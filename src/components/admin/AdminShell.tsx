@@ -117,7 +117,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="sticky top-0 z-20 flex h-16 items-center gap-3 bg-background/90 px-4 backdrop-blur">
             <SidebarTrigger />
-            <p className="text-sm text-muted-foreground">Demo mode — changes are saved in this browser only</p>
+            <p className="truncate text-sm text-muted-foreground"><span className="sm:hidden">Demo mode</span><span className="hidden sm:inline">Demo mode — changes are saved in this browser only</span></p>
           </header>
           <main className="flex-1 p-4 md:p-8">{children}</main>
         </div>
