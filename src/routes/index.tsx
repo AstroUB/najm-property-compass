@@ -212,7 +212,7 @@ function Home() {
                 <p className="text-base text-primary">{g.status} · {g.region}</p>
                 <h3 className="mt-3 text-3xl font-medium tracking-tight md:text-4xl">{g.name}</h3>
                 <p className="mt-4 text-lg text-muted-foreground">{g.text}</p>
-                <dl className="mt-8 grid grid-cols-2 gap-3">
+                <dl className="mb-8 mt-8 grid grid-cols-2 gap-3">
                   <div className="rounded-2xl bg-cream p-5">
                     <dt className="text-sm text-muted-foreground">Est. deadline</dt>
                     <dd className="mt-1 text-xl font-medium tracking-tight">{g.deadline}</dd>
@@ -222,7 +222,7 @@ function Home() {
                     <dd className="mt-1 text-xl font-medium tracking-tight">{g.budget}</dd>
                   </div>
                 </dl>
-                <a href="#contact" className="mt-auto inline-flex w-fit items-center gap-2 self-start rounded-full bg-ink px-7 py-4 pt-4 text-base text-ink-foreground transition-colors hover:bg-primary [margin-top:max(2rem,auto)]">
+                <a href="#contact" className="mt-auto inline-flex w-fit items-center gap-2 self-start rounded-full bg-ink px-7 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
                   Register interest <ArrowUpRight className="h-4 w-4" />
                 </a>
               </div>
