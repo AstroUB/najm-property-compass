@@ -78,7 +78,7 @@ export function Nav() {
 }
 
 export function Footer() {
-  const cols: { title: string; links: { label: string; to?: string; href?: string; city?: string }[] }[] = [
+  const cols: { title: string; links: { label: string; to?: "/" | "/properties" | "/knowledge" | "/about" | "/contact"; href?: string; city?: string }[] }[] = [
     { title: "Explore", links: [
       { label: "Home", to: "/" }, { label: "Properties", to: "/properties" }, { label: "Investment Vault", href: "/#vault" },
       { label: "Giga Projects", href: "/#projects" }, { label: "Knowledge Hub", to: "/knowledge" } ] },
