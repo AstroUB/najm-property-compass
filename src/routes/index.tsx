@@ -46,7 +46,7 @@ function Hero() {
     })();
   }, []);
 
-  useLiquidGlass(".lg-glass", { frost: 6, refraction: 0.006, bevelDepth: 0.06, tint: "rgba(255, 255, 255, 0.55)" });
+  useLiquidGlass(".lg-glass", { frost: 6, refraction: 0.006, bevelDepth: 0.06 });
   const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer";
   const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
@@ -86,7 +86,7 @@ function Hero() {
           ].map((f) => (
             <div key={f.label} className="relative">
               <span aria-hidden className="lg-glass glass pointer-events-none absolute inset-0 rounded-full" />
-              <label className="relative z-10 flex cursor-pointer flex-col rounded-full px-6 py-3">
+              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-background/55 px-6 py-3">
                 <span className="text-xs text-foreground/70">{f.label}</span>
                 <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
                   <option value="">{f.ph}</option>
