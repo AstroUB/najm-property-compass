@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -121,14 +122,12 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const isAdmin = useRouterState({ select: (r) => r.location.pathname.startsWith("/admin") });
   useLiquidGlass(".lg-nav", { refraction: 0.006, bevelDepth: 0.06, bevelWidth: 0.12 });
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SmoothScroll />
-      <Nav />
-      <Outlet />
-      <Footer />
+      {isAdmin ? <Outlet /> : (<><SmoothScroll /><Nav /><Outlet /><Footer /></>)}
       <Toaster position="bottom-center" />
     </QueryClientProvider>
   );
