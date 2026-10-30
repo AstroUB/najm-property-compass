@@ -6,7 +6,7 @@
 
 @theme inline {
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", Georgia, serif;
+  --font-display: "Pinyon Script", cursive;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -48,8 +48,8 @@
   --card-foreground: oklch(0.17 0.01 160);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.17 0.01 160);
-  /* Royal Rolex green */
-  --primary: oklch(0.43 0.1 158);
+  /* Midnight navy */
+  --primary: oklch(0.32 0.08 262);
   --primary-foreground: oklch(0.98 0.01 90);
   /* Cream */
   --secondary: oklch(0.96 0.018 85);
@@ -67,7 +67,7 @@
   --destructive-foreground: oklch(0.98 0 0);
   --border: oklch(0.96 0.018 85);
   --input: oklch(0.96 0.018 85);
-  --ring: oklch(0.43 0.1 158);
+  --ring: oklch(0.32 0.08 262);
   --shadow-soft: 0 30px 60px -30px oklch(0.17 0.01 160 / 0.25);
 }
 
@@ -96,31 +96,31 @@ html.lenis, html.lenis body { height: auto; }
 /* Big single fancy letter */
 @utility fancy {
   font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
+  font-style: normal;
+  font-weight: 400;
   color: var(--primary);
-  font-size: 1.12em;
-  line-height: 0.9;
-  letter-spacing: -0.01em;
-  padding-right: 0.04em;
+  font-size: 1.45em;
+  line-height: 0.8;
+  letter-spacing: 0;
+  padding-right: 0.08em;
 }
 
 @utility display-xl {
-  font-size: clamp(2.6rem, 5.4vw, 5.25rem);
+  font-size: clamp(3rem, 6.4vw, 6.5rem);
   line-height: 1;
   letter-spacing: -0.03em;
   font-weight: 500;
 }
 
 @utility display-lg {
-  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  font-size: clamp(2.4rem, 4.6vw, 4.6rem);
   line-height: 1.05;
   letter-spacing: -0.025em;
   font-weight: 500;
 }
 
 @utility display-md {
-  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
   line-height: 1.15;
   letter-spacing: -0.02em;
   font-weight: 500;
@@ -155,4 +155,8 @@ html.lenis, html.lenis body { height: auto; }
   &:focus {
     box-shadow: 0 0 0 2px var(--primary);
   }
+}
+
+@utility hero-clip {
+  clip-path: inset(30% 0 0 0 round 2rem);
 }

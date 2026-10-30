@@ -1,7 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Plus, Minus, Search } from "lucide-react";
-import hero from "@/assets/hero.jpg";
+import hero from "@/assets/hero2.jpg";
+import heroCut from "@/assets/hero2-cut.png";
+import p3 from "@/assets/p3.jpg";
+import p4 from "@/assets/p4.jpg";
+import g1 from "@/assets/g1.jpg";
+import g3 from "@/assets/g3.jpg";
 import { BUDGETS, CITIES, GIGA_PROJECTS, PROPERTIES, TYPES, formatSAR } from "@/data/properties";
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
@@ -24,74 +29,65 @@ export const Route = createFileRoute("/")({
 
 function Hero() {
   const navigate = useNavigate();
-  const imgRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const [loc, setLoc] = useState("");
   const [type, setType] = useState("");
   const [budget, setBudget] = useState("");
 
   useEffect(() => {
-    let cleanup = () => {};
     (async () => {
       const { gsap } = await import("gsap");
-      const tl = gsap.timeline();
-      tl.from(imgRef.current, { scale: 1.15, duration: 2, ease: "power3.out" })
-        .from("[data-hero-line]", { yPercent: 100, opacity: 0, duration: 1.1, stagger: 0.1, ease: "power4.out" }, 0.2)
-        .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out", clearProps: "all" }, 0.7);
-      const onMove = (e: MouseEvent) => {
-        const x = e.clientX / window.innerWidth - 0.5;
-        const y = e.clientY / window.innerHeight - 0.5;
-        gsap.to(imgRef.current, { x: x * -20, y: y * -14, duration: 1.4, ease: "power3.out" });
-      };
-      window.addEventListener("mousemove", onMove);
-      cleanup = () => window.removeEventListener("mousemove", onMove);
+      gsap.timeline()
+        .from("[data-hero-line]", { yPercent: 110, duration: 1.2, stagger: 0.12, ease: "power4.out" })
+        .from("[data-hero-photo]", { scale: 1.08, opacity: 0, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.1)
+        .from("[data-hero-cut]", { y: 80, opacity: 0, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.3)
+        .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out", clearProps: "all" }, 0.9);
     })();
-    return () => cleanup();
   }, []);
 
-  const sel = "w-full appearance-none bg-transparent text-sm font-medium outline-none cursor-pointer";
+  const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer";
 
   return (
-    <section className="p-3">
-      <div className="relative flex h-[calc(100svh-1.5rem)] min-h-[620px] flex-col justify-between overflow-hidden rounded-[2rem] bg-cream px-6 pb-6 pt-32 md:px-12 md:pb-10">
-        <div ref={imgRef} className="absolute -inset-6">
-          <img src={hero} alt="Najm Estate signature villa at sunset" width={1920} height={1088} className="h-full w-full object-cover" />
+    <section className="px-3 pt-24 md:px-4">
+      <div ref={stageRef} className="relative mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[5/4] sm:max-w-[min(1440px,calc((100svh-6.5rem)*1.25))]">
+        <h1 className="absolute inset-x-0 top-[1%] z-10 text-center font-medium uppercase leading-[0.86] tracking-[-0.04em]" style={{ fontSize: "clamp(2.8rem, min(8vw, 11svh), 9rem)" }}>
+          <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
+          <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy normal-case">S</span>tars</span></span>
+        </h1>
+        <div data-hero-photo className="absolute inset-x-0 bottom-0 top-[40%] overflow-hidden rounded-[2rem]">
+          <img src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="absolute inset-x-0 bottom-0 h-[138.4%] w-full object-cover" />
         </div>
-        <div className="relative max-w-2xl">
-          <h1 className="display-xl">
-            <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
-            <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy">s</span>tars.</span></span>
-          </h1>
-          <p data-hero-line className="mt-5 max-w-md text-base text-foreground/75">
-            Curated residences and investment property across the Kingdom of Saudi Arabia.
-          </p>
-        </div>
+        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[83%] w-full object-cover" />
 
-        <div data-hero-search className="relative w-full max-w-4xl">
+
         <form
+          data-hero-search
           onSubmit={(e) => {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="liquidGL glass relative z-50 grid w-full gap-1 rounded-[1.75rem] p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
+          className="absolute inset-x-3 bottom-3 z-50 mx-auto grid max-w-5xl gap-2 md:bottom-8 md:grid-cols-[1fr_1fr_1fr_auto]"
         >
           {[
             { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
             { label: "Property type", value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
             { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
           ].map((f) => (
-            <label key={f.label} className="relative z-10 flex flex-col rounded-full px-5 py-2 transition-colors hover:bg-background/50">
-              <span className="text-xs text-foreground/60">{f.label}</span>
-              <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
-                <option value="">{f.ph}</option>
-                {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-              </select>
-            </label>
+            <div key={f.label} className="relative">
+              <span aria-hidden className="liquidGL glass absolute inset-0 z-0 rounded-full" />
+              <label className="relative z-10 flex cursor-pointer flex-col rounded-full px-6 py-3">
+                <span className="text-xs text-foreground/70">{f.label}</span>
+                <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
+                  <option value="">{f.ph}</option>
+                  {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                </select>
+              </label>
+            </div>
           ))}
-          <button className="relative z-10 flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm text-ink-foreground transition-colors hover:bg-primary">
+          <button className="relative z-50 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
             <Search className="h-4 w-4" /> Search
           </button>
         </form>
-        </div>
       </div>
     </section>
   );
@@ -111,6 +107,13 @@ const WHY = [
   { n: "24h", t: "Response promise", d: "A dedicated advisor, available whenever you need them." },
 ];
 
+const ARTICLES = [
+  { c: "Buyer guide", m: 6, t: "How foreigners can buy property in Saudi Arabia in 2026", img: p4 },
+  { c: "Market report", m: 8, t: "Riyadh prime residential: Q3 prices and rental yields", img: g3 },
+  { c: "Investment", m: 5, t: "Off-plan vs ready: which earns more in Jeddah?", img: p3 },
+  { c: "Giga projects", m: 7, t: "What NEOM and the Red Sea mean for nearby land values", img: g1 },
+];
+
 const FAQ = [
   { q: "Can foreigners buy property in Saudi Arabia?", a: "Yes. Under the updated real estate ownership law, non-Saudis can own property in designated zones. Our advisors guide you through every eligibility requirement." },
   { q: "Do you help with mortgage financing?", a: "We work with leading Saudi banks to secure competitive, Sharia-compliant financing for residents and eligible non-residents." },
@@ -122,7 +125,7 @@ const FAQ = [
 function Home() {
   useReveal();
   const [faq, setFaq] = useState<number | null>(0);
-  const featured = PROPERTIES.filter((p) => p.featured).slice(0, 6);
+  const featured = PROPERTIES.filter((p) => p.featured).slice(0, 4);
   const vault = PROPERTIES.filter((p) => p.investment).slice(0, 4);
 
   return (
@@ -131,14 +134,14 @@ function Home() {
 
       {/* Featured */}
       <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionTitle letter="F" rest="eatured homes" eyebrow="Hand-picked this season" />
             <Link to="/properties" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
               View all properties <ArrowUpRight className="h-5 w-5" />
             </Link>
           </div>
-          <div className="mt-16 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
             {featured.map((p) => <PropertyCard key={p.id} p={p} />)}
           </div>
         </div>
@@ -175,10 +178,10 @@ function Home() {
 
       {/* Other properties */}
       <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-[1400px]">
           <SectionTitle letter="M" rest="ore to explore" />
-          <div className="mt-16 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
-            {PROPERTIES.filter((p) => !p.featured).slice(0, 3).map((p) => <PropertyCard key={p.id} p={p} />)}
+          <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+            {PROPERTIES.filter((p) => !p.featured).slice(0, 4).map((p) => <PropertyCard key={p.id} p={p} />)}
           </div>
         </div>
       </section>
@@ -242,6 +245,32 @@ function Home() {
                 <p className="mt-4 text-xl">{w.t}</p>
                 <p className="mt-2 text-lg opacity-70">{w.d}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Knowledge Hub */}
+      <section id="insights" className="scroll-mt-28 px-6 py-20">
+        <div className="mx-auto max-w-[1400px]">
+          <div className="flex flex-wrap items-end justify-between gap-8">
+            <SectionTitle letter="K" rest="nowledge Hub" eyebrow="Guides, market reports and buyer insight" />
+            <a href="#contact" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
+              Ask an advisor <ArrowUpRight className="h-5 w-5" />
+            </a>
+          </div>
+          <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+            {ARTICLES.map((a) => (
+              <a key={a.t} href="#contact" className="group block" data-reveal>
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
+                  <img src={a.img} alt={a.t} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <span className="glass absolute bottom-4 right-4 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                    <ArrowUpRight className="h-5 w-5" />
+                  </span>
+                </div>
+                <p className="mt-5 text-sm text-muted-foreground">{a.c} · {a.m} min read</p>
+                <p className="mt-2 text-xl font-medium leading-snug tracking-tight">{a.t}</p>
+              </a>
             ))}
           </div>
         </div>
