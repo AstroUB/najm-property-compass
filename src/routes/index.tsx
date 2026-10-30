@@ -3,12 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDownRight, ArrowUpRight, ChevronDown, Home as HomeIcon, MapPin, Plus, Minus, Search, Wallet } from "lucide-react";
 import hero from "@/assets/hero2.jpg";
 import heroCut from "@/assets/hero2-cut.png";
-import p3 from "@/assets/p3.jpg";
-import p4 from "@/assets/p4.jpg";
-import g1 from "@/assets/g1.jpg";
-import g3 from "@/assets/g3.jpg";
 import { GigaProjects, WhyNajm } from "@/components/site/HomeSections";
 import { BUDGETS, CITIES, PROPERTIES, TYPES, formatSAR } from "@/data/properties";
+import { ARTICLES } from "@/data/site";
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
@@ -78,31 +75,31 @@ function Hero() {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="absolute inset-x-0 top-full z-30 mx-auto mt-3 max-w-4xl md:inset-x-6 md:bottom-8 md:top-auto md:mt-0"
+          className="absolute inset-x-0 top-full z-30 mx-auto mt-3 max-w-[1240px] md:inset-x-8 md:bottom-8 md:top-auto md:mt-0"
         >
           <span aria-hidden className="lg-glass pointer-events-none absolute inset-0 hidden rounded-[2rem] md:block md:rounded-full" />
-          <div className="relative z-10 grid gap-1 rounded-[2rem] bg-cream p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full md:bg-ink/30 md:backdrop-blur-xl">
+          <div className="relative z-10 grid gap-2 rounded-[2rem] bg-cream p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:gap-0 md:rounded-full md:bg-ink/40 md:p-2.5">
             {[
-              { label: "Location", icon: MapPin, value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
-              { label: "Property type", icon: HomeIcon, value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
-              { label: "Budget", icon: Wallet, value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
-            ].map((f) => (
-              <label key={f.label} className="group relative flex cursor-pointer items-center gap-3 rounded-full px-4 py-2.5 transition-colors hover:bg-background/60 md:hover:bg-ink-foreground/10">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background text-primary md:bg-ink-foreground/15 md:text-ink-foreground">
-                  <f.icon className="h-4 w-4" />
+              { label: "Location", icon: MapPin, value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city in the Kingdom" },
+              { label: "Property type", icon: HomeIcon, value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Villa, penthouse…" },
+              { label: "Budget", icon: Wallet, value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget (SAR)" },
+            ].map((f, i) => (
+              <label key={f.label} className={`group relative flex cursor-pointer items-center gap-4 rounded-full px-5 py-3 transition-colors hover:bg-background/60 md:px-6 md:hover:bg-ink-foreground/10 ${i > 0 ? "md:before:absolute md:before:left-0 md:before:top-1/4 md:before:h-1/2 md:before:w-px md:before:bg-ink-foreground/25" : ""}`}>
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-background text-primary">
+                  <f.icon className="h-5 w-5" />
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="text-xs text-muted-foreground md:text-ink-foreground/70">{f.label}</span>
+                  <span className="text-sm text-muted-foreground md:text-ink-foreground/75">{f.label}</span>
                   <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
                     <option value="">{f.ph}</option>
                     {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
                   </select>
                 </span>
-                <ChevronDown className="pointer-events-none h-4 w-4 shrink-0 opacity-60 md:text-ink-foreground" />
+                <ChevronDown className="pointer-events-none h-4 w-4 shrink-0 opacity-70 md:text-ink-foreground" />
               </label>
             ))}
-            <button className="flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-base text-primary-foreground transition-colors hover:bg-ink">
-              <Search className="h-4 w-4" /> Search
+            <button className="flex items-center justify-center gap-2 rounded-full bg-primary px-10 py-5 text-lg text-primary-foreground transition-colors hover:bg-background hover:text-foreground">
+              <Search className="h-5 w-5" /> Search
             </button>
           </div>
         </form>
@@ -119,12 +116,6 @@ const STEPS = [
 ];
 
 
-const ARTICLES = [
-  { c: "Buyer guide", m: 6, t: "How foreigners can buy property in Saudi Arabia in 2026", img: p4 },
-  { c: "Market report", m: 8, t: "Riyadh prime residential: Q3 prices and rental yields", img: g3 },
-  { c: "Investment", m: 5, t: "Off-plan vs ready: which earns more in Jeddah?", img: p3 },
-  { c: "Giga projects", m: 7, t: "What NEOM and the Red Sea mean for nearby land values", img: g1 },
-];
 
 const FAQ = [
   { q: "Can foreigners buy property in Saudi Arabia?", a: "Yes. Under the updated real estate ownership law, non-Saudis can own property in designated zones. Our advisors guide you through every eligibility requirement." },
@@ -231,13 +222,13 @@ function Home() {
         <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionTitle word="Knowledge" rest=" Hub" eyebrow="Guides, market reports and buyer insight" />
-            <a href="#contact" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
-              Ask an advisor <ArrowUpRight className="h-5 w-5" />
-            </a>
+            <Link to="/knowledge" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
+              All articles <ArrowUpRight className="h-5 w-5" />
+            </Link>
           </div>
           <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-            {ARTICLES.map((a) => (
-              <a key={a.t} href="#contact" className="group block" data-reveal>
+            {ARTICLES.slice(0, 4).map((a) => (
+              <Link key={a.t} to="/knowledge" className="group block" data-reveal>
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
                   <img src={a.img} alt={a.t} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <span className="glass absolute bottom-4 right-4 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
@@ -246,7 +237,7 @@ function Home() {
                 </div>
                 <p className="mt-5 text-sm text-muted-foreground">{a.c} · {a.m} min read</p>
                 <p className="mt-2 text-xl font-medium leading-snug tracking-tight">{a.t}</p>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

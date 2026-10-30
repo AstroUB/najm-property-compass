@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, Bath, BedDouble, Building2, Calendar, Car, Check, Compass, Download, FileCheck2, Home, Layers, MapPin, Maximize, Sofa, Trees } from "lucide-react";
 import { PROPERTIES, formatSAR, propertyDetails } from "@/data/properties";
+import advisor from "@/assets/t2.jpg";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { useLiquidGlass, useReveal } from "@/components/site/motion";
@@ -152,6 +153,58 @@ function Detail() {
               </div>
             </Block>
 
+            <Block title="Features" rest=" & finishes">
+              <div className="grid gap-4 md:grid-cols-3">
+                {[
+                  ["Interiors", ["Italian marble flooring", "Oak joinery & walk-in wardrobes", "Double-height majlis", "Bespoke lighting design"]],
+                  ["Kitchen & systems", ["Gaggenau appliances", "Smart-home control (KNX)", "Central VRF air-conditioning", "Solar-ready roof & water storage"]],
+                  ["Security & services", ["24/7 gated security", "CCTV & video intercom", "Separate driver & maid quarters", "Backup generator"]],
+                ].map(([t, items]) => (
+                  <div key={t as string} className="rounded-[2rem] bg-primary/[0.06] p-6">
+                    <p className="text-lg font-medium text-primary">{t as string}</p>
+                    <ul className="mt-4 space-y-2.5">{(items as string[]).map((i) => <li key={i} className="flex gap-2 text-muted-foreground"><Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />{i}</li>)}</ul>
+                  </div>
+                ))}
+              </div>
+            </Block>
+
+            <Block title="Investment" rest=" snapshot">
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                {[
+                  ["Est. annual rent", formatSAR(Math.round(p.price * ((p.investment?.yield ?? 5.2) / 100)))],
+                  ["Gross yield", `${p.investment?.yield ?? 5.2}%`],
+                  ["5-yr price growth", `+${28 + (p.id.length % 9)}%`],
+                  ["Service charge", `SAR ${18 + (p.id.length % 6)}/m²/yr`],
+                ].map(([k, v]) => (
+                  <div key={k} className="rounded-[1.75rem] bg-ink p-6 text-ink-foreground">
+                    <p className="text-2xl font-medium tracking-tight">{v}</p>
+                    <p className="mt-2 text-sm opacity-70">{k}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 rounded-[2rem] bg-cream p-6">
+                <p className="text-lg font-medium">{p.district} price trend (SAR/m²)</p>
+                <div className="mt-6 flex h-40 items-end gap-3">
+                  {[0.72, 0.76, 0.81, 0.85, 0.9, 0.95, 1].map((h, i) => (
+                    <div key={i} className="flex flex-1 flex-col items-center gap-2">
+                      <div className="w-full rounded-t-xl bg-primary" style={{ height: `${h * 100}%`, opacity: 0.45 + h * 0.55 }} />
+                      <span className="text-xs text-muted-foreground">{2020 + i}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Block>
+
+            <Block title="Documents" rest=" & compliance">
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[["Title deed", d.deed], ["REGA advertising licence", `AD-${7100 + p.id.length * 37}`], ["Building permit", `BP-${p.year}-${400 + p.id.length}`], ["Escrow account", p.status === "Off-plan" ? "Wafi-registered" : "Not required"]].map(([k, v]) => (
+                  <div key={k} className="flex items-center justify-between gap-4 rounded-2xl bg-primary/[0.06] px-5 py-4">
+                    <span className="flex items-center gap-3"><FileCheck2 className="h-5 w-5 text-primary" />{k}</span><span className="font-medium">{v}</span>
+                  </div>
+                ))}
+              </div>
+            </Block>
+
             <Block title="Amenities">
               <ul className="grid gap-3 sm:grid-cols-2">
                 {p.amenities.map((a) => (
@@ -221,6 +274,11 @@ function Detail() {
               <div className="p-8">
                 <EnquiryForm cta="Request viewing" defaultMessage={`I'm interested in ${p.title}.`} />
               </div>
+            </div>
+            <div className="mt-4 flex items-center gap-4 rounded-[2rem] bg-cream p-4">
+              <img src={advisor} alt="Lama Al-Qahtani" className="h-16 w-16 rounded-full object-cover" />
+              <div className="flex-1"><p className="font-medium">Lama Al-Qahtani</p><p className="text-sm text-muted-foreground">Your private advisor</p></div>
+              <a href="tel:+966110000000" className="rounded-full bg-primary px-4 py-2.5 text-sm text-primary-foreground hover:bg-ink">Call</a>
             </div>
           </aside>
         </div>
