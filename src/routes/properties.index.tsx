@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { BUDGETS, CITIES, PROPERTIES, TYPES } from "@/data/properties";
 import { PropertyCard } from "@/components/site/PropertyCard";
-import { useLiquidGlass, useReveal } from "@/components/site/motion";
+import { useReveal } from "@/components/site/motion";
 
 type Search = { city?: string | undefined; type?: string | undefined; budget?: string | undefined; beds?: string | undefined; status?: string | undefined; sort?: string | undefined };
 
@@ -52,7 +52,6 @@ function PropertiesPage() {
 
   const list = useMemo(() => filterProperties(search), [search]);
   useReveal([list.length, JSON.stringify(search)]);
-  useLiquidGlass(".lg-card", { frost: 1.5, refraction: 0.006, bevelDepth: 0.06, bevelWidth: 0.12 });
   const hasFilters = Object.values(search).some(Boolean);
 
   return (
@@ -69,7 +68,7 @@ function PropertiesPage() {
             <button onClick={() => setMobileOpen(true)} className="flex items-center gap-2 rounded-full bg-cream px-5 py-3 text-sm lg:hidden">
               <SlidersHorizontal className="h-4 w-4" /> Filters
             </button>
-            <select aria-label="Sort" value={search.sort ?? ""} onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value || undefined }), replace: true })} className="field w-auto bg-primary/10 pr-10 text-sm text-primary">
+            <select aria-label="Sort" value={search.sort ?? ""} onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value || undefined }), replace: true })} className="field w-auto bg-cream pr-10 text-sm">
               <option value="">Recommended</option>
               <option value="low">Price: low to high</option>
               <option value="high">Price: high to low</option>
@@ -78,14 +77,14 @@ function PropertiesPage() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[320px_1fr] lg:gap-10">
+        <div className="mt-10 grid gap-8 lg:grid-cols-[264px_1fr] lg:gap-10">
           <aside className={`${mobileOpen ? "fixed inset-0 z-[60] overflow-y-auto bg-background p-4" : "hidden"} lg:sticky lg:top-28 lg:block lg:self-start`}>
-            <div className="rounded-[2rem] bg-primary p-3 text-primary-foreground">
-              <div className="flex items-center justify-between px-4 pb-2 pt-4">
-                <p className="text-2xl font-medium tracking-tight"><span className="fancy !text-primary-foreground">Filters</span></p>
+            <div className="rounded-[1.75rem] bg-cream p-2.5 text-foreground">
+              <div className="flex items-center justify-between px-3 pb-1 pt-3">
+                <p className="text-xl font-medium tracking-tight"><span className="fancy">Filters</span></p>
                 <div className="flex items-center gap-3">
                   {hasFilters ? (
-                    <button onClick={() => navigate({ search: {} })} className="text-sm opacity-80 hover:underline">Clear all</button>
+                    <button onClick={() => navigate({ search: {} })} className="text-xs text-primary hover:underline">Clear all</button>
                   ) : null}
                   <button onClick={() => setMobileOpen(false)} className="lg:hidden" aria-label="Close filters"><X className="h-5 w-5" /></button>
                 </div>
@@ -94,7 +93,7 @@ function PropertiesPage() {
               <Panel title="Location">
                 <div className="flex flex-col">
                   {CITIES.map((c) => (
-                    <button key={c} onClick={() => set("city", c)} className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition-colors ${search.city === c ? "bg-primary text-primary-foreground" : "hover:bg-primary/10"}`}>
+                    <button key={c} onClick={() => set("city", c)} className={`flex items-center justify-between rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-colors ${search.city === c ? "bg-primary text-primary-foreground" : "hover:bg-cream"}`}>
                       {c}
                       <span className={search.city === c ? "opacity-80" : "text-muted-foreground"}>{PROPERTIES.filter((p) => p.city === c).length}</span>
                     </button>
@@ -109,8 +108,8 @@ function PropertiesPage() {
               <Panel title="Budget">
                 <div className="flex flex-col">
                   {BUDGETS.map((b) => (
-                    <button key={b.value} onClick={() => set("budget", b.value)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm hover:bg-primary/10">
-                      <span className={`h-4 w-4 shrink-0 rounded-full transition-all ${search.budget === b.value ? "bg-primary ring-4 ring-primary/20" : "bg-primary/15"}`} />
+                    <button key={b.value} onClick={() => set("budget", b.value)} className="flex items-center gap-3 rounded-lg px-2.5 py-1.5 text-left text-[13px] hover:bg-primary/10">
+                      <span className={`h-3.5 w-3.5 shrink-0 rounded-full transition-all ${search.budget === b.value ? "bg-primary ring-4 ring-primary/20" : "bg-cream"}`} />
                       {b.label}
                     </button>
                   ))}
@@ -122,7 +121,7 @@ function PropertiesPage() {
               <Panel title="Status">
                 <Segment options={["Ready", "Off-plan"]} value={search.status} onPick={(v) => set("status", v)} />
               </Panel>
-              <button onClick={() => setMobileOpen(false)} className="mt-2 w-full rounded-full bg-background text-foreground py-3.5 text-sm lg:hidden">
+              <button onClick={() => setMobileOpen(false)} className="mt-2 w-full rounded-full bg-primary text-primary-foreground py-3.5 text-sm lg:hidden">
                 Show {list.length} results
               </button>
             </div>
@@ -148,8 +147,8 @@ function PropertiesPage() {
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mt-2 rounded-[1.5rem] bg-background p-3 text-foreground">
-      <p className="mb-2 px-3 pt-1 text-xs font-medium uppercase tracking-[0.14em] text-primary">{title}</p>
+    <div className="mt-2 rounded-[1.25rem] bg-background p-2.5 text-foreground">
+      <p className="mb-1.5 px-2.5 pt-0.5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">{title}</p>
       {children}
     </div>
   );
@@ -157,9 +156,9 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
 
 function Segment({ options, value, onPick, suffix = "" }: { options: string[]; value?: string | undefined; onPick: (v: string) => void; suffix?: string }) {
   return (
-    <div className="flex gap-1 rounded-full bg-primary/10 p-1">
+    <div className="flex gap-1 rounded-full bg-cream p-1">
       {options.map((o) => (
-        <button key={o} onClick={() => onPick(o)} className={`flex-1 rounded-full py-2 text-sm transition-colors ${value === o ? "bg-primary text-primary-foreground" : "hover:bg-background"}`}>
+        <button key={o} onClick={() => onPick(o)} className={`flex-1 rounded-full py-1.5 text-[13px] transition-colors ${value === o ? "bg-primary text-primary-foreground" : "hover:bg-background"}`}>
           {o}{suffix}
         </button>
       ))}
@@ -171,7 +170,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
   return (
     <button
       onClick={onClick}
-      className={`rounded-xl px-3 py-3 text-sm transition-colors ${active ? "bg-primary text-primary-foreground" : "bg-primary/10 hover:bg-primary/20"}`}
+      className={`rounded-lg px-2 py-2 text-[13px] transition-colors ${active ? "bg-primary text-primary-foreground" : "bg-cream hover:bg-cream"}`}
     >
       {children}
     </button>
