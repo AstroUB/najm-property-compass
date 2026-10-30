@@ -86,7 +86,7 @@ function Hero() {
           ].map((f) => (
             <div key={f.label} className="relative">
               <span aria-hidden className="lg-glass glass pointer-events-none absolute inset-0 rounded-full" />
-              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-background/55 px-6 py-3">
+              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-cream px-6 py-3 md:bg-background/55">
                 <span className="text-xs text-foreground/70">{f.label}</span>
                 <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
                   <option value="">{f.ph}</option>
