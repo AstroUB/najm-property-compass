@@ -78,56 +78,74 @@ export function Nav() {
 }
 
 export function Footer() {
+  const cols: { title: string; links: { label: string; to?: "/" | "/properties" | "/knowledge" | "/about" | "/contact"; href?: string; city?: string }[] }[] = [
+    { title: "Explore", links: [
+      { label: "Home", to: "/" }, { label: "Properties", to: "/properties" }, { label: "Investment Vault", href: "/#vault" },
+      { label: "Giga Projects", href: "/#projects" }, { label: "Knowledge Hub", to: "/knowledge" } ] },
+    { title: "Company", links: [{ label: "About us", to: "/about" }, { label: "Contact", to: "/contact" }, { label: "Careers", href: "/about" }, { label: "Press", href: "/about" }] },
+    { title: "Cities", links: ["Riyadh", "Jeddah", "Dammam", "AlUla"].map((c) => ({ label: c, city: c })) },
+  ];
+  const linkCls = "group inline-flex items-center gap-2 text-ink-foreground/80 transition-colors hover:text-ink-foreground";
+  const dot = <span className="h-1.5 w-0 rounded-full bg-primary transition-all duration-300 group-hover:w-3" />;
   return (
     <footer className="px-3 pb-3">
-      <div className="overflow-hidden rounded-[2rem] bg-ink px-6 pt-16 text-ink-foreground md:px-12">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
+      <div className="overflow-hidden rounded-[2rem] bg-ink text-ink-foreground">
+        {/* CTA band */}
+        <div className="grid gap-8 bg-primary px-6 py-14 text-primary-foreground md:grid-cols-[1.4fr_1fr] md:items-end md:px-12">
+          <h2 className="display-lg max-w-2xl">Find the address that <span className="fancy !text-primary-foreground">defines</span> you.</h2>
+          <div className="flex flex-col gap-4 md:items-end">
+            <p className="max-w-sm text-primary-foreground/80 md:text-right">Speak to an advisor today — private viewings across Riyadh, Jeddah and beyond.</p>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/contact" className="rounded-full bg-primary-foreground px-6 py-3 text-sm font-medium text-primary transition-transform hover:-translate-y-0.5">Book a consultation</Link>
+              <Link to="/properties" className="rounded-full bg-ink px-6 py-3 text-sm font-medium text-ink-foreground transition-transform hover:-translate-y-0.5">Browse homes</Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-7xl px-6 pt-16 md:px-12">
+          <div className="grid gap-12 lg:grid-cols-[1.2fr_2fr]">
             <div>
-              <h2 className="display-lg max-w-xl">Find the address that <span className="fancy !text-ink-foreground">defines</span> you.</h2>
+              <Link to="/" className="text-3xl font-semibold tracking-tight">Najm<span className="fancy !text-primary"> Estate</span></Link>
+              <p className="mt-4 max-w-sm text-ink-foreground/60">Curated residences and investment opportunities across the Kingdom.</p>
               <form
                 className="mt-8 flex max-w-md items-center gap-2 rounded-full bg-ink-foreground/10 p-1.5"
                 onSubmit={(e) => { e.preventDefault(); e.currentTarget.reset(); toast.success("Subscribed — welcome to Najm."); }}
               >
-                <input type="email" required placeholder="Your email for private listings" className="flex-1 bg-transparent px-4 text-sm outline-none placeholder:text-ink-foreground/50" />
+                <input type="email" required placeholder="Email for private listings" className="min-w-0 flex-1 bg-transparent px-4 text-sm outline-none placeholder:text-ink-foreground/50" />
                 <button className="rounded-full bg-primary px-5 py-2.5 text-sm text-primary-foreground transition-colors hover:bg-ink-foreground hover:text-ink">Subscribe</button>
               </form>
+              <div className="mt-8 grid max-w-md grid-cols-2 gap-4 text-sm">
+                <a href="tel:+966110000000" className="rounded-2xl bg-ink-foreground/5 p-4 transition-colors hover:bg-ink-foreground/10"><span className="block text-ink-foreground/50">Call</span>+966 11 000 0000</a>
+                <a href="mailto:hello@najmestate.sa" className="rounded-2xl bg-ink-foreground/5 p-4 transition-colors hover:bg-ink-foreground/10"><span className="block text-ink-foreground/50">Email</span>hello@najmestate.sa</a>
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
-              <div className="flex flex-col gap-3">
-                <p className="text-ink-foreground/50">Explore</p>
-                <Link to="/" className="hover:text-ink-foreground/70">Home</Link>
-                <Link to="/properties" className="hover:text-ink-foreground/70">Properties</Link>
-                <a href="/#vault" className="hover:text-ink-foreground/70">Investment Vault</a>
-                <a href="/#projects" className="hover:text-ink-foreground/70">Giga Projects</a>
-                <Link to="/knowledge" className="hover:text-ink-foreground/70">Knowledge Hub</Link>
-                <Link to="/about" className="hover:text-ink-foreground/70">About us</Link>
-                <Link to="/contact" className="hover:text-ink-foreground/70">Contact</Link>
-              </div>
-              <div className="flex flex-col gap-3">
-                <p className="text-ink-foreground/50">Cities</p>
-                {["Riyadh", "Jeddah", "Dammam", "AlUla"].map((c) => (
-                  <Link key={c} to="/properties" search={{ city: c }} className="hover:text-ink-foreground/70">{c}</Link>
-                ))}
-              </div>
-              <div className="flex flex-col gap-3">
-                <p className="text-ink-foreground/50">Contact</p>
-                <a href="tel:+966110000000" className="hover:text-ink-foreground/70">+966 11 000 0000</a>
-                <a href="mailto:hello@najmestate.sa" className="hover:text-ink-foreground/70">hello@najmestate.sa</a>
-                <p className="text-ink-foreground/70">King Fahd Rd, Riyadh</p>
-              </div>
+            <div className="grid grid-cols-2 gap-10 text-sm sm:grid-cols-3">
+              {cols.map((c) => (
+                <div key={c.title} className="flex flex-col gap-3.5">
+                  <p className="mb-1 text-ink-foreground/45">{c.title}</p>
+                  {c.links.map((l) => l.city ? (
+                    <Link key={l.label} to="/properties" search={{ city: l.city }} className={linkCls}>{dot}{l.label}</Link>
+                  ) : l.to ? (
+                    <Link key={l.label} to={l.to} className={linkCls}>{dot}{l.label}</Link>
+                  ) : (
+                    <a key={l.label} href={l.href} className={linkCls}>{dot}{l.label}</a>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
-          <div className="mt-16 flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-ink-foreground/50">
-            <p>© 2026 Najm Estate · Licensed by REGA</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-ink-foreground">Instagram</a>
-              <a href="#" className="hover:text-ink-foreground">LinkedIn</a>
-              <a href="#" className="hover:text-ink-foreground">X</a>
+
+          <div className="mt-16 flex flex-wrap items-center justify-between gap-4 bg-ink py-6 text-sm text-ink-foreground/50" style={{ boxShadow: "0 -1px 0 0 color-mix(in oklab, var(--ink-foreground) 10%, transparent)" }}>
+            <p>© 2026 Najm Estate · Licensed by REGA · King Fahd Rd, Riyadh</p>
+            <div className="flex gap-2">
+              {["Instagram", "LinkedIn", "X"].map((s) => (
+                <a key={s} href="#" className="rounded-full bg-ink-foreground/5 px-4 py-2 transition-colors hover:bg-primary hover:text-primary-foreground">{s}</a>
+              ))}
             </div>
+            <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="rounded-full bg-ink-foreground/5 px-4 py-2 transition-colors hover:bg-ink-foreground hover:text-ink">Back to top ↑</button>
           </div>
         </div>
-        <p className="pointer-events-none -mb-[0.22em] select-none text-center font-medium leading-none tracking-[-0.05em] text-ink-foreground/10" style={{ fontSize: "clamp(5rem, 19vw, 18rem)" }}>
+        <p className="pointer-events-none -mb-[0.22em] select-none text-center leading-none" style={{ fontSize: "clamp(5rem, 19vw, 18rem)" }}>
           <span className="fancy !text-primary">Najm</span>
         </p>
       </div>

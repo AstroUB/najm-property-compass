@@ -26,6 +26,7 @@ export function PageTransition() {
   const [count, setCount] = useState(0);
   const [intro, setIntro] = useState(true);
   const busy = useRef(false);
+  const beat = useRef<{ kill: () => void } | null>(null);
 
   const stripes = () => Array.from(root.current?.querySelectorAll<HTMLElement>("[data-stripe]") ?? []);
   const text = () => root.current?.querySelector<HTMLElement>("[data-label]");
@@ -70,6 +71,15 @@ export function PageTransition() {
       await new Promise<void>((r) => gsap.timeline({ onComplete: r })
         .to(stripes(), { scaleY: 1, duration: 0.6, stagger: 0.07, ease: "power4.inOut" })
         .to(text()!, { yPercent: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, "-=0.25"));
+      // If the next page is slow, all stripes + label pulse together like a heartbeat until it resolves.
+      if (busy.current) {
+        gsap.set(stripes(), { transformOrigin: "50% 50%" });
+        beat.current = gsap.timeline({ repeat: -1, delay: 0.25, repeatDelay: 0.5 })
+          .to([...stripes(), text()!], { scale: 1.04, duration: 0.14, ease: "power2.out" })
+          .to([...stripes(), text()!], { scale: 1, duration: 0.16, ease: "power2.in" })
+          .to([...stripes(), text()!], { scale: 1.07, duration: 0.14, ease: "power2.out" })
+          .to([...stripes(), text()!], { scale: 1, duration: 0.3, ease: "power2.inOut" });
+      }
       return false;
     },
   });
@@ -78,6 +88,8 @@ export function PageTransition() {
     if (!busy.current) return;
     window.scrollTo(0, 0);
     const { gsap } = await import("gsap");
+    beat.current?.kill(); beat.current = null;
+    gsap.set([...stripes(), text()!], { scale: 1 });
     await new Promise((r) => setTimeout(r, 120));
     gsap.timeline({ onComplete: () => { busy.current = false; if (root.current) root.current.style.visibility = "hidden"; } })
       .to(text()!, { yPercent: -120, opacity: 0, duration: 0.4, ease: "power3.in" })
