@@ -19,7 +19,7 @@ export function PropertyCard({ p }: { p: Property }) {
         <h3 className="text-lg font-medium leading-snug tracking-tight">{p.title}</h3>
         <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground"><MapPin className="h-3.5 w-3.5" />{p.district}, {p.city}</p>
         <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{p.short}</p>
-        <div className="mt-auto flex items-center justify-between gap-2 whitespace-nowrap rounded-full bg-cream px-4 py-2.5 text-[13px] [margin-top:max(1rem,auto)]">
+        <div className="mt-4 flex w-full items-center justify-between gap-2 whitespace-nowrap rounded-full bg-cream px-4 py-2.5 text-[13px]">
           <span className="flex items-center gap-1.5"><Maximize className="h-4 w-4 text-primary" />{p.area} m²</span>
           {p.beds > 0 && <span className="flex items-center gap-1.5"><BedDouble className="h-4 w-4 text-primary" />{p.beds} Beds</span>}
           <span className="flex items-center gap-1.5"><Bath className="h-4 w-4 text-primary" />{p.baths} Baths</span>
