@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { BUDGETS, CITIES, PROPERTIES, TYPES } from "@/data/properties";
 import { PropertyCard } from "@/components/site/PropertyCard";
-import { useLiquidGlass, useReveal } from "@/components/site/motion";
+import { useReveal } from "@/components/site/motion";
 
 type Search = { city?: string | undefined; type?: string | undefined; budget?: string | undefined; beds?: string | undefined; status?: string | undefined; sort?: string | undefined };
 
@@ -52,7 +52,6 @@ function PropertiesPage() {
 
   const list = useMemo(() => filterProperties(search), [search]);
   useReveal([list.length, JSON.stringify(search)]);
-  useLiquidGlass(".lg-card", { frost: 1.5, refraction: 0.006, bevelDepth: 0.06, bevelWidth: 0.12 });
   const hasFilters = Object.values(search).some(Boolean);
 
   return (

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDownRight, ArrowUpRight, Plus, Minus, Search } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, ChevronDown, Home as HomeIcon, MapPin, Plus, Minus, Search, Wallet } from "lucide-react";
 import hero from "@/assets/hero2.jpg";
 import heroCut from "@/assets/hero2-cut.png";
 import p3 from "@/assets/p3.jpg";
@@ -47,8 +47,8 @@ function Hero() {
     })();
   }, []);
 
-  useLiquidGlass(".lg-glass", { frost: 1.5, refraction: 0.003, bevelDepth: 0.04, bevelWidth: 0.1 });
-  const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer md:text-ink-foreground [&>option]:text-foreground";
+  useLiquidGlass(".lg-glass", { frost: 0, refraction: 0.003, bevelDepth: 0.04, bevelWidth: 0.1 });
+  const sel = "w-full truncate appearance-none bg-transparent text-[15px] font-medium text-foreground outline-none cursor-pointer md:text-ink-foreground [&>option]:text-foreground";
   const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
   return (
@@ -78,27 +78,33 @@ function Hero() {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="absolute inset-x-0 top-full z-30 mx-auto mt-3 grid max-w-5xl gap-2 md:inset-x-3 md:bottom-8 md:top-auto md:mt-0 md:grid-cols-[1fr_1fr_1fr_auto]"
+          className="absolute inset-x-0 top-full z-30 mx-auto mt-3 max-w-4xl md:inset-x-6 md:bottom-8 md:top-auto md:mt-0"
         >
-          {[
-            { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
-            { label: "Property type", value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
-            { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
-          ].map((f) => (
-            <div key={f.label} className="relative">
-              <span aria-hidden className="lg-glass glass-clear pointer-events-none absolute inset-0 rounded-full" />
-              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-cream px-6 py-3 md:bg-transparent md:drop-shadow-[0_1px_6px_oklch(0_0_0/0.45)]">
-                <span className="text-xs text-foreground/70 md:text-ink-foreground/80">{f.label}</span>
-                <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
-                  <option value="">{f.ph}</option>
-                  {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                </select>
+          <span aria-hidden className="lg-glass pointer-events-none absolute inset-0 hidden rounded-[2rem] md:block md:rounded-full" />
+          <div className="relative z-10 grid gap-1 rounded-[2rem] bg-cream p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full md:bg-ink/30 md:backdrop-blur-xl">
+            {[
+              { label: "Location", icon: MapPin, value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
+              { label: "Property type", icon: HomeIcon, value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
+              { label: "Budget", icon: Wallet, value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
+            ].map((f) => (
+              <label key={f.label} className="group relative flex cursor-pointer items-center gap-3 rounded-full px-4 py-2.5 transition-colors hover:bg-background/60 md:hover:bg-ink-foreground/10">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-background text-primary md:bg-ink-foreground/15 md:text-ink-foreground">
+                  <f.icon className="h-4 w-4" />
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="text-xs text-muted-foreground md:text-ink-foreground/70">{f.label}</span>
+                  <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
+                    <option value="">{f.ph}</option>
+                    {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                  </select>
+                </span>
+                <ChevronDown className="pointer-events-none h-4 w-4 shrink-0 opacity-60 md:text-ink-foreground" />
               </label>
-            </div>
-          ))}
-          <button className="relative z-10 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
-            <Search className="h-4 w-4" /> Search
-          </button>
+            ))}
+            <button className="flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-base text-primary-foreground transition-colors hover:bg-ink">
+              <Search className="h-4 w-4" /> Search
+            </button>
+          </div>
         </form>
       </div>
     </section>
