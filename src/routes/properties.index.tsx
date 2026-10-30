@@ -36,7 +36,7 @@ function PropertiesPage() {
       if (search.status && p.status !== search.status) return false;
       if (search.beds && p.beds < Number(search.beds)) return false;
       if (search.budget) {
-        const [min, max] = search.budget.split("-").map(Number);
+        const [min = 0, max = Infinity] = search.budget.split("-").map(Number);
         if (p.price < min || p.price > max) return false;
       }
       return true;

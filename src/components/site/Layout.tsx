@@ -32,7 +32,7 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   return (
     <header className="fixed inset-x-0 top-4 z-50 px-4">
-      <nav className="liquidGL glass mx-auto flex max-w-6xl items-center justify-between rounded-full py-3 pl-7 pr-3">
+      <nav className="glass mx-auto flex max-w-6xl items-center justify-between rounded-full py-3 pl-7 pr-3">
         <Link to="/" className="flex items-baseline gap-1 text-2xl font-medium tracking-tight">
           <span className="fancy text-4xl">N</span>ajm Estate
         </Link>
