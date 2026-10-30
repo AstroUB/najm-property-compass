@@ -34,13 +34,13 @@ function Hero() {
     (async () => {
       const { gsap } = await import("gsap");
       const tl = gsap.timeline();
-      tl.from("[data-hero-line]", { yPercent: 110, opacity: 0, duration: 1.2, stagger: 0.12, ease: "power4.out" })
-        .from(imgRef.current, { y: 120, rotateX: 25, opacity: 0, scale: 0.9, duration: 1.6, ease: "power3.out" }, 0.2)
-        .from("[data-hero-search]", { y: 40, opacity: 0, duration: 1, ease: "power3.out" }, 0.8);
+      tl.from(imgRef.current, { scale: 1.15, duration: 2, ease: "power3.out" })
+        .from("[data-hero-line]", { yPercent: 100, opacity: 0, duration: 1.1, stagger: 0.1, ease: "power4.out" }, 0.2)
+        .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, 0.7);
       const onMove = (e: MouseEvent) => {
         const x = e.clientX / window.innerWidth - 0.5;
         const y = e.clientY / window.innerHeight - 0.5;
-        gsap.to(imgRef.current, { rotateY: x * 14, rotateX: -y * 10, x: x * 30, duration: 1.2, ease: "power3.out" });
+        gsap.to(imgRef.current, { x: x * -20, y: y * -14, duration: 1.4, ease: "power3.out" });
       };
       window.addEventListener("mousemove", onMove);
       cleanup = () => window.removeEventListener("mousemove", onMove);
@@ -48,46 +48,50 @@ function Hero() {
     return () => cleanup();
   }, []);
 
+  const sel = "w-full appearance-none bg-transparent text-sm font-medium outline-none cursor-pointer";
+
   return (
-    <section className="relative overflow-hidden px-6 pb-20 pt-36">
-      <div className="mx-auto max-w-7xl text-center">
-        <h1 className="display-xl">
-          <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
-          <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy">s</span>tars</span></span>
-        </h1>
-        <p data-hero-line className="mx-auto mt-8 max-w-xl text-lg text-muted-foreground">
-          Curated residences and investment property across the Kingdom of Saudi Arabia.
-        </p>
-      </div>
-      <div className="mx-auto mt-6 max-w-6xl" style={{ perspective: "1400px" }}>
-        <div ref={imgRef} style={{ transformStyle: "preserve-3d" }}>
-          <img src={hero} alt="Najm Estate signature villa" width={1600} height={1008} className="mx-auto w-full max-w-5xl" />
+    <section className="p-3">
+      <div className="relative flex h-[calc(100svh-1.5rem)] min-h-[620px] flex-col justify-between overflow-hidden rounded-[2rem] bg-cream px-6 pb-6 pt-32 md:px-12 md:pb-10">
+        <div ref={imgRef} className="absolute -inset-6">
+          <img src={hero} alt="Najm Estate signature villa at sunset" width={1920} height={1088} className="h-full w-full object-cover" />
         </div>
+        <div className="relative max-w-2xl">
+          <h1 className="display-xl">
+            <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
+            <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy">s</span>tars.</span></span>
+          </h1>
+          <p data-hero-line className="mt-5 max-w-md text-base text-foreground/75">
+            Curated residences and investment property across the Kingdom of Saudi Arabia.
+          </p>
+        </div>
+
+        <form
+          data-hero-search
+          onSubmit={(e) => {
+            e.preventDefault();
+            navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
+          }}
+          className="liquidGL glass relative grid w-full max-w-4xl gap-1 rounded-[1.75rem] p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
+        >
+          {[
+            { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
+            { label: "Property type", value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
+            { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
+          ].map((f) => (
+            <label key={f.label} className="flex flex-col rounded-full px-5 py-2 transition-colors hover:bg-background/50">
+              <span className="text-xs text-foreground/60">{f.label}</span>
+              <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
+                <option value="">{f.ph}</option>
+                {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+              </select>
+            </label>
+          ))}
+          <button className="flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm text-ink-foreground transition-colors hover:bg-primary">
+            <Search className="h-4 w-4" /> Search
+          </button>
+        </form>
       </div>
-      <form
-        data-hero-search
-        onSubmit={(e) => {
-          e.preventDefault();
-          navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
-        }}
-        className="liquidGL glass relative z-10 mx-auto -mt-16 grid max-w-5xl gap-3 rounded-[2.5rem] p-3 md:-mt-28 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
-      >
-        <select value={loc} onChange={(e) => setLoc(e.target.value)} className="field bg-background" aria-label="Location">
-          <option value="">Any location</option>
-          {CITIES.map((c) => <option key={c}>{c}</option>)}
-        </select>
-        <select value={type} onChange={(e) => setType(e.target.value)} className="field bg-background" aria-label="Property type">
-          <option value="">Any property type</option>
-          {TYPES.map((c) => <option key={c}>{c}</option>)}
-        </select>
-        <select value={budget} onChange={(e) => setBudget(e.target.value)} className="field bg-background" aria-label="Budget">
-          <option value="">Any budget</option>
-          {BUDGETS.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
-        </select>
-        <button className="flex items-center justify-center gap-3 rounded-full bg-ink px-8 py-4 text-lg text-ink-foreground transition-colors hover:bg-primary">
-          <Search className="h-5 w-5" /> Search
-        </button>
-      </form>
     </section>
   );
 }
