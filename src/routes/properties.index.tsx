@@ -25,7 +25,7 @@ export const Route = createFileRoute("/properties/")({
   component: PropertiesPage,
 });
 
-export function filterProperties(search: Search) {
+function filterProperties(search: Search) {
   let r = PROPERTIES.filter((p) => {
     if (search.city && p.city !== search.city) return false;
     if (search.type && p.type !== search.type) return false;
