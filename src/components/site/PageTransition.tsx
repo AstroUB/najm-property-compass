@@ -77,7 +77,7 @@ export function PageTransition() {
       // If the next page is slow, all stripes + label pulse together like a heartbeat until it resolves.
       if (busy.current) {
         gsap.set(stripes(), { transformOrigin: "50% 50%" });
-        beat.current = gsap.timeline({ repeat: -1, repeatDelay: 0.35 });
+        beat.current = gsap.timeline({ repeat: -1, repeatDelay: 0.35 }) as unknown as BeatTimeline;
         stripes().forEach((s) => {
           beat.current!
             .to(s, { opacity: 0, duration: 0.15, ease: "power2.out" })
