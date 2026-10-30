@@ -4,7 +4,7 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 
 export function SmoothScroll() {
   useEffect(() => {
-    let lenis: { raf: (t: number) => void; destroy: () => void; on: (e: string, f: () => void) => void } | undefined;
+    let lenis: import("lenis").default | undefined;
     let tick: ((t: number) => void) | undefined;
     let gsapRef: typeof import("gsap").gsap | undefined;
     (async () => {
@@ -13,8 +13,9 @@ export function SmoothScroll() {
       const { ScrollTrigger } = await import("gsap/ScrollTrigger");
       gsap.registerPlugin(ScrollTrigger);
       gsapRef = gsap;
-      lenis = new Lenis({ duration: 1.2, smoothWheel: true });
-      lenis.on("scroll", ScrollTrigger.update);
+      const l = new Lenis({ duration: 1.2, smoothWheel: true });
+      lenis = l;
+      l.on("scroll", ScrollTrigger.update);
       tick = (t: number) => lenis?.raf(t * 1000);
       gsap.ticker.add(tick);
       gsap.ticker.lagSmoothing(0);

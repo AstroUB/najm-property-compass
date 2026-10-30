@@ -4,7 +4,7 @@ import { BUDGETS, CITIES, PROPERTIES, TYPES } from "@/data/properties";
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { useReveal } from "@/components/site/motion";
 
-type Search = { city?: string; type?: string; budget?: string; beds?: string; status?: string; sort?: string };
+type Search = { city?: string | undefined; type?: string | undefined; budget?: string | undefined; beds?: string | undefined; status?: string | undefined; sort?: string | undefined };
 
 export const Route = createFileRoute("/properties/")({
   validateSearch: (s: Record<string, unknown>): Search => {
