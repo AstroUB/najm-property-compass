@@ -145,7 +145,7 @@ function Home() {
       </section>
 
       {/* Investment Vault */}
-      <section className="bg-cream px-6 py-20">
+      <section id="vault" className="scroll-mt-24 bg-cream px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 md:grid-cols-2 md:items-end">
             <SectionTitle letter="I" rest="nvestment Vault" eyebrow="Income-ready properties" />
@@ -157,14 +157,14 @@ function Home() {
             {vault.map((p) => (
               <Link key={p.id} to="/properties/$id" params={{ id: p.id }} data-reveal
                 className="group flex items-center gap-6 rounded-[2rem] bg-background p-4 transition-shadow hover:shadow-soft">
-                <div className="relative h-36 w-36 shrink-0 overflow-hidden rounded-[1.5rem] md:h-44 md:w-44">
+                <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-[1.25rem] md:h-32 md:w-32">
                   <img src={p.images[0]} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 <div className="flex-1">
                   <p className="text-4xl font-medium tracking-tight text-primary">{p.investment!.yield}%</p>
-                  <p className="text-base text-muted-foreground">Est. annual yield · {p.investment!.label}</p>
+                  <p className="text-sm text-muted-foreground">Est. annual yield · {p.investment!.label}</p>
                   <p className="mt-3 text-lg font-medium">{p.title}</p>
-                  <p className="text-base text-muted-foreground">{formatSAR(p.price)} · {p.city}</p>
+                  <p className="text-sm text-muted-foreground">{formatSAR(p.price)} · {p.city}</p>
                 </div>
                 <ArrowUpRight className="mr-3 hidden h-7 w-7 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 md:block" />
               </Link>
@@ -192,7 +192,7 @@ function Home() {
       </section>
 
       {/* Giga projects */}
-      <section className="bg-ink px-6 py-20 text-ink-foreground">
+      <section id="projects" className="scroll-mt-24 bg-ink px-6 py-20 text-ink-foreground">
         <div className="mx-auto max-w-7xl">
           <div data-reveal>
             <p className="mb-5 text-lg opacity-60">Upcoming & under construction</p>
@@ -201,9 +201,9 @@ function Home() {
         </div>
         <div className="mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1.5rem,calc((100vw-80rem)/2))] pb-6 [scrollbar-width:none]">
           {GIGA_PROJECTS.map((g) => (
-            <article key={g.name} className="group relative h-[70vh] min-h-[480px] w-[85vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] md:w-[65vw] lg:w-[54rem]">
+            <article key={g.name} className="group relative h-[62vh] min-h-[420px] w-[85vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] md:w-[65vw] lg:w-[46rem]">
               <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-              <div className="liquidGL glass absolute bottom-6 left-6 right-6 rounded-[2rem] p-8 text-foreground md:right-auto md:max-w-lg">
+              <div className="liquidGL glass absolute bottom-5 left-5 right-5 rounded-[1.5rem] p-6 text-foreground md:right-auto md:max-w-md">
                 <p className="text-lg text-primary">{g.status} · {g.region}</p>
                 <h3 className="display-md mt-2">{g.name}</h3>
                 <p className="mt-3 text-lg text-muted-foreground">{g.text}</p>
