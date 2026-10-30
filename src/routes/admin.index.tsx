@@ -22,7 +22,7 @@ function Dashboard() {
       { label: "Total listing views", value: views.toLocaleString("en"), icon: Eye },
       { label: "New enquiries", value: String(fresh), icon: Inbox },
       { label: "Active listings", value: String(properties.filter((p) => p.published).length), icon: Building2 },
-      { label: "Portfolio value", value: formatSAR(value), icon: Wallet },
+      { label: "Portfolio value", value: `SAR ${Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(value)}`, icon: Wallet },
       { label: "Conversion", value: `${enquiries.length ? Math.round((closed / enquiries.length) * 100) : 0}%`, icon: ArrowUpRight },
     ];
   }, [properties, enquiries]);
