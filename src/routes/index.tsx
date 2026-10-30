@@ -47,7 +47,7 @@ function Hero() {
     })();
   }, []);
 
-  useLiquidGlass(".lg-glass", { frost: 1.5, refraction: 0.008, bevelDepth: 0.08 });
+  useLiquidGlass(".lg-glass", { frost: 1.5, refraction: 0.003, bevelDepth: 0.04, bevelWidth: 0.1 });
   const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer md:text-ink-foreground [&>option]:text-foreground";
   const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
