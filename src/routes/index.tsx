@@ -46,8 +46,8 @@ function Hero() {
     })();
   }, []);
 
-  useLiquidGlass(".lg-glass", { frost: 6, refraction: 0.006, bevelDepth: 0.06 });
-  const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer";
+  useLiquidGlass(".lg-glass", { frost: 1.5, refraction: 0.008, bevelDepth: 0.08 });
+  const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer md:text-ink-foreground [&>option]:text-foreground";
   const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
   return (
@@ -85,9 +85,9 @@ function Hero() {
             { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
           ].map((f) => (
             <div key={f.label} className="relative">
-              <span aria-hidden className="lg-glass glass pointer-events-none absolute inset-0 rounded-full" />
-              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-cream px-6 py-3 md:bg-background/55">
-                <span className="text-xs text-foreground/70">{f.label}</span>
+              <span aria-hidden className="lg-glass glass-clear pointer-events-none absolute inset-0 rounded-full" />
+              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-cream px-6 py-3 md:bg-transparent md:drop-shadow-[0_1px_6px_oklch(0_0_0/0.45)]">
+                <span className="text-xs text-foreground/70 md:text-ink-foreground/80">{f.label}</span>
                 <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
                   <option value="">{f.ph}</option>
                   {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
@@ -136,7 +136,7 @@ const FAQ = [
 function Home() {
   useReveal();
   const [faq, setFaq] = useState<number | null>(0);
-  const featured = PROPERTIES.filter((p) => p.featured).slice(0, 4);
+  const featured = [...PROPERTIES.filter((p) => p.featured), ...PROPERTIES.filter((p) => !p.featured)].slice(0, 8);
   const vault = PROPERTIES.filter((p) => p.investment).slice(0, 4);
 
   return (
@@ -192,7 +192,7 @@ function Home() {
         <div className="mx-auto max-w-[1400px]">
           <SectionTitle word="More" rest=" to explore" />
           <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-            {PROPERTIES.filter((p) => !p.featured).slice(0, 4).map((p) => <PropertyCard key={p.id} p={p} />)}
+            {PROPERTIES.slice(-4).map((p) => <PropertyCard key={p.id} p={p} />)}
           </div>
         </div>
       </section>
