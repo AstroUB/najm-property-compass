@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Plus, Minus, Search } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Plus, Minus, Search } from "lucide-react";
 import hero from "@/assets/hero2.jpg";
 import heroCut from "@/assets/hero2-cut.png";
 import p3 from "@/assets/p3.jpg";
@@ -11,7 +11,7 @@ import { BUDGETS, CITIES, GIGA_PROJECTS, PROPERTIES, TYPES, formatSAR } from "@/
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
-import { useReveal } from "@/components/site/motion";
+import { useLiquidGlass, useReveal } from "@/components/site/motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,24 +41,35 @@ function Hero() {
         .from("[data-hero-line]", { yPercent: 110, duration: 1.2, stagger: 0.12, ease: "power4.out" })
         .from("[data-hero-photo]", { scale: 1.08, opacity: 0, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.1)
         .from("[data-hero-cut]", { y: 80, opacity: 0, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.3)
+        .from("[data-hero-side]", { opacity: 0, y: 20, duration: 1, stagger: 0.1, ease: "power3.out", clearProps: "all" }, 0.6)
         .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out", clearProps: "all" }, 0.9);
     })();
   }, []);
 
+  useLiquidGlass(".lg-glass", { frost: 4 });
   const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer";
+  const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
   return (
     <section className="px-3 pt-24 md:px-4">
-      <div ref={stageRef} className="relative mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[5/4] sm:max-w-[min(1440px,calc((100svh-6.5rem)*1.25))]">
-        <h1 className="absolute inset-x-0 top-[1%] z-10 text-center font-medium uppercase leading-[0.86] tracking-[-0.04em]" style={{ fontSize: "clamp(2.8rem, min(8vw, 11svh), 9rem)" }}>
-          <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
-          <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy normal-case">S</span>tars</span></span>
+      <div ref={stageRef} className="relative mx-auto h-[128vw] w-full sm:h-[min(69vw,calc(100svh-6.5rem))]">
+        <h1 className="absolute left-[5%] top-0 z-10 font-normal uppercase leading-[0.86] tracking-[-0.035em] sm:left-[23%]" style={{ fontSize: fs }}>
+          <span className="block overflow-hidden"><span data-hero-line className="block">Homes</span></span>
+          <span className="block overflow-hidden pb-[0.06em]"><span data-hero-line className="block"><span className="fancy normal-case">Beneath</span> the</span></span>
+          <span className="block overflow-hidden"><span data-hero-line className="block">Stars</span></span>
         </h1>
-        <div data-hero-photo className="absolute inset-x-0 bottom-0 top-[40%] overflow-hidden rounded-[2rem]">
-          <img src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="absolute inset-x-0 bottom-0 h-[138.4%] w-full object-cover" />
-        </div>
-        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[83%] w-full object-cover" />
 
+        <a href="#featured" aria-label="Scroll to featured homes" data-hero-side className="group absolute left-[6%] top-[19%] z-10 hidden aspect-square w-[11%] items-center justify-center rounded-full bg-cream transition-colors hover:bg-ink sm:flex">
+          <ArrowDownRight className="h-[30%] w-[30%] stroke-[1.25] text-foreground transition-colors group-hover:text-ink-foreground" />
+        </a>
+        <p data-hero-side className="absolute left-[84%] top-[19%] z-10 hidden max-w-[13%] text-[clamp(0.85rem,1.2vw,1.15rem)] leading-snug text-foreground/80 sm:block">
+          Curated residences and investment property across the Kingdom.
+        </p>
+
+        <div data-hero-photo className="absolute inset-x-0 bottom-0 top-[37.5%] overflow-hidden rounded-[1.75rem]">
+          <img src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="absolute inset-x-0 bottom-0 h-[124.3%] w-full object-cover object-top" />
+        </div>
+        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[77.7%] w-full object-cover object-top" />
 
         <form
           data-hero-search
@@ -66,7 +77,7 @@ function Hero() {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="absolute inset-x-3 bottom-3 z-50 mx-auto grid max-w-5xl gap-2 md:bottom-8 md:grid-cols-[1fr_1fr_1fr_auto]"
+          className="absolute inset-x-3 bottom-3 z-30 mx-auto grid max-w-5xl gap-2 md:bottom-8 md:grid-cols-[1fr_1fr_1fr_auto]"
         >
           {[
             { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
@@ -74,7 +85,7 @@ function Hero() {
             { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
           ].map((f) => (
             <div key={f.label} className="relative">
-              <span aria-hidden className="liquidGL glass absolute inset-0 z-0 rounded-full" />
+              <span aria-hidden className="lg-glass glass pointer-events-none absolute inset-0 rounded-full" />
               <label className="relative z-10 flex cursor-pointer flex-col rounded-full px-6 py-3">
                 <span className="text-xs text-foreground/70">{f.label}</span>
                 <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
@@ -84,7 +95,7 @@ function Hero() {
               </label>
             </div>
           ))}
-          <button className="relative z-50 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
+          <button className="relative z-10 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
             <Search className="h-4 w-4" /> Search
           </button>
         </form>
