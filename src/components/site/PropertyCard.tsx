@@ -14,13 +14,16 @@ export function PropertyCard({ p }: { p: Property }) {
           height={800}
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
         />
-        <span className="glass absolute bottom-3 right-3 flex h-11 w-11 translate-y-3 scale-75 items-center justify-center rounded-full text-foreground opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
+        <div className="absolute bottom-3 left-3 right-16 h-11">
+          <span aria-hidden className="lg-card glass-clear pointer-events-none absolute inset-0 rounded-full" />
+          <p className="relative z-10 flex h-full items-center px-4 text-base font-semibold tracking-tight text-ink-foreground drop-shadow-[0_1px_6px_oklch(0_0_0/0.5)]">{formatSAR(p.price)}</p>
+        </div>
+        <span className="absolute bottom-3 right-3 bg-primary text-primary-foreground flex h-11 w-11 translate-y-3 scale-75 items-center justify-center rounded-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
           <ArrowUpRight className="h-5 w-5" />
         </span>
       </div>
-      <div className="px-1 pt-4">
-        <p className="text-lg font-semibold tracking-tight text-primary">{formatSAR(p.price)}</p>
-        <h3 className="mt-1 text-lg font-medium tracking-tight">{p.title}</h3>
+      <div className="px-1 pt-4 transition-transform duration-500 group-hover:translate-x-1">
+        <h3 className="text-lg font-medium tracking-tight">{p.title}</h3>
         <p className="text-sm text-muted-foreground">{p.district}, {p.city}</p>
         <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{p.short}</p>
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 whitespace-nowrap text-[13px]">

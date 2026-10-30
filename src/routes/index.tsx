@@ -7,7 +7,8 @@ import p3 from "@/assets/p3.jpg";
 import p4 from "@/assets/p4.jpg";
 import g1 from "@/assets/g1.jpg";
 import g3 from "@/assets/g3.jpg";
-import { BUDGETS, CITIES, GIGA_PROJECTS, PROPERTIES, TYPES, formatSAR } from "@/data/properties";
+import { GigaProjects, WhyNajm } from "@/components/site/HomeSections";
+import { BUDGETS, CITIES, PROPERTIES, TYPES, formatSAR } from "@/data/properties";
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
@@ -46,8 +47,8 @@ function Hero() {
     })();
   }, []);
 
-  useLiquidGlass(".lg-glass", { frost: 6, refraction: 0.006, bevelDepth: 0.06 });
-  const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer";
+  useLiquidGlass(".lg-glass", { frost: 1.5, refraction: 0.003, bevelDepth: 0.04, bevelWidth: 0.1 });
+  const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer md:text-ink-foreground [&>option]:text-foreground";
   const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
   return (
@@ -85,9 +86,9 @@ function Hero() {
             { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
           ].map((f) => (
             <div key={f.label} className="relative">
-              <span aria-hidden className="lg-glass glass pointer-events-none absolute inset-0 rounded-full" />
-              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-cream px-6 py-3 md:bg-background/55">
-                <span className="text-xs text-foreground/70">{f.label}</span>
+              <span aria-hidden className="lg-glass glass-clear pointer-events-none absolute inset-0 rounded-full" />
+              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-cream px-6 py-3 md:bg-transparent md:drop-shadow-[0_1px_6px_oklch(0_0_0/0.45)]">
+                <span className="text-xs text-foreground/70 md:text-ink-foreground/80">{f.label}</span>
                 <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
                   <option value="">{f.ph}</option>
                   {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
@@ -111,12 +112,6 @@ const STEPS = [
   { t: "Own", d: "Negotiation, REGA-compliant contracts, financing and handover, all managed." },
 ];
 
-const WHY = [
-  { n: "18+", t: "Years of local expertise", d: "Deep relationships with the Kingdom's leading developers." },
-  { n: "SAR 6B", t: "In property transacted", d: "Trusted by families, funds and global investors." },
-  { n: "100%", t: "Verified listings", d: "Every title and permit checked before it reaches you." },
-  { n: "24h", t: "Response promise", d: "A dedicated advisor, available whenever you need them." },
-];
 
 const ARTICLES = [
   { c: "Buyer guide", m: 6, t: "How foreigners can buy property in Saudi Arabia in 2026", img: p4 },
@@ -136,7 +131,7 @@ const FAQ = [
 function Home() {
   useReveal();
   const [faq, setFaq] = useState<number | null>(0);
-  const featured = PROPERTIES.filter((p) => p.featured).slice(0, 4);
+  const featured = [...PROPERTIES.filter((p) => p.featured), ...PROPERTIES.filter((p) => !p.featured)].slice(0, 8);
   const vault = PROPERTIES.filter((p) => p.investment).slice(0, 4);
 
   return (
@@ -192,7 +187,7 @@ function Home() {
         <div className="mx-auto max-w-[1400px]">
           <SectionTitle word="More" rest=" to explore" />
           <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-            {PROPERTIES.filter((p) => !p.featured).slice(0, 4).map((p) => <PropertyCard key={p.id} p={p} />)}
+            {PROPERTIES.slice(-4).map((p) => <PropertyCard key={p.id} p={p} />)}
           </div>
         </div>
       </section>
@@ -205,42 +200,7 @@ function Home() {
         </p>
       </section>
 
-      {/* Giga projects */}
-      <section id="projects" className="scroll-mt-24 bg-ink px-6 py-20 text-ink-foreground">
-        <div className="mx-auto max-w-7xl">
-          <div data-reveal>
-            <p className="mb-5 text-lg opacity-60">Upcoming & under construction</p>
-            <h2 className="display-lg">The <span className="fancy">Sovereign</span> Giga Projects</h2>
-          </div>
-        </div>
-        <div className="mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1.5rem,calc((100vw-80rem)/2))] pb-6 [scrollbar-width:none]">
-          {GIGA_PROJECTS.map((g) => (
-            <article key={g.name} className="grid w-[88vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] bg-background text-foreground md:w-[80vw] lg:w-[64rem] lg:grid-cols-[1.15fr_1fr]">
-              <div className="group relative h-72 overflow-hidden lg:h-auto lg:min-h-[520px]">
-                <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-              </div>
-              <div className="flex flex-col p-8 md:p-10">
-                <p className="text-base text-primary">{g.status} · {g.region}</p>
-                <h3 className="mt-3 text-3xl font-medium tracking-tight md:text-4xl">{g.name}</h3>
-                <p className="mt-4 text-lg text-muted-foreground">{g.text}</p>
-                <dl className="mb-8 mt-8 grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl bg-cream p-5">
-                    <dt className="text-sm text-muted-foreground">Est. deadline</dt>
-                    <dd className="mt-1 text-xl font-medium tracking-tight">{g.deadline}</dd>
-                  </div>
-                  <div className="rounded-2xl bg-cream p-5">
-                    <dt className="text-sm text-muted-foreground">Budget</dt>
-                    <dd className="mt-1 text-xl font-medium tracking-tight">{g.budget}</dd>
-                  </div>
-                </dl>
-                <a href="#contact" className="mt-auto inline-flex w-fit items-center gap-2 self-start rounded-full bg-ink px-7 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
-                  Register interest <ArrowUpRight className="h-4 w-4" />
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <GigaProjects />
 
       {/* Process */}
       <section className="px-6 py-20">
@@ -258,23 +218,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Why us */}
-      <section className="bg-primary px-6 py-20 text-primary-foreground">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="display-lg" data-reveal>
-            <span className="fancy !text-primary-foreground">Why</span> Najm?
-          </h2>
-          <div className="mt-16 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-4">
-            {WHY.map((w) => (
-              <div key={w.t} data-reveal>
-                <p className="display-lg">{w.n}</p>
-                <p className="mt-4 text-xl">{w.t}</p>
-                <p className="mt-2 text-lg opacity-70">{w.d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <WhyNajm />
 
       {/* Knowledge Hub */}
       <section id="insights" className="scroll-mt-28 px-6 py-20">

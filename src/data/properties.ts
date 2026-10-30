@@ -107,6 +107,27 @@ export const PROPERTIES: Property[] = [
     description: "A refined apartment in a boutique marina development with private beach club access.",
     images: [p4, p3, p1], status: "Ready", year: 2024, amenities: amen.slice(1, 6),
   },
+  {
+    id: "hittin-modern-villa", title: "Hittin Modern Villa", city: "Riyadh", district: "Hittin",
+    type: "Villa", price: 7350000, area: 690, beds: 5, baths: 6,
+    short: "Light-filled family villa with a shaded courtyard pool.",
+    description: "A calm, contemporary villa in one of north Riyadh's most sought-after neighbourhoods, arranged around a shaded courtyard pool with generous family and guest wings.",
+    images: [hero, p4, p2], featured: true, status: "Ready", year: 2025, amenities: amen,
+  },
+  {
+    id: "jeddah-waterfront-penthouse", title: "Waterfront Sky Penthouse", city: "Jeddah", district: "Al Hamra",
+    type: "Penthouse", price: 11200000, area: 520, beds: 4, baths: 5,
+    short: "Double-height penthouse above the Jeddah Corniche.",
+    description: "A double-height penthouse with a private plunge pool and uninterrupted views over the Corniche and the Red Sea.",
+    images: [p1, p3, p4], featured: true, investment: { yield: 6.8, label: "Short-let premium" }, status: "Off-plan", year: 2027, amenities: amen.slice(0, 7),
+  },
+  {
+    id: "khobar-family-townhouse", title: "Al Aziziyah Townhouse", city: "Al Khobar", district: "Al Aziziyah",
+    type: "Townhouse", price: 2650000, area: 320, beds: 4, baths: 4,
+    short: "Corner townhouse near the beach and international schools.",
+    description: "A bright corner townhouse with private garden and rooftop, minutes from Half Moon Bay and Al Khobar's international schools.",
+    images: [p5, p2, p4], status: "Ready", year: 2024, amenities: amen.slice(2, 8),
+  },
 ];
 
 export const GIGA_PROJECTS = [
@@ -114,3 +135,35 @@ export const GIGA_PROJECTS = [
   { name: "Red Sea Global", region: "West Coast", status: "Phased opening", deadline: "2030 (full completion)", budget: "SAR 75 billion", text: "A regenerative tourism destination across 90 pristine islands, with ultra-luxury resorts and residences.", image: g2 },
   { name: "Diriyah Gate", region: "Riyadh", status: "Building now", deadline: "2030", budget: "SAR 236 billion", text: "The birthplace of the Kingdom reborn as a world-class cultural, living and hospitality district.", image: g3 },
 ];
+
+/** Approximate map coordinates per district (demo data). */
+const COORDS: Record<string, [number, number]> = {
+  "Al Malqa": [24.808, 46.613], KAFD: [24.764, 46.640], Obhur: [21.739, 39.104], Diriyah: [24.734, 46.575],
+  Corniche: [26.298, 50.218], "Al Rawdah": [26.392, 50.140], Olaya: [24.694, 46.685], "Ashar Valley": [26.497, 37.947],
+  "Al Shati": [21.597, 39.110], Hittin: [24.761, 46.600], "Al Hamra": [21.537, 39.161], "Al Aziziyah": [26.205, 50.199],
+};
+
+/** Derived in-depth details for the property page (sample values, deterministic per property). */
+export function propertyDetails(p: Property) {
+  const seed = p.id.length;
+  const [lat, lng] = COORDS[p.district] ?? [24.7136, 46.6753];
+  return {
+    lat, lng,
+    pricePerM2: Math.round(p.price / p.area),
+    plot: Math.round(p.area * (p.type === "Villa" ? 1.45 : p.type === "Townhouse" ? 1.2 : 1)),
+    floors: p.type === "Apartment" || p.type === "Penthouse" ? `Floor ${18 + seed}` : p.type === "Commercial" ? "12 floors" : `${2 + (seed % 2)} levels`,
+    parking: p.type === "Commercial" ? 140 : Math.max(2, Math.ceil(p.beds / 2)),
+    furnishing: seed % 3 === 0 ? "Fully furnished" : seed % 3 === 1 ? "Semi furnished" : "Unfurnished",
+    facing: ["North", "East", "South-east", "West"][seed % 4] ?? "North",
+    developer: ["Roshn", "Dar Al Arkan", "Retal", "Najm Developments"][seed % 4] ?? "Roshn",
+    deed: `SA-${(p.price % 9973).toString().padStart(4, "0")}-${p.year}`,
+    tax: Math.round(p.price * 0.05),
+    fee: Math.round(p.price * 0.025),
+    mortgage: Math.round((p.price * 0.8 * (0.055 / 12)) / (1 - Math.pow(1 + 0.055 / 12, -300))),
+    rooms: p.type === "Commercial"
+      ? [["Office floors", "11 × 200 m²"], ["Lobby", "180 m²"], ["Retail podium", "320 m²"], ["Rooftop", "260 m²"]]
+      : [["Living & majlis", `${Math.round(p.area * 0.18)} m²`], ["Kitchen & dining", `${Math.round(p.area * 0.11)} m²`], ["Primary suite", `${Math.round(p.area * 0.09)} m²`], ["Bedrooms", `${Math.max(p.beds - 1, 0)} × ${Math.round(p.area * 0.04)} m²`], ["Outdoor & terraces", `${Math.round(p.area * 0.15)} m²`]],
+    nearby: [["International school", `${(seed % 5) + 1} min`], ["Hospital", `${(seed % 7) + 5} min`], ["Mall", `${(seed % 4) + 4} min`], ["Airport", `${(seed % 15) + 18} min`], ["Mosque", "2 min"]],
+    plan: p.status === "Off-plan" ? [["On booking", "10%"], ["During construction", "50%"], ["On handover", "40%"]] : [["Down payment", "20%"], ["Bank financing", "80%"]],
+  };
+}
