@@ -54,7 +54,7 @@ function PropertiesPage() {
     <main className="px-6 pb-28 pt-40">
       <div className="mx-auto max-w-7xl">
         <h1 className="display-xl"><span className="fancy">P</span>roperties</h1>
-        <p className="mt-6 max-w-xl text-xl text-muted-foreground">
+        <p className="mt-6 max-w-xl text-lg text-muted-foreground">
           {list.length} curated {list.length === 1 ? "residence" : "residences"} across the Kingdom.
         </p>
 
@@ -81,7 +81,7 @@ function PropertiesPage() {
         ) : (
           <div className="mt-14 rounded-[2.5rem] bg-cream p-16 text-center">
             <p className="display-md">No matches — yet.</p>
-            <p className="mt-4 text-xl text-muted-foreground">Try widening your filters, or ask us about off-market homes.</p>
+            <p className="mt-4 text-lg text-muted-foreground">Try widening your filters, or ask us about off-market homes.</p>
           </div>
         )}
       </div>

@@ -27,7 +27,7 @@ export const Route = createFileRoute("/properties/$id")({
   notFoundComponent: () => (
     <main className="px-6 pb-28 pt-44 text-center">
       <h1 className="display-lg">Property not found</h1>
-      <Link to="/properties" className="mt-8 inline-block text-xl text-primary">Back to all properties</Link>
+      <Link to="/properties" className="mt-8 inline-block text-lg text-primary">Back to all properties</Link>
     </main>
   ),
   component: Detail,
@@ -80,34 +80,34 @@ function Detail() {
 
         <div className="mt-16 grid gap-16 lg:grid-cols-[1fr_420px]">
           <div>
-            <p className="flex items-center gap-2 text-xl text-muted-foreground"><MapPin className="h-5 w-5 text-primary" />{p.district}, {p.city}</p>
+            <p className="flex items-center gap-2 text-lg text-muted-foreground"><MapPin className="h-5 w-5 text-primary" />{p.district}, {p.city}</p>
             <h1 className="display-lg mt-4"><span className="fancy">{p.title[0]}</span>{p.title.slice(1)}</h1>
-            <p className="mt-6 text-4xl font-medium tracking-tight text-primary md:text-5xl">{formatSAR(p.price)}</p>
+            <p className="mt-6 text-3xl font-medium tracking-tight text-primary md:text-4xl">{formatSAR(p.price)}</p>
             {p.investment && (
-              <p className="mt-3 text-xl text-muted-foreground">Est. annual yield {p.investment.yield}% · {p.investment.label}</p>
+              <p className="mt-3 text-lg text-muted-foreground">Est. annual yield {p.investment.yield}% · {p.investment.label}</p>
             )}
 
             <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3">
               {facts.map((f) => (
                 <div key={f.label} className="rounded-[1.75rem] bg-cream p-6" data-reveal>
                   <f.icon className="h-7 w-7 text-primary" />
-                  <p className="mt-6 text-2xl font-medium">{f.value}</p>
+                  <p className="mt-6 text-xl font-medium">{f.value}</p>
                   <p className="text-base text-muted-foreground">{f.label}</p>
                 </div>
               ))}
             </div>
 
             <h2 className="display-md mt-16">About this home</h2>
-            <p className="mt-6 text-xl leading-relaxed text-muted-foreground">{p.description}</p>
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{p.description}</p>
 
             <h2 className="display-md mt-16">Amenities</h2>
             <ul className="mt-6 grid gap-4 sm:grid-cols-2">
               {p.amenities.map((a) => (
-                <li key={a} className="flex items-center gap-3 text-xl"><Check className="h-5 w-5 text-primary" />{a}</li>
+                <li key={a} className="flex items-center gap-3 text-lg"><Check className="h-5 w-5 text-primary" />{a}</li>
               ))}
             </ul>
 
-            <button onClick={downloadBrochure} className="mt-14 flex items-center gap-3 rounded-full bg-ink px-10 py-5 text-lg text-ink-foreground transition-colors hover:bg-primary">
+            <button onClick={downloadBrochure} className="mt-14 flex items-center gap-3 rounded-full bg-ink px-8 py-4 text-lg text-ink-foreground transition-colors hover:bg-primary">
               <Download className="h-5 w-5" /> Download brochure
             </button>
           </div>
