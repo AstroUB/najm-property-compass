@@ -29,43 +29,35 @@ export function useReveal(deps: unknown[] = []) {
   }, deps);
 }
 
-/** Load liquidGL (from CDN) and apply it to `.liquidGL` elements; CSS glass stays as fallback. */
-export function useLiquidGlass() {
+type LiquidFn = ((o: Record<string, unknown>) => unknown) & { syncWith?: (o: Record<string, unknown>) => void };
+
+/**
+ * Apply liquidGL (npm `liquid-gl`) glass to `.lg-nav` (fixed navbar) and `.lg-glass` (in-page panes).
+ * Lens elements are empty decorative layers, so real content stays visible and clickable even if WebGL fails;
+ * their `glass` class doubles as the CSS fallback.
+ */
+export function useLiquidGlass(deps: unknown[] = []) {
   useEffect(() => {
-    const load = (src: string) =>
-      new Promise<void>((res, rej) => {
-        if (document.querySelector(`script[src="${src}"]`)) return res();
-        const s = document.createElement("script");
-        s.src = src;
-        s.onload = () => res();
-        s.onerror = rej;
-        document.body.appendChild(s);
-      });
+    let cancelled = false;
     const t = setTimeout(async () => {
       try {
-        await load("https://cdn.jsdelivr.net/npm/html2canvas-pro@1.6.7/dist/html2canvas-pro.min.js");
-        const g = window as unknown as { html2canvas?: unknown };
-        const h = g.html2canvas as { default?: unknown } | undefined;
-        if (h && typeof h !== "function" && h.default) g.html2canvas = h.default;
-        await load("https://cdn.jsdelivr.net/gh/naughtyduk/liquidGL/scripts/liquidGL.js");
-        const w = window as unknown as { liquidGL?: (o: Record<string, unknown>) => void };
-        if (!document.querySelector(".liquidGL") || !w.liquidGL) return;
-        w.liquidGL({
-          target: ".liquidGL",
-          snapshot: "body",
-          resolution: 1.5,
-          refraction: 0.01,
-          bevelDepth: 0.08,
-          bevelWidth: 0.15,
-          frost: 2,
-          shadow: false,
-          specular: true,
-          reveal: "fade",
-        });
-      } catch {
-        /* glass CSS fallback remains */
+        const mod = await import("liquid-gl");
+        const liquidGL = ((mod as { default?: unknown }).default ?? mod) as LiquidFn;
+        if (cancelled || typeof liquidGL !== "function") return;
+        const opts = { snapshot: "body", resolution: 2, refraction: 0.012, bevelDepth: 0.1, bevelWidth: 0.18, frost: 3, shadow: false, specular: true, reveal: "fade" };
+        if (document.querySelector(".lg-nav")) liquidGL({ ...opts, target: ".lg-nav" });
+        if (document.querySelector(".lg-glass")) liquidGL({ ...opts, target: ".lg-glass", frost: 4 });
+        const { gsap } = await import("gsap");
+        const lenis = (window as unknown as { __lenis?: unknown }).__lenis;
+        liquidGL.syncWith?.({ gsap, ...(lenis ? { lenis } : {}) });
+      } catch (e) {
+        console.warn("liquidGL unavailable, using CSS glass", e);
       }
-    }, 1200);
-    return () => clearTimeout(t);
-  }, []);
+    }, 900);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 }

@@ -16,6 +16,7 @@ export function SmoothScroll() {
       gsapRef = gsap;
       const l = new Lenis({ duration: 1.2, smoothWheel: true });
       lenis = l;
+      (window as unknown as { __lenis?: unknown }).__lenis = l;
       l.on("scroll", ScrollTrigger.update);
       tick = (t: number) => lenis?.raf(t * 1000);
       gsap.ticker.add(tick);
@@ -41,11 +42,12 @@ export function Nav() {
   const link = "rounded-full px-4 py-2 text-sm transition-colors hover:bg-background/60";
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
-      <nav className={`liquidGL glass mx-auto flex max-w-6xl items-center justify-between rounded-full py-2 pl-6 pr-2 transition-all duration-500 ${scrolled ? "max-w-5xl" : ""}`}>
-        <Link to="/" className="flex items-baseline text-lg font-medium tracking-tight">
+      <nav className={`relative mx-auto flex max-w-[1440px] items-center justify-between rounded-full py-2 pl-6 pr-2 transition-[max-width] duration-500 ${scrolled ? "lg:max-w-6xl" : ""}`}>
+        <span aria-hidden className="lg-nav glass pointer-events-none absolute inset-0 rounded-full" />
+        <Link to="/" className="relative z-10 flex items-baseline text-lg font-medium tracking-tight">
           <span className="fancy text-2xl">Najm</span>&nbsp;Estate
         </Link>
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="relative z-10 hidden items-center gap-1 md:flex">
           <Link to="/" className={link} activeOptions={{ exact: true }} activeProps={{ className: "bg-background/70" }}>Home</Link>
           <Link to="/properties" className={link} activeProps={{ className: "bg-background/70" }}>Properties</Link>
           <a href="/#vault" className={link}>Invest</a>
@@ -53,10 +55,10 @@ export function Nav() {
           <a href="/#insights" className={link}>Knowledge Hub</a>
           <a href="/#contact" className={link}>Contact</a>
         </div>
-        <a href="/#contact" className="hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-ink-foreground transition-colors hover:bg-primary md:flex">
+        <a href="/#contact" className="relative z-10 hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-ink-foreground transition-colors hover:bg-primary md:flex">
           Book a viewing <ArrowUpRight className="h-4 w-4" />
         </a>
-        <button className="rounded-full bg-ink p-2.5 text-ink-foreground md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
+        <button className="relative z-10 rounded-full bg-ink p-2.5 text-ink-foreground md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
