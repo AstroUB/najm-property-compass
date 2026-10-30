@@ -42,8 +42,8 @@ function PropertiesAdmin() {
 
   const save = () => {
     if (!edit) return;
-    if (!edit.title.trim() || !edit.district.trim() || edit.price <= 0) return toast.error("Title, district and price are required");
-    if (edit.images.length === 0) return toast.error("Add at least one photo");
+    if (!edit.title.trim() || !edit.district.trim() || edit.price <= 0) { toast.error("Title, district and price are required"); return; }
+    if (edit.images.length === 0) { toast.error("Add at least one photo"); return; }
     saveProperty({ ...edit, description: edit.description || edit.short });
     toast.success(isNew ? "Property added" : "Property updated");
     setEdit(null);

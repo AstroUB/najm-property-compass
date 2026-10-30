@@ -28,11 +28,11 @@ export function seed(): Data {
   const properties = PROPERTIES.map((p, i) => ({ ...p, views: 4200 - i * 310 + ((i * 977) % 600), published: true }));
   const statuses: EnquiryStatus[] = ["New", "New", "Contacted", "Viewing", "New", "Closed"];
   const enquiries: Enquiry[] = Array.from({ length: 18 }, (_, i) => {
-    const n = NAMES[i % NAMES.length];
-    return { id: uid(), name: n, email: n.toLowerCase().replace(/[^a-z]+/g, ".") + "@mail.com", phone: `+966 5${(10000000 + i * 7345121) % 99999999}`.slice(0, 15), message: MSGS[i % MSGS.length], propertyId: properties[i % properties.length].id, source: SOURCES[i % SOURCES.length], status: statuses[i % statuses.length], date: daysAgo(Math.floor(i * 1.6), 9 + (i % 8)) };
+    const n = NAMES[i % NAMES.length]!;
+    return { id: uid(), name: n, email: n.toLowerCase().replace(/[^a-z]+/g, ".") + "@mail.com", phone: `+966 5${(10000000 + i * 7345121) % 99999999}`.slice(0, 15), message: MSGS[i % MSGS.length]!, propertyId: properties[i % properties.length]!.id, source: SOURCES[i % SOURCES.length]!, status: statuses[i % statuses.length]!, date: daysAgo(Math.floor(i * 1.6), 9 + (i % 8)) };
   });
   const types: Contact["type"][] = ["Buyer", "Investor", "Seller", "Tenant"];
-  const contacts: Contact[] = NAMES.map((n, i) => ({ id: uid(), name: n, email: n.toLowerCase().replace(/[^a-z]+/g, ".") + "@mail.com", phone: `+966 55 ${String(1000000 + i * 834211).slice(0, 7)}`, type: types[i % 4], city: ["Riyadh", "Jeddah", "Al Khobar", "Dammam"][i % 4], notes: i % 3 === 0 ? "Prefers WhatsApp. Budget around SAR 5M." : "", date: daysAgo(i * 4) }));
+  const contacts: Contact[] = NAMES.map((n, i) => ({ id: uid(), name: n, email: n.toLowerCase().replace(/[^a-z]+/g, ".") + "@mail.com", phone: `+966 55 ${String(1000000 + i * 834211).slice(0, 7)}`, type: types[i % 4]!, city: ["Riyadh", "Jeddah", "Al Khobar", "Dammam"][i % 4]!, notes: i % 3 === 0 ? "Prefers WhatsApp. Budget around SAR 5M." : "", date: daysAgo(i * 4) }));
   const staff: Staff[] = [
     { id: "s1", name: "Abdulrahman Al-Saud", email: "admin@najm.sa", role: "Admin", active: true },
     { id: "s2", name: "Lama Al-Qahtani", email: "lama@najm.sa", role: "Agent", active: true },
@@ -42,7 +42,7 @@ export function seed(): Data {
 }
 
 /** Called by public site forms so new enquiries appear in the admin inbox. */
-export function pushEnquiry(e: { name: string; email: string; phone: string; message?: string; source: string; propertyId?: string }) {
+export function pushEnquiry(e: { name: string; email: string; phone: string; message?: string | undefined; source: string; propertyId?: string | undefined }) {
   try {
     const list = JSON.parse(localStorage.getItem(INBOX) || "[]");
     list.push({ id: uid(), message: "", ...e, status: "New", date: new Date().toISOString() });

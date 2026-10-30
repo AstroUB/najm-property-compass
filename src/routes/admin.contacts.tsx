@@ -66,9 +66,9 @@ function Contacts() {
         <DialogContent className="rounded-[2rem] border-none">
           <DialogHeader><DialogTitle className="text-2xl font-medium">{contacts.some((c) => c.id === edit?.id) ? "Edit contact" : "New contact"}</DialogTitle></DialogHeader>
           {edit && (
-            <form className="grid gap-3" onSubmit={(e) => { e.preventDefault(); if (!edit.name.trim() || !edit.email.includes("@")) return toast.error("Name and a valid email are required"); saveContact(edit); setEdit(null); toast.success("Contact saved"); }}>
+            <form className="grid gap-3" onSubmit={(e) => { e.preventDefault(); if (!edit.name.trim() || !edit.email.includes("@")) { toast.error("Name and a valid email are required"); return; } saveContact(edit); setEdit(null); toast.success("Contact saved"); }}>
               {(["name", "email", "phone", "city"] as const).map((k) => (
-                <input key={k} className="field" placeholder={k[0].toUpperCase() + k.slice(1)} value={edit[k]} onChange={(e) => setEdit({ ...edit, [k]: e.target.value })} />
+                <input key={k} className="field" placeholder={k[0]!.toUpperCase() + k.slice(1)} value={edit[k]} onChange={(e) => setEdit({ ...edit, [k]: e.target.value })} />
               ))}
               <select className="field" value={edit.type} onChange={(e) => setEdit({ ...edit, type: e.target.value as Contact["type"] })}>{TYPES.map((t) => <option key={t}>{t}</option>)}</select>
               <textarea className="field resize-none rounded-[1.5rem]" rows={3} placeholder="Notes" value={edit.notes} onChange={(e) => setEdit({ ...edit, notes: e.target.value })} />

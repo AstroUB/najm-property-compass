@@ -41,8 +41,8 @@ function StaffPage() {
             <p className="text-xl font-medium">Invite staff member</p>
             <form className="mt-4 grid gap-3" onSubmit={(e) => {
               e.preventDefault();
-              if (!name.trim() || !email.includes("@")) return toast.error("Name and a valid email are required");
-              if (staff.some((s) => s.email.toLowerCase() === email.toLowerCase())) return toast.error("That email already has an account");
+              if (!name.trim() || !email.includes("@")) { toast.error("Name and a valid email are required"); return; }
+              if (staff.some((s) => s.email.toLowerCase() === email.toLowerCase())) { toast.error("That email already has an account"); return; }
               saveStaff({ id: newId(), name: name.trim(), email: email.trim(), role, active: true }); setName(""); setEmail(""); toast.success("Staff member added");
             }}>
               <input className="field" placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} />
