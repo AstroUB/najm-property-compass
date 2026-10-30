@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Plus, Minus, Search } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Plus, Minus, Search } from "lucide-react";
 import hero from "@/assets/hero2.jpg";
 import heroCut from "@/assets/hero2-cut.png";
 import p3 from "@/assets/p3.jpg";
@@ -11,7 +11,7 @@ import { BUDGETS, CITIES, GIGA_PROJECTS, PROPERTIES, TYPES, formatSAR } from "@/
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
-import { useReveal } from "@/components/site/motion";
+import { useLiquidGlass, useReveal } from "@/components/site/motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,24 +41,35 @@ function Hero() {
         .from("[data-hero-line]", { yPercent: 110, duration: 1.2, stagger: 0.12, ease: "power4.out" })
         .from("[data-hero-photo]", { scale: 1.08, opacity: 0, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.1)
         .from("[data-hero-cut]", { y: 80, opacity: 0, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.3)
+        .from("[data-hero-side]", { opacity: 0, y: 20, duration: 1, stagger: 0.1, ease: "power3.out", clearProps: "all" }, 0.6)
         .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out", clearProps: "all" }, 0.9);
     })();
   }, []);
 
+  useLiquidGlass(".lg-glass", { frost: 6, refraction: 0.006, bevelDepth: 0.06 });
   const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer";
+  const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
   return (
-    <section className="px-3 pt-24 md:px-4">
-      <div ref={stageRef} className="relative mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[5/4] sm:max-w-[min(1440px,calc((100svh-6.5rem)*1.25))]">
-        <h1 className="absolute inset-x-0 top-[1%] z-10 text-center font-medium uppercase leading-[0.86] tracking-[-0.04em]" style={{ fontSize: "clamp(2.8rem, min(8vw, 11svh), 9rem)" }}>
-          <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
-          <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy normal-case">S</span>tars</span></span>
+    <section className="px-3 pb-[17rem] pt-24 md:px-4 md:pb-0">
+      <div ref={stageRef} className="relative mx-auto h-[115vw] w-full sm:h-[min(69vw,calc(100svh-6.5rem))]">
+        <h1 className="absolute left-[5%] top-0 z-10 font-normal uppercase leading-[0.86] tracking-[-0.035em] sm:left-[23%]" style={{ fontSize: fs }}>
+          <span className="block overflow-hidden"><span data-hero-line className="block">Homes</span></span>
+          <span className="block overflow-hidden pb-[0.06em]"><span data-hero-line className="block"><span className="fancy normal-case">Beneath</span> the</span></span>
+          <span className="block overflow-hidden"><span data-hero-line className="block">Stars</span></span>
         </h1>
-        <div data-hero-photo className="absolute inset-x-0 bottom-0 top-[40%] overflow-hidden rounded-[2rem]">
-          <img src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="absolute inset-x-0 bottom-0 h-[138.4%] w-full object-cover" />
-        </div>
-        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[83%] w-full object-cover" />
 
+        <a href="#featured" aria-label="Scroll to featured homes" data-hero-side className="group absolute left-[6%] top-[19%] z-10 hidden aspect-square w-[10%] items-center justify-center rounded-full bg-cream transition-colors hover:bg-ink sm:flex">
+          <ArrowDownRight className="h-[30%] w-[30%] stroke-[1.25] text-foreground transition-colors group-hover:text-ink-foreground" />
+        </a>
+        <p data-hero-side className="absolute left-[84%] top-[19%] z-10 hidden max-w-[13%] text-[clamp(0.85rem,1.2vw,1.15rem)] leading-snug text-foreground/80 sm:block">
+          Curated residences and investment property across the Kingdom.
+        </p>
+
+        <div data-hero-photo className="absolute inset-x-0 bottom-0 top-[37.5%] overflow-hidden rounded-[1.75rem]">
+          <img src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="absolute inset-x-0 bottom-0 h-[119.2%] w-full object-cover object-top" />
+        </div>
+        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[74.5%] w-full object-cover object-top" />
 
         <form
           data-hero-search
@@ -66,7 +77,7 @@ function Hero() {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="absolute inset-x-3 bottom-3 z-50 mx-auto grid max-w-5xl gap-2 md:bottom-8 md:grid-cols-[1fr_1fr_1fr_auto]"
+          className="absolute inset-x-0 top-full z-30 mx-auto mt-3 grid max-w-5xl gap-2 md:inset-x-3 md:bottom-8 md:top-auto md:mt-0 md:grid-cols-[1fr_1fr_1fr_auto]"
         >
           {[
             { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
@@ -74,8 +85,8 @@ function Hero() {
             { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
           ].map((f) => (
             <div key={f.label} className="relative">
-              <span aria-hidden className="liquidGL glass absolute inset-0 z-0 rounded-full" />
-              <label className="relative z-10 flex cursor-pointer flex-col rounded-full px-6 py-3">
+              <span aria-hidden className="lg-glass glass pointer-events-none absolute inset-0 rounded-full" />
+              <label className="relative z-10 flex cursor-pointer flex-col rounded-full bg-cream px-6 py-3 md:bg-background/55">
                 <span className="text-xs text-foreground/70">{f.label}</span>
                 <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
                   <option value="">{f.ph}</option>
@@ -84,7 +95,7 @@ function Hero() {
               </label>
             </div>
           ))}
-          <button className="relative z-50 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
+          <button className="relative z-10 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
             <Search className="h-4 w-4" /> Search
           </button>
         </form>
@@ -133,10 +144,10 @@ function Home() {
       <Hero />
 
       {/* Featured */}
-      <section className="px-6 py-20">
+      <section id="featured" className="scroll-mt-24 px-6 py-20">
         <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-wrap items-end justify-between gap-8">
-            <SectionTitle letter="F" rest="eatured homes" eyebrow="Hand-picked this season" />
+            <SectionTitle word="Featured" rest=" homes" eyebrow="Hand-picked this season" />
             <Link to="/properties" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
               View all properties <ArrowUpRight className="h-5 w-5" />
             </Link>
@@ -151,7 +162,7 @@ function Home() {
       <section id="vault" className="scroll-mt-24 bg-cream px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 md:grid-cols-2 md:items-end">
-            <SectionTitle letter="I" rest="nvestment Vault" eyebrow="Income-ready properties" />
+            <SectionTitle word="Investment" rest=" Vault" eyebrow="Income-ready properties" />
             <p className="text-lg text-muted-foreground" data-reveal>
               Tenanted, fully furnished or in high-growth zones — properties selected for strong, dependable returns from day one.
             </p>
@@ -179,7 +190,7 @@ function Home() {
       {/* Other properties */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-[1400px]">
-          <SectionTitle letter="M" rest="ore to explore" />
+          <SectionTitle word="More" rest=" to explore" />
           <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
             {PROPERTIES.filter((p) => !p.featured).slice(0, 4).map((p) => <PropertyCard key={p.id} p={p} />)}
           </div>
@@ -199,17 +210,32 @@ function Home() {
         <div className="mx-auto max-w-7xl">
           <div data-reveal>
             <p className="mb-5 text-lg opacity-60">Upcoming & under construction</p>
-            <h2 className="display-lg"><span className="fancy">T</span>he Sovereign Giga Projects</h2>
+            <h2 className="display-lg">The <span className="fancy">Sovereign</span> Giga Projects</h2>
           </div>
         </div>
         <div className="mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1.5rem,calc((100vw-80rem)/2))] pb-6 [scrollbar-width:none]">
           {GIGA_PROJECTS.map((g) => (
-            <article key={g.name} className="group relative h-[62vh] min-h-[420px] w-[85vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] md:w-[65vw] lg:w-[46rem]">
-              <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-              <div className="liquidGL glass absolute z-50 bottom-5 left-5 right-5 rounded-[1.5rem] p-6 text-foreground md:right-auto md:max-w-md">
-                <p className="text-lg text-primary">{g.status} · {g.region}</p>
-                <h3 className="display-md mt-2">{g.name}</h3>
-                <p className="mt-3 text-lg text-muted-foreground">{g.text}</p>
+            <article key={g.name} className="grid w-[88vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] bg-background text-foreground md:w-[80vw] lg:w-[64rem] lg:grid-cols-[1.15fr_1fr]">
+              <div className="group relative h-72 overflow-hidden lg:h-auto lg:min-h-[520px]">
+                <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
+              </div>
+              <div className="flex flex-col p-8 md:p-10">
+                <p className="text-base text-primary">{g.status} · {g.region}</p>
+                <h3 className="mt-3 text-3xl font-medium tracking-tight md:text-4xl">{g.name}</h3>
+                <p className="mt-4 text-lg text-muted-foreground">{g.text}</p>
+                <dl className="mb-8 mt-8 grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-cream p-5">
+                    <dt className="text-sm text-muted-foreground">Est. deadline</dt>
+                    <dd className="mt-1 text-xl font-medium tracking-tight">{g.deadline}</dd>
+                  </div>
+                  <div className="rounded-2xl bg-cream p-5">
+                    <dt className="text-sm text-muted-foreground">Budget</dt>
+                    <dd className="mt-1 text-xl font-medium tracking-tight">{g.budget}</dd>
+                  </div>
+                </dl>
+                <a href="#contact" className="mt-auto inline-flex w-fit items-center gap-2 self-start rounded-full bg-ink px-7 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
+                  Register interest <ArrowUpRight className="h-4 w-4" />
+                </a>
               </div>
             </article>
           ))}
@@ -219,7 +245,7 @@ function Home() {
       {/* Process */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <SectionTitle letter="H" rest="ow we work" eyebrow="Four steps to the keys" />
+          <SectionTitle word="How" rest=" we work" eyebrow="Four steps to the keys" />
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s, i) => (
               <div key={s.t} className="rounded-[2rem] bg-cream p-8" data-reveal>
@@ -236,7 +262,7 @@ function Home() {
       <section className="bg-primary px-6 py-20 text-primary-foreground">
         <div className="mx-auto max-w-7xl">
           <h2 className="display-lg" data-reveal>
-            <span className="fancy !text-primary-foreground">W</span>hy Najm?
+            <span className="fancy !text-primary-foreground">Why</span> Najm?
           </h2>
           <div className="mt-16 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-4">
             {WHY.map((w) => (
@@ -254,7 +280,7 @@ function Home() {
       <section id="insights" className="scroll-mt-28 px-6 py-20">
         <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-wrap items-end justify-between gap-8">
-            <SectionTitle letter="K" rest="nowledge Hub" eyebrow="Guides, market reports and buyer insight" />
+            <SectionTitle word="Knowledge" rest=" Hub" eyebrow="Guides, market reports and buyer insight" />
             <a href="#contact" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
               Ask an advisor <ArrowUpRight className="h-5 w-5" />
             </a>
@@ -280,7 +306,7 @@ function Home() {
       <section id="contact" className="scroll-mt-28 px-6 py-20">
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
           <div>
-            <SectionTitle letter="Q" rest="uestions" />
+            <SectionTitle word="Questions" rest="" />
             <div className="mt-12 flex flex-col gap-3">
               {FAQ.map((f, i) => (
                 <div key={f.q} className="rounded-[1.75rem] bg-cream" data-reveal>
@@ -294,7 +320,7 @@ function Home() {
             </div>
           </div>
           <div className="rounded-[2.5rem] bg-background p-2 lg:pt-0" data-reveal>
-            <h2 className="display-lg"><span className="fancy">T</span>alk to us</h2>
+            <h2 className="display-lg"><span className="fancy">Talk</span> to us</h2>
             <p className="mb-10 mt-5 text-lg text-muted-foreground">Tell us what you're looking for — a private advisor will be in touch within 24 hours.</p>
             <EnquiryForm cta="Send message" />
           </div>
@@ -304,7 +330,7 @@ function Home() {
       {/* Banner */}
       <section className="px-6 pb-28">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 overflow-hidden rounded-[2.5rem] bg-cream p-10 md:flex-row md:items-center md:p-16" data-reveal>
-          <h2 className="display-lg max-w-3xl">Your <span className="fancy">n</span>ext address is waiting.</h2>
+          <h2 className="display-lg max-w-3xl">Your next <span className="fancy">address</span> is waiting.</h2>
           <Link to="/properties" className="flex shrink-0 items-center gap-3 rounded-full bg-ink px-8 py-4 text-lg text-ink-foreground transition-colors hover:bg-primary">
             Browse properties <ArrowUpRight className="h-5 w-5" />
           </Link>
