@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Architecture rules
+- Glass effect uses the npm `liquid-gl` package via `useLiquidGlass(selector)` in src/components/site/motion.ts; lens targets are empty decorative spans behind real content, so content stays visible/clickable if WebGL fails.
