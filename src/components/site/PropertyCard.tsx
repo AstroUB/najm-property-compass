@@ -23,7 +23,7 @@ export function PropertyCard({ p }: { p: Property }) {
         <h3 className="mt-1 text-lg font-medium tracking-tight">{p.title}</h3>
         <p className="text-sm text-muted-foreground">{p.district}, {p.city}</p>
         <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{p.short}</p>
-        <div className="mt-4 flex items-center gap-5 text-sm">
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 whitespace-nowrap text-[13px]">
           <span className="flex items-center gap-1.5"><Maximize className="h-4 w-4 text-primary" />{p.area} m²</span>
           {p.beds > 0 && <span className="flex items-center gap-1.5"><BedDouble className="h-4 w-4 text-primary" />{p.beds} Beds</span>}
           <span className="flex items-center gap-1.5"><Bath className="h-4 w-4 text-primary" />{p.baths} Baths</span>
