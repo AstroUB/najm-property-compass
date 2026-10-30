@@ -98,8 +98,8 @@ function Hero() {
                 <ChevronDown className="pointer-events-none h-4 w-4 shrink-0 opacity-70 md:text-ink-foreground" />
               </label>
             ))}
-            <button className="flex items-center justify-center gap-2 rounded-full bg-primary px-10 py-5 text-lg text-primary-foreground transition-colors hover:bg-background hover:text-foreground">
-              <Search className="h-5 w-5" /> Search
+            <button className="flex items-center justify-center gap-2 self-center rounded-full bg-primary px-6 py-3 text-base text-primary-foreground transition-colors hover:bg-background hover:text-foreground md:mr-1">
+              <Search className="h-4 w-4" /> Search
             </button>
           </div>
         </form>
