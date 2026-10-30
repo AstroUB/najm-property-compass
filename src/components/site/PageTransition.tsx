@@ -26,7 +26,7 @@ export function PageTransition() {
   const [count, setCount] = useState(0);
   const [intro, setIntro] = useState(true);
   const busy = useRef(false);
-  const beat = useRef<{ kill: () => void; to: (...args: unknown[]) => { kill: () => void } } | null>(null);
+  const beat = useRef<BeatTimeline | null>(null);
 
   const stripes = () => Array.from(root.current?.querySelectorAll<HTMLElement>("[data-stripe]") ?? []);
   const text = () => root.current?.querySelector<HTMLElement>("[data-label]");
