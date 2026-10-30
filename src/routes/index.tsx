@@ -89,7 +89,7 @@ function Hero() {
                   <f.icon className="h-4 w-4" />
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="text-sm text-muted-foreground md:text-ink-foreground/75">{f.label}</span>
+                  <span className="text-xs text-muted-foreground md:text-ink-foreground/75">{f.label}</span>
                   <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
                     <option value="">{f.ph}</option>
                     {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}

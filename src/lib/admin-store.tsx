@@ -8,7 +8,14 @@ export type EnquiryStatus = "New" | "Contacted" | "Viewing" | "Closed";
 export type Enquiry = { id: string; name: string; email: string; phone: string; message: string; propertyId?: string; source: string; status: EnquiryStatus; date: string };
 export type Contact = { id: string; name: string; email: string; phone: string; type: "Buyer" | "Investor" | "Seller" | "Tenant"; city: string; notes: string; date: string };
 export type Staff = { id: string; name: string; email: string; role: Role; active: boolean };
-export type AdminProperty = Property & { views: number; published: boolean };
+export type Pair = [string, string];
+export type PropertyExtra = {
+  plot: number; floors: string; parking: number; furnishing: string; facing: string; developer: string; deed: string;
+  lat: number; lng: number; serviceCharge: number; handover: string; video: string;
+  rooms: Pair[]; nearby: Pair[]; plan: Pair[]; features: string[];
+  agentName: string; agentPhone: string; seoTitle: string; seoDescription: string;
+};
+export type AdminProperty = Property & { views: number; published: boolean; details?: PropertyExtra };
 
 type Data = { properties: AdminProperty[]; enquiries: Enquiry[]; contacts: Contact[]; staff: Staff[] };
 
