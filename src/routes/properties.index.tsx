@@ -89,7 +89,7 @@ function PropertiesPage() {
   );
 }
 
-function Select({ label, value, onChange, options, placeholder }: { label: string; value?: string; onChange: (v: string) => void; options: (readonly [string, string])[] | string[][]; placeholder: string }) {
+function Select({ label, value, onChange, options, placeholder }: { label: string; value?: string | undefined; onChange: (v: string) => void; options: string[][]; placeholder: string }) {
   return (
     <select aria-label={label} value={value ?? ""} onChange={(e) => onChange(e.target.value)} className="field">
       <option value="">{placeholder}</option>
