@@ -46,11 +46,11 @@ function Dashboard() {
           <p className="opacity-70">{new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}</p>
           <h1 className="mt-3 text-4xl font-medium tracking-tight md:text-5xl">Welcome back, <span className="fancy !text-primary-foreground">{user?.name.split(" ")[0]}</span></h1>
           <p className="mt-3 max-w-lg text-lg opacity-80">You have {enquiries.filter((e) => e.status === "New").length} new enquiries waiting and {properties.filter((p) => p.published).length} listings live on the site.</p>
-          <div className="mt-8 flex flex-wrap gap-2">
+          <div className="relative z-10 mt-8 flex flex-wrap gap-2">
             <Link to="/admin/properties/new" className="flex items-center gap-2 rounded-full bg-background px-5 py-3 text-foreground hover:bg-cream"><Plus className="h-4 w-4" />Add property</Link>
             <Link to="/admin/enquiries" className="flex items-center gap-2 rounded-full bg-primary-foreground/15 px-5 py-3 hover:bg-primary-foreground/25"><Inbox className="h-4 w-4" />Reply to enquiries</Link>
           </div>
-          <p aria-hidden className="pointer-events-none absolute -bottom-10 right-6 select-none text-[10rem] font-medium leading-none tracking-tighter opacity-10">Najm</p>
+          <p aria-hidden className="pointer-events-none absolute -bottom-10 right-6 select-none text-[10rem] font-medium leading-none tracking-tighter opacity-[0.06]">Najm</p>
         </div>
         <Panel>
           <p className="text-xl font-medium">Enquiry pipeline</p>

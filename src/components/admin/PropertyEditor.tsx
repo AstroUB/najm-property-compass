@@ -82,7 +82,7 @@ export function PropertyEditor({ initial }: { initial: AdminProperty }) {
 
         <div className="flex min-w-0 flex-col gap-6">
           <Section title="Photos" hint="Upload from your computer. The first photo is the cover; use the arrows to reorder.">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:col-span-2 sm:grid-cols-4">
               {p.images.map((src, i) => (
                 <div key={i} className="group relative aspect-[4/3] overflow-hidden rounded-2xl">
                   <img src={src} alt="" className="h-full w-full object-cover" />
