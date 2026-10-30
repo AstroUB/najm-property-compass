@@ -28,8 +28,8 @@ function StaffPage() {
             {staff.map((s) => (
               <li key={s.id} className="flex flex-wrap items-center gap-4 rounded-2xl p-4 hover:bg-cream/60">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cream font-medium">{s.name[0]}</span>
-                <div className="min-w-0 flex-1"><p className="font-medium">{s.name}{s.id === user?.id && <span className="text-muted-foreground"> · you</span>}</p><p className="text-sm text-muted-foreground">{s.email}</p></div>
-                <select value={s.role} disabled={s.id === user?.id} onChange={(e) => saveStaff({ ...s, role: e.target.value as Role })} className="field !w-auto !py-2">{ROLES.map((r) => <option key={r}>{r}</option>)}</select>
+                <div className="min-w-0 flex-1 basis-[calc(100%-4rem)] sm:basis-auto"><p className="font-medium">{s.name}{s.id === user?.id && <span className="text-muted-foreground"> · you</span>}</p><p className="text-sm text-muted-foreground">{s.email}</p></div>
+                <select value={s.role} disabled={s.id === user?.id} aria-label="Role" onChange={(e) => saveStaff({ ...s, role: e.target.value as Role })} className="field !w-auto !py-2 ml-14 sm:ml-0">{ROLES.map((r) => <option key={r}>{r}</option>)}</select>
                 <Switch checked={s.active} disabled={s.id === user?.id} onCheckedChange={(v) => saveStaff({ ...s, active: v })} aria-label="Active" />
                 <button aria-label="Remove" disabled={s.id === user?.id} onClick={() => { if (confirm(`Remove ${s.name}?`)) deleteStaff(s.id); }} className="rounded-full p-2 text-destructive hover:bg-cream disabled:opacity-30"><Trash2 className="h-4 w-4" /></button>
               </li>
