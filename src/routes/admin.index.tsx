@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowUpRight, Building2, Eye, Inbox, Wallet } from "lucide-react";
-import { formatSAR } from "@/data/properties";
 import { fmtDate, useAdmin } from "@/lib/admin-store";
 import { PageHeader, Panel, STATUS_STYLE } from "@/components/admin/AdminShell";
 
