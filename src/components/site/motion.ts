@@ -15,7 +15,7 @@ export function useReveal(deps: unknown[] = []) {
           gsap.fromTo(
             el,
             { y: 60, opacity: 0 },
-            { y: 0, opacity: 1, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 90%" } },
+            { y: 0, opacity: 1, duration: 1.1, ease: "power3.out", clearProps: "transform,opacity", scrollTrigger: { trigger: el, start: "top 90%" } },
           );
         });
       });

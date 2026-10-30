@@ -36,7 +36,7 @@ function Hero() {
       const tl = gsap.timeline();
       tl.from(imgRef.current, { scale: 1.15, duration: 2, ease: "power3.out" })
         .from("[data-hero-line]", { yPercent: 100, opacity: 0, duration: 1.1, stagger: 0.1, ease: "power4.out" }, 0.2)
-        .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out" }, 0.7);
+        .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out", clearProps: "all" }, 0.7);
       const onMove = (e: MouseEvent) => {
         const x = e.clientX / window.innerWidth - 0.5;
         const y = e.clientY / window.innerHeight - 0.5;
