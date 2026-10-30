@@ -46,7 +46,7 @@ function Hero() {
     })();
   }, []);
 
-  useLiquidGlass(".lg-glass", { frost: 4 });
+  useLiquidGlass(".lg-glass", { frost: 6, refraction: 0.006, bevelDepth: 0.06, tint: "rgba(255, 255, 255, 0.55)" });
   const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer";
   const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
@@ -59,7 +59,7 @@ function Hero() {
           <span className="block overflow-hidden"><span data-hero-line className="block">Stars</span></span>
         </h1>
 
-        <a href="#featured" aria-label="Scroll to featured homes" data-hero-side className="group absolute left-[6%] top-[19%] z-10 hidden aspect-square w-[11%] items-center justify-center rounded-full bg-cream transition-colors hover:bg-ink sm:flex">
+        <a href="#featured" aria-label="Scroll to featured homes" data-hero-side className="group absolute left-[6%] top-[19%] z-10 hidden aspect-square w-[10%] items-center justify-center rounded-full bg-cream transition-colors hover:bg-ink sm:flex">
           <ArrowDownRight className="h-[30%] w-[30%] stroke-[1.25] text-foreground transition-colors group-hover:text-ink-foreground" />
         </a>
         <p data-hero-side className="absolute left-[84%] top-[19%] z-10 hidden max-w-[13%] text-[clamp(0.85rem,1.2vw,1.15rem)] leading-snug text-foreground/80 sm:block">
@@ -67,9 +67,9 @@ function Hero() {
         </p>
 
         <div data-hero-photo className="absolute inset-x-0 bottom-0 top-[37.5%] overflow-hidden rounded-[1.75rem]">
-          <img src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="absolute inset-x-0 bottom-0 h-[124.3%] w-full object-cover object-top" />
+          <img src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="absolute inset-x-0 bottom-0 h-[119.2%] w-full object-cover object-top" />
         </div>
-        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[77.7%] w-full object-cover object-top" />
+        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[74.5%] w-full object-cover object-top" />
 
         <form
           data-hero-search
