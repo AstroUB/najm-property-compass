@@ -18,6 +18,9 @@ const labelFor = (path: string) => {
 };
 const STRIPES = ["bg-background", "bg-primary", "bg-background", "bg-primary"];
 
+/** Minimal shape of a gsap timeline we keep a handle on (heartbeat animation). */
+type BeatTimeline = { kill: () => void; to: (...args: unknown[]) => BeatTimeline };
+
 /** Four stripes rise from the bottom to cover the page, then lift away upward one by one. */
 export function PageTransition() {
   const router = useRouter();
