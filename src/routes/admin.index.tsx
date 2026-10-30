@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ArrowUpRight, Building2, Eye, Inbox, Wallet } from "lucide-react";
+import { ArrowUpRight, Building2, Eye, Inbox, Plus, Wallet } from "lucide-react";
 import { fmtDate, useAdmin } from "@/lib/admin-store";
-import { PageHeader, Panel, STATUS_STYLE } from "@/components/admin/AdminShell";
+import { Panel, STATUS_STYLE } from "@/components/admin/AdminShell";
 
 export const Route = createFileRoute("/admin/")({ component: Dashboard });
 
@@ -37,17 +37,47 @@ function Dashboard() {
   const topViewed = [...properties].sort((a, b) => b.views - a.views).slice(0, 5);
   const recent = [...enquiries].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 6);
   const maxViews = topViewed[0]?.views ?? 1;
+  const pipeline = (["New", "Contacted", "Viewing", "Closed"] as const).map((status, i) => ({ status, n: enquiries.filter((e) => e.status === status).length, color: C[i]! }));
 
   return (
     <div>
-      <PageHeader title={`Welcome back, ${user?.name.split(" ")[0]}`} sub="Here's how Najm Estate is performing." />
+      <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
+        <div className="relative overflow-hidden rounded-[2rem] bg-primary p-8 text-primary-foreground md:p-10">
+          <p className="opacity-70">{new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}</p>
+          <h1 className="mt-3 text-4xl font-medium tracking-tight md:text-5xl">Welcome back, <span className="fancy !text-primary-foreground">{user?.name.split(" ")[0]}</span></h1>
+          <p className="mt-3 max-w-lg text-lg opacity-80">You have {enquiries.filter((e) => e.status === "New").length} new enquiries waiting and {properties.filter((p) => p.published).length} listings live on the site.</p>
+          <div className="relative z-10 mt-8 flex flex-wrap gap-2">
+            <Link to="/admin/properties/new" className="flex items-center gap-2 rounded-full bg-background px-5 py-3 text-foreground hover:bg-cream"><Plus className="h-4 w-4" />Add property</Link>
+            <Link to="/admin/enquiries" className="flex items-center gap-2 rounded-full bg-primary-foreground/15 px-5 py-3 hover:bg-primary-foreground/25"><Inbox className="h-4 w-4" />Reply to enquiries</Link>
+          </div>
+          <p aria-hidden className="pointer-events-none absolute -bottom-10 right-6 select-none text-[10rem] font-medium leading-none tracking-tighter opacity-[0.06]">Najm</p>
+        </div>
+        <Panel>
+          <p className="text-xl font-medium">Enquiry pipeline</p>
+          <p className="text-sm text-muted-foreground">{enquiries.length} enquiries in total</p>
+          <div className="mt-6 flex h-4 overflow-hidden rounded-full bg-cream">
+            {pipeline.map((s) => <div key={s.status} style={{ width: `${(s.n / Math.max(1, enquiries.length)) * 100}%`, background: s.color }} />)}
+          </div>
+          <ul className="mt-6 grid grid-cols-2 gap-3">
+            {pipeline.map((s) => (
+              <li key={s.status} className="rounded-2xl bg-cream p-4">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground"><span className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />{s.status}</span>
+                <p className="mt-1 text-3xl font-medium tracking-tight">{s.n}</p>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {stats.map((s, i) => (
-          <Panel key={s.label} className={i === 0 ? "bg-primary text-primary-foreground" : ""}>
-            <s.icon className="h-6 w-6 opacity-80" />
+          <Panel key={s.label} className="transition-transform duration-300 hover:-translate-y-0.5">
+            <div className="flex items-center justify-between">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cream text-primary"><s.icon className="h-5 w-5" /></span>
+              <span className="text-sm text-primary">+{[12, 8, 3, 6, 2][i]}%</span>
+            </div>
             <p className="mt-6 text-3xl font-medium tracking-tight">{s.value}</p>
-            <p className="mt-1 text-sm opacity-70">{s.label}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
           </Panel>
         ))}
       </div>
