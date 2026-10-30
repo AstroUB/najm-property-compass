@@ -16,7 +16,7 @@ const labelFor = (path: string) => {
   if (clean.startsWith("/admin")) return "Admin";
   return "Najm";
 };
-const STRIPES = ["bg-primary", "bg-ink", "bg-primary", "bg-ink"];
+const STRIPES = ["bg-background", "bg-primary", "bg-background", "bg-primary"];
 
 /** Four stripes rise from the bottom to cover the page, then lift away upward one by one. */
 export function PageTransition() {
@@ -85,11 +85,11 @@ export function PageTransition() {
   }), [router]);
 
   return (
-    <div ref={root} aria-hidden className="pointer-events-none fixed inset-0 z-[100] grid grid-cols-4">
+    <div ref={root} aria-hidden data-html2canvas-ignore="true" data-liquid-ignore className="pointer-events-none fixed inset-0 z-[100] grid grid-cols-4">
       {STRIPES.map((c, i) => <div key={i} data-stripe className={`${c} h-full w-full origin-bottom`} />)}
-      <div className="absolute inset-0 flex items-center justify-center overflow-hidden text-primary-foreground">
+      <div className="absolute inset-0 flex items-center justify-center overflow-hidden text-ink">
         <div data-label className="text-center">
-          <p className="fancy !text-primary-foreground text-[clamp(4rem,12vw,10rem)]">{intro ? "Najm" : label}</p>
+          <p className="fancy !text-ink text-[clamp(4rem,12vw,10rem)]">{intro ? "Najm" : label}</p>
           {intro && <p className="mt-4 text-lg tabular-nums tracking-[0.3em] opacity-70">{String(count).padStart(3, "0")}</p>}
         </div>
       </div>

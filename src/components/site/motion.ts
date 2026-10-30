@@ -44,6 +44,17 @@ export function useLiquidGlass(target: string, extra: Record<string, unknown> = 
     let lenses: Lens[] = [];
     const t = setTimeout(async () => {
       try {
+        // Wait for the loader to lift so the glass snapshot never captures its stripes.
+        const { introDone } = await import("./PageTransition");
+        await introDone;
+        // Also wait out any route-change stripes still covering the page.
+        for (let i = 0; i < 40; i++) {
+          const cover = document.querySelector<HTMLElement>("[data-liquid-ignore]");
+          if (!cover || cover.style.visibility === "hidden") break;
+          await new Promise((r) => setTimeout(r, 100));
+        }
+        await new Promise((r) => setTimeout(r, 150));
+        if (cancelled) return;
         const mod = await import("liquid-gl");
         const liquidGL = ((mod as { default?: unknown }).default ?? mod) as LiquidFn;
         if (cancelled || typeof liquidGL !== "function" || !document.querySelector(target)) return;
