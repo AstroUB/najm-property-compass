@@ -66,20 +66,20 @@ function Hero() {
           </p>
         </div>
 
+        <div data-hero-search className="relative w-full max-w-4xl">
         <form
-          data-hero-search
           onSubmit={(e) => {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="liquidGL glass relative grid w-full max-w-4xl gap-1 rounded-[1.75rem] p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
+          className="liquidGL glass relative grid w-full gap-1 rounded-[1.75rem] p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
         >
           {[
             { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
             { label: "Property type", value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
             { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
           ].map((f) => (
-            <label key={f.label} className="flex flex-col rounded-full px-5 py-2 transition-colors hover:bg-background/50">
+            <label key={f.label} className="relative z-10 flex flex-col rounded-full px-5 py-2 transition-colors hover:bg-background/50">
               <span className="text-xs text-foreground/60">{f.label}</span>
               <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
                 <option value="">{f.ph}</option>
@@ -87,10 +87,11 @@ function Hero() {
               </select>
             </label>
           ))}
-          <button className="flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm text-ink-foreground transition-colors hover:bg-primary">
+          <button className="relative z-10 flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm text-ink-foreground transition-colors hover:bg-primary">
             <Search className="h-4 w-4" /> Search
           </button>
         </form>
+        </div>
       </div>
     </section>
   );
