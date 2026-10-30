@@ -6,7 +6,7 @@ import { BUDGETS, CITIES, GIGA_PROJECTS, PROPERTIES, TYPES, formatSAR } from "@/
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
-import { useLiquidGlass, useReveal } from "@/components/site/motion";
+import { useReveal } from "@/components/site/motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,13 +34,13 @@ function Hero() {
     (async () => {
       const { gsap } = await import("gsap");
       const tl = gsap.timeline();
-      tl.from("[data-hero-line]", { yPercent: 110, opacity: 0, duration: 1.2, stagger: 0.12, ease: "power4.out" })
-        .from(imgRef.current, { y: 120, rotateX: 25, opacity: 0, scale: 0.9, duration: 1.6, ease: "power3.out" }, 0.2)
-        .from("[data-hero-search]", { y: 40, opacity: 0, duration: 1, ease: "power3.out" }, 0.8);
+      tl.from(imgRef.current, { scale: 1.15, duration: 2, ease: "power3.out" })
+        .from("[data-hero-line]", { yPercent: 100, opacity: 0, duration: 1.1, stagger: 0.1, ease: "power4.out" }, 0.2)
+        .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out", clearProps: "all" }, 0.7);
       const onMove = (e: MouseEvent) => {
         const x = e.clientX / window.innerWidth - 0.5;
         const y = e.clientY / window.innerHeight - 0.5;
-        gsap.to(imgRef.current, { rotateY: x * 14, rotateX: -y * 10, x: x * 30, duration: 1.2, ease: "power3.out" });
+        gsap.to(imgRef.current, { x: x * -20, y: y * -14, duration: 1.4, ease: "power3.out" });
       };
       window.addEventListener("mousemove", onMove);
       cleanup = () => window.removeEventListener("mousemove", onMove);
@@ -48,46 +48,51 @@ function Hero() {
     return () => cleanup();
   }, []);
 
+  const sel = "w-full appearance-none bg-transparent text-sm font-medium outline-none cursor-pointer";
+
   return (
-    <section className="relative overflow-hidden px-6 pb-20 pt-36">
-      <div className="mx-auto max-w-7xl text-center">
-        <h1 className="display-xl">
-          <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
-          <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy">s</span>tars</span></span>
-        </h1>
-        <p data-hero-line className="mx-auto mt-8 max-w-xl text-xl text-muted-foreground">
-          Curated residences and investment property across the Kingdom of Saudi Arabia.
-        </p>
-      </div>
-      <div className="mx-auto mt-6 max-w-6xl" style={{ perspective: "1400px" }}>
-        <div ref={imgRef} style={{ transformStyle: "preserve-3d" }}>
-          <img src={hero} alt="Najm Estate signature villa" width={1600} height={1008} className="mx-auto w-full max-w-5xl" />
+    <section className="p-3">
+      <div className="relative flex h-[calc(100svh-1.5rem)] min-h-[620px] flex-col justify-between overflow-hidden rounded-[2rem] bg-cream px-6 pb-6 pt-32 md:px-12 md:pb-10">
+        <div ref={imgRef} className="absolute -inset-6">
+          <img src={hero} alt="Najm Estate signature villa at sunset" width={1920} height={1088} className="h-full w-full object-cover" />
+        </div>
+        <div className="relative max-w-2xl">
+          <h1 className="display-xl">
+            <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
+            <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy">s</span>tars.</span></span>
+          </h1>
+          <p data-hero-line className="mt-5 max-w-md text-base text-foreground/75">
+            Curated residences and investment property across the Kingdom of Saudi Arabia.
+          </p>
+        </div>
+
+        <div data-hero-search className="relative w-full max-w-4xl">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
+          }}
+          className="liquidGL glass relative z-50 grid w-full gap-1 rounded-[1.75rem] p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
+        >
+          {[
+            { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
+            { label: "Property type", value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
+            { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
+          ].map((f) => (
+            <label key={f.label} className="relative z-10 flex flex-col rounded-full px-5 py-2 transition-colors hover:bg-background/50">
+              <span className="text-xs text-foreground/60">{f.label}</span>
+              <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
+                <option value="">{f.ph}</option>
+                {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+              </select>
+            </label>
+          ))}
+          <button className="relative z-10 flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm text-ink-foreground transition-colors hover:bg-primary">
+            <Search className="h-4 w-4" /> Search
+          </button>
+        </form>
         </div>
       </div>
-      <form
-        data-hero-search
-        onSubmit={(e) => {
-          e.preventDefault();
-          navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
-        }}
-        className="liquidGL glass relative z-10 mx-auto -mt-16 grid max-w-5xl gap-3 rounded-[2.5rem] p-3 md:-mt-28 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
-      >
-        <select value={loc} onChange={(e) => setLoc(e.target.value)} className="field bg-background" aria-label="Location">
-          <option value="">Any location</option>
-          {CITIES.map((c) => <option key={c}>{c}</option>)}
-        </select>
-        <select value={type} onChange={(e) => setType(e.target.value)} className="field bg-background" aria-label="Property type">
-          <option value="">Any property type</option>
-          {TYPES.map((c) => <option key={c}>{c}</option>)}
-        </select>
-        <select value={budget} onChange={(e) => setBudget(e.target.value)} className="field bg-background" aria-label="Budget">
-          <option value="">Any budget</option>
-          {BUDGETS.map((b) => <option key={b.value} value={b.value}>{b.label}</option>)}
-        </select>
-        <button className="flex items-center justify-center gap-3 rounded-full bg-ink px-10 py-4 text-lg text-ink-foreground transition-colors hover:bg-primary">
-          <Search className="h-5 w-5" /> Search
-        </button>
-      </form>
     </section>
   );
 }
@@ -116,7 +121,6 @@ const FAQ = [
 
 function Home() {
   useReveal();
-  useLiquidGlass();
   const [faq, setFaq] = useState<number | null>(0);
   const featured = PROPERTIES.filter((p) => p.featured).slice(0, 6);
   const vault = PROPERTIES.filter((p) => p.investment).slice(0, 4);
@@ -126,7 +130,7 @@ function Home() {
       <Hero />
 
       {/* Featured */}
-      <section className="px-6 py-28">
+      <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionTitle letter="F" rest="eatured homes" eyebrow="Hand-picked this season" />
@@ -141,11 +145,11 @@ function Home() {
       </section>
 
       {/* Investment Vault */}
-      <section className="bg-cream px-6 py-28">
+      <section id="vault" className="scroll-mt-24 bg-cream px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 md:grid-cols-2 md:items-end">
             <SectionTitle letter="I" rest="nvestment Vault" eyebrow="Income-ready properties" />
-            <p className="text-xl text-muted-foreground" data-reveal>
+            <p className="text-lg text-muted-foreground" data-reveal>
               Tenanted, fully furnished or in high-growth zones — properties selected for strong, dependable returns from day one.
             </p>
           </div>
@@ -153,14 +157,14 @@ function Home() {
             {vault.map((p) => (
               <Link key={p.id} to="/properties/$id" params={{ id: p.id }} data-reveal
                 className="group flex items-center gap-6 rounded-[2rem] bg-background p-4 transition-shadow hover:shadow-soft">
-                <div className="relative h-36 w-36 shrink-0 overflow-hidden rounded-[1.5rem] md:h-44 md:w-44">
+                <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-[1.25rem] md:h-32 md:w-32">
                   <img src={p.images[0]} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-5xl font-medium tracking-tight text-primary">{p.investment!.yield}%</p>
-                  <p className="text-base text-muted-foreground">Est. annual yield · {p.investment!.label}</p>
-                  <p className="mt-3 text-xl font-medium">{p.title}</p>
-                  <p className="text-base text-muted-foreground">{formatSAR(p.price)} · {p.city}</p>
+                  <p className="text-4xl font-medium tracking-tight text-primary">{p.investment!.yield}%</p>
+                  <p className="text-sm text-muted-foreground">Est. annual yield · {p.investment!.label}</p>
+                  <p className="mt-3 text-lg font-medium">{p.title}</p>
+                  <p className="text-sm text-muted-foreground">{formatSAR(p.price)} · {p.city}</p>
                 </div>
                 <ArrowUpRight className="mr-3 hidden h-7 w-7 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 md:block" />
               </Link>
@@ -170,7 +174,7 @@ function Home() {
       </section>
 
       {/* Other properties */}
-      <section className="px-6 py-28">
+      <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <SectionTitle letter="M" rest="ore to explore" />
           <div className="mt-16 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
@@ -180,7 +184,7 @@ function Home() {
       </section>
 
       {/* Info statement */}
-      <section className="px-6 py-28">
+      <section className="px-6 py-20">
         <p className="display-md mx-auto max-w-5xl text-center" data-reveal>
           Vision 2030 is reshaping the Kingdom. We place you at the heart of it — with homes and investments in the{" "}
           <span className="text-primary">fastest-growing real estate market</span> in the region.
@@ -188,7 +192,7 @@ function Home() {
       </section>
 
       {/* Giga projects */}
-      <section className="bg-ink px-6 py-28 text-ink-foreground">
+      <section id="projects" className="scroll-mt-24 bg-ink px-6 py-20 text-ink-foreground">
         <div className="mx-auto max-w-7xl">
           <div data-reveal>
             <p className="mb-5 text-lg opacity-60">Upcoming & under construction</p>
@@ -197,9 +201,9 @@ function Home() {
         </div>
         <div className="mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1.5rem,calc((100vw-80rem)/2))] pb-6 [scrollbar-width:none]">
           {GIGA_PROJECTS.map((g) => (
-            <article key={g.name} className="group relative h-[70vh] min-h-[480px] w-[85vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] md:w-[65vw] lg:w-[54rem]">
+            <article key={g.name} className="group relative h-[62vh] min-h-[420px] w-[85vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] md:w-[65vw] lg:w-[46rem]">
               <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-              <div className="liquidGL glass absolute bottom-6 left-6 right-6 rounded-[2rem] p-8 text-foreground md:right-auto md:max-w-lg">
+              <div className="liquidGL glass absolute z-50 bottom-5 left-5 right-5 rounded-[1.5rem] p-6 text-foreground md:right-auto md:max-w-md">
                 <p className="text-lg text-primary">{g.status} · {g.region}</p>
                 <h3 className="display-md mt-2">{g.name}</h3>
                 <p className="mt-3 text-lg text-muted-foreground">{g.text}</p>
@@ -210,14 +214,14 @@ function Home() {
       </section>
 
       {/* Process */}
-      <section className="px-6 py-28">
+      <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <SectionTitle letter="H" rest="ow we work" eyebrow="Four steps to the keys" />
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s, i) => (
               <div key={s.t} className="rounded-[2rem] bg-cream p-8" data-reveal>
-                <p className="fancy text-7xl">{i + 1}</p>
-                <h3 className="mt-10 text-3xl font-medium tracking-tight">{s.t}</h3>
+                <p className="fancy text-5xl">{i + 1}</p>
+                <h3 className="mt-10 text-2xl font-medium tracking-tight">{s.t}</h3>
                 <p className="mt-3 text-lg text-muted-foreground">{s.d}</p>
               </div>
             ))}
@@ -226,7 +230,7 @@ function Home() {
       </section>
 
       {/* Why us */}
-      <section className="bg-primary px-6 py-28 text-primary-foreground">
+      <section className="bg-primary px-6 py-20 text-primary-foreground">
         <div className="mx-auto max-w-7xl">
           <h2 className="display-lg" data-reveal>
             <span className="fancy !text-primary-foreground">W</span>hy Najm?
@@ -235,7 +239,7 @@ function Home() {
             {WHY.map((w) => (
               <div key={w.t} data-reveal>
                 <p className="display-lg">{w.n}</p>
-                <p className="mt-4 text-2xl">{w.t}</p>
+                <p className="mt-4 text-xl">{w.t}</p>
                 <p className="mt-2 text-lg opacity-70">{w.d}</p>
               </div>
             ))}
@@ -244,14 +248,14 @@ function Home() {
       </section>
 
       {/* FAQ + Contact */}
-      <section id="contact" className="scroll-mt-28 px-6 py-28">
+      <section id="contact" className="scroll-mt-28 px-6 py-20">
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
           <div>
             <SectionTitle letter="Q" rest="uestions" />
             <div className="mt-12 flex flex-col gap-3">
               {FAQ.map((f, i) => (
                 <div key={f.q} className="rounded-[1.75rem] bg-cream" data-reveal>
-                  <button className="flex w-full items-center justify-between gap-6 p-6 text-left text-xl font-medium" onClick={() => setFaq(faq === i ? null : i)}>
+                  <button className="flex w-full items-center justify-between gap-6 p-6 text-left text-lg font-medium" onClick={() => setFaq(faq === i ? null : i)}>
                     {f.q}
                     {faq === i ? <Minus className="h-6 w-6 shrink-0 text-primary" /> : <Plus className="h-6 w-6 shrink-0 text-primary" />}
                   </button>
@@ -262,7 +266,7 @@ function Home() {
           </div>
           <div className="rounded-[2.5rem] bg-background p-2 lg:pt-0" data-reveal>
             <h2 className="display-lg"><span className="fancy">T</span>alk to us</h2>
-            <p className="mb-10 mt-5 text-xl text-muted-foreground">Tell us what you're looking for — a private advisor will be in touch within 24 hours.</p>
+            <p className="mb-10 mt-5 text-lg text-muted-foreground">Tell us what you're looking for — a private advisor will be in touch within 24 hours.</p>
             <EnquiryForm cta="Send message" />
           </div>
         </div>
@@ -272,7 +276,7 @@ function Home() {
       <section className="px-6 pb-28">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 overflow-hidden rounded-[2.5rem] bg-cream p-10 md:flex-row md:items-center md:p-16" data-reveal>
           <h2 className="display-lg max-w-3xl">Your <span className="fancy">n</span>ext address is waiting.</h2>
-          <Link to="/properties" className="flex shrink-0 items-center gap-3 rounded-full bg-ink px-10 py-5 text-lg text-ink-foreground transition-colors hover:bg-primary">
+          <Link to="/properties" className="flex shrink-0 items-center gap-3 rounded-full bg-ink px-8 py-4 text-lg text-ink-foreground transition-colors hover:bg-primary">
             Browse properties <ArrowUpRight className="h-5 w-5" />
           </Link>
         </div>

@@ -15,7 +15,7 @@ export function useReveal(deps: unknown[] = []) {
           gsap.fromTo(
             el,
             { y: 60, opacity: 0 },
-            { y: 0, opacity: 1, duration: 1.1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 90%" } },
+            { y: 0, opacity: 1, duration: 1.1, ease: "power3.out", clearProps: "transform,opacity", scrollTrigger: { trigger: el, start: "top 90%" } },
           );
         });
       });
@@ -43,7 +43,10 @@ export function useLiquidGlass() {
       });
     const t = setTimeout(async () => {
       try {
-        await load("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+        await load("https://cdn.jsdelivr.net/npm/html2canvas-pro@1.6.7/dist/html2canvas-pro.min.js");
+        const g = window as unknown as { html2canvas?: unknown };
+        const h = g.html2canvas as { default?: unknown } | undefined;
+        if (h && typeof h !== "function" && h.default) g.html2canvas = h.default;
         await load("https://cdn.jsdelivr.net/gh/naughtyduk/liquidGL/scripts/liquidGL.js");
         const w = window as unknown as { liquidGL?: (o: Record<string, unknown>) => void };
         if (!document.querySelector(".liquidGL") || !w.liquidGL) return;

@@ -43,7 +43,7 @@ export function EnquiryForm({ cta = "Send enquiry", defaultMessage = "" }: { cta
         </div>
       ))}
       <textarea name="message" rows={4} defaultValue={defaultMessage} placeholder="How can we help?" className="field resize-none rounded-[1.75rem]" />
-      <button type="submit" className="mt-2 flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-5 text-lg text-primary-foreground transition-colors hover:bg-ink">
+      <button type="submit" className="mt-2 flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-lg text-primary-foreground transition-colors hover:bg-ink">
         {cta} <ArrowUpRight className="h-5 w-5" />
       </button>
     </form>
