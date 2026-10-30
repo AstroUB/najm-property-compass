@@ -204,12 +204,27 @@ function Home() {
         </div>
         <div className="mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1.5rem,calc((100vw-80rem)/2))] pb-6 [scrollbar-width:none]">
           {GIGA_PROJECTS.map((g) => (
-            <article key={g.name} className="group relative h-[62vh] min-h-[420px] w-[85vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] md:w-[65vw] lg:w-[46rem]">
-              <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-              <div className="liquidGL glass absolute z-50 bottom-5 left-5 right-5 rounded-[1.5rem] p-6 text-foreground md:right-auto md:max-w-md">
-                <p className="text-lg text-primary">{g.status} · {g.region}</p>
-                <h3 className="display-md mt-2">{g.name}</h3>
-                <p className="mt-3 text-lg text-muted-foreground">{g.text}</p>
+            <article key={g.name} className="grid w-[88vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] bg-background text-foreground md:w-[80vw] lg:w-[64rem] lg:grid-cols-[1.15fr_1fr]">
+              <div className="group relative h-72 overflow-hidden lg:h-auto lg:min-h-[520px]">
+                <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
+              </div>
+              <div className="flex flex-col p-8 md:p-10">
+                <p className="text-base text-primary">{g.status} · {g.region}</p>
+                <h3 className="mt-3 text-3xl font-medium tracking-tight md:text-4xl">{g.name}</h3>
+                <p className="mt-4 text-lg text-muted-foreground">{g.text}</p>
+                <dl className="mt-8 grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-cream p-5">
+                    <dt className="text-sm text-muted-foreground">Est. deadline</dt>
+                    <dd className="mt-1 text-xl font-medium tracking-tight">{g.deadline}</dd>
+                  </div>
+                  <div className="rounded-2xl bg-cream p-5">
+                    <dt className="text-sm text-muted-foreground">Budget</dt>
+                    <dd className="mt-1 text-xl font-medium tracking-tight">{g.budget}</dd>
+                  </div>
+                </dl>
+                <a href="#contact" className="mt-auto inline-flex w-fit items-center gap-2 self-start rounded-full bg-ink px-7 py-4 pt-4 text-base text-ink-foreground transition-colors hover:bg-primary [margin-top:max(2rem,auto)]">
+                  Register interest <ArrowUpRight className="h-4 w-4" />
+                </a>
               </div>
             </article>
           ))}

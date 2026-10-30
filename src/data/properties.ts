@@ -110,7 +110,7 @@ export const PROPERTIES: Property[] = [
 ];
 
 export const GIGA_PROJECTS = [
-  { name: "NEOM — The Line", region: "Tabuk Province", status: "Under construction", text: "A 170 km linear city redefining urban living — zero cars, zero streets, powered entirely by renewable energy.", image: g1 },
-  { name: "Red Sea Global", region: "West Coast", status: "Phased opening", text: "A regenerative tourism destination across 90 pristine islands, with ultra-luxury resorts and residences.", image: g2 },
-  { name: "Diriyah Gate", region: "Riyadh", status: "Building now", text: "The birthplace of the Kingdom reborn as a world-class cultural, living and hospitality district.", image: g3 },
+  { name: "NEOM — The Line", region: "Tabuk Province", status: "Under construction", deadline: "2030 (phase one)", budget: "SAR 1.9 trillion", text: "A 170 km linear city redefining urban living — zero cars, zero streets, powered entirely by renewable energy.", image: g1 },
+  { name: "Red Sea Global", region: "West Coast", status: "Phased opening", deadline: "2030 (full completion)", budget: "SAR 75 billion", text: "A regenerative tourism destination across 90 pristine islands, with ultra-luxury resorts and residences.", image: g2 },
+  { name: "Diriyah Gate", region: "Riyadh", status: "Building now", deadline: "2030", budget: "SAR 236 billion", text: "The birthplace of the Kingdom reborn as a world-class cultural, living and hospitality district.", image: g3 },
 ];
