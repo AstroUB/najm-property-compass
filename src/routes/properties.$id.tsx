@@ -113,7 +113,7 @@ function Detail() {
           </div>
 
           <aside className="lg:sticky lg:top-28 lg:self-start">
-            <div className="rounded-[2.5rem] bg-cream p-8">
+            <div className="rounded-[2.5rem] bg-background p-8 shadow-soft">
               <h2 className="display-md"><span className="fancy">E</span>nquire</h2>
               <p className="mb-8 mt-3 text-lg text-muted-foreground">Arrange a private viewing or request more details.</p>
               <EnquiryForm cta="Request viewing" defaultMessage={`I'm interested in ${p.title}.`} />
