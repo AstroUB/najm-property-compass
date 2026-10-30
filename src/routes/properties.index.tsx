@@ -77,34 +77,51 @@ function PropertiesPage() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[280px_1fr]">
-          <aside className={`${mobileOpen ? "fixed inset-0 z-[60] overflow-y-auto bg-background p-6" : "hidden"} lg:sticky lg:top-24 lg:block lg:self-start`}>
-            <div className="rounded-[1.5rem] bg-cream p-6">
-              <div className="flex items-center justify-between">
-                <p className="text-lg font-medium">Filters</p>
-                {hasFilters ? (
-                  <button onClick={() => navigate({ search: {} })} className="text-sm text-primary hover:underline">Reset</button>
-                ) : null}
-                <button onClick={() => setMobileOpen(false)} className="lg:hidden" aria-label="Close filters"><X className="h-5 w-5" /></button>
+        <div className="mt-10 grid gap-8 lg:grid-cols-[320px_1fr] lg:gap-10">
+          <aside className={`${mobileOpen ? "fixed inset-0 z-[60] overflow-y-auto bg-background p-4" : "hidden"} lg:sticky lg:top-28 lg:block lg:self-start`}>
+            <div className="rounded-[2rem] bg-cream p-3">
+              <div className="flex items-center justify-between px-4 pb-2 pt-4">
+                <p className="text-2xl font-medium tracking-tight"><span className="fancy">F</span>ilters</p>
+                <div className="flex items-center gap-3">
+                  {hasFilters ? (
+                    <button onClick={() => navigate({ search: {} })} className="text-sm text-primary hover:underline">Clear all</button>
+                  ) : null}
+                  <button onClick={() => setMobileOpen(false)} className="lg:hidden" aria-label="Close filters"><X className="h-5 w-5" /></button>
+                </div>
               </div>
 
-              <Group title="Location">
-                {CITIES.map((c) => <Chip key={c} active={search.city === c} onClick={() => set("city", c)}>{c}</Chip>)}
-              </Group>
-              <Group title="Property type">
-                {TYPES.map((c) => <Chip key={c} active={search.type === c} onClick={() => set("type", c)}>{c}</Chip>)}
-              </Group>
-              <Group title="Budget" column>
-                {BUDGETS.map((b) => <Chip key={b.value} active={search.budget === b.value} onClick={() => set("budget", b.value)} wide>{b.label}</Chip>)}
-              </Group>
-              <Group title="Bedrooms">
-                {["1", "2", "3", "4", "5"].map((n) => <Chip key={n} active={search.beds === n} onClick={() => set("beds", n)}>{n}+</Chip>)}
-              </Group>
-              <Group title="Status">
-                <Chip active={search.status === "Ready"} onClick={() => set("status", "Ready")}>Ready</Chip>
-                <Chip active={search.status === "Off-plan"} onClick={() => set("status", "Off-plan")}>Off-plan</Chip>
-              </Group>
-              <button onClick={() => setMobileOpen(false)} className="mt-6 w-full rounded-full bg-ink py-3 text-sm text-ink-foreground lg:hidden">
+              <Panel title="Location">
+                <div className="flex flex-col">
+                  {CITIES.map((c) => (
+                    <button key={c} onClick={() => set("city", c)} className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm transition-colors ${search.city === c ? "bg-primary text-primary-foreground" : "hover:bg-cream"}`}>
+                      {c}
+                      <span className={search.city === c ? "opacity-80" : "text-muted-foreground"}>{PROPERTIES.filter((p) => p.city === c).length}</span>
+                    </button>
+                  ))}
+                </div>
+              </Panel>
+              <Panel title="Property type">
+                <div className="grid grid-cols-2 gap-2">
+                  {TYPES.map((c) => <Chip key={c} active={search.type === c} onClick={() => set("type", c)}>{c}</Chip>)}
+                </div>
+              </Panel>
+              <Panel title="Budget">
+                <div className="flex flex-col">
+                  {BUDGETS.map((b) => (
+                    <button key={b.value} onClick={() => set("budget", b.value)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm hover:bg-cream">
+                      <span className={`h-4 w-4 shrink-0 rounded-full transition-all ${search.budget === b.value ? "bg-primary ring-4 ring-primary/20" : "bg-cream"}`} />
+                      {b.label}
+                    </button>
+                  ))}
+                </div>
+              </Panel>
+              <Panel title="Bedrooms">
+                <Segment options={["1", "2", "3", "4", "5"]} value={search.beds} onPick={(v) => set("beds", v)} suffix="+" />
+              </Panel>
+              <Panel title="Status">
+                <Segment options={["Ready", "Off-plan"]} value={search.status} onPick={(v) => set("status", v)} />
+              </Panel>
+              <button onClick={() => setMobileOpen(false)} className="mt-2 w-full rounded-full bg-ink py-3.5 text-sm text-ink-foreground lg:hidden">
                 Show {list.length} results
               </button>
             </div>
@@ -112,7 +129,7 @@ function PropertiesPage() {
 
           <section>
             {list.length ? (
-              <div className="grid gap-x-5 gap-y-10 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid gap-x-7 gap-y-14 sm:grid-cols-2 xl:grid-cols-3">
                 {list.map((p) => <PropertyCard key={p.id} p={p} />)}
               </div>
             ) : (
@@ -128,20 +145,32 @@ function PropertiesPage() {
   );
 }
 
-function Group({ title, children, column }: { title: string; children: React.ReactNode; column?: boolean }) {
+function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mt-6">
-      <p className="mb-3 text-sm text-muted-foreground">{title}</p>
-      <div className={column ? "flex flex-col gap-2" : "flex flex-wrap gap-2"}>{children}</div>
+    <div className="mt-2 rounded-[1.5rem] bg-background p-3">
+      <p className="mb-2 px-3 pt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">{title}</p>
+      {children}
     </div>
   );
 }
 
-function Chip({ active, onClick, children, wide }: { active: boolean; onClick: () => void; children: React.ReactNode; wide?: boolean }) {
+function Segment({ options, value, onPick, suffix = "" }: { options: string[]; value?: string; onPick: (v: string) => void; suffix?: string }) {
+  return (
+    <div className="flex gap-1 rounded-full bg-cream p-1">
+      {options.map((o) => (
+        <button key={o} onClick={() => onPick(o)} className={`flex-1 rounded-full py-2 text-sm transition-colors ${value === o ? "bg-ink text-ink-foreground" : "hover:bg-background"}`}>
+          {o}{suffix}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
     <button
       onClick={onClick}
-      className={`rounded-full px-4 py-2 text-sm transition-colors ${wide ? "text-left" : ""} ${active ? "bg-primary text-primary-foreground" : "bg-background hover:bg-background/60"}`}
+      className={`rounded-xl px-3 py-3 text-sm transition-colors ${active ? "bg-primary text-primary-foreground" : "bg-cream hover:bg-secondary"}`}
     >
       {children}
     </button>
