@@ -31,22 +31,27 @@ export function useReveal(deps: unknown[] = []) {
 
 type LiquidFn = ((o: Record<string, unknown>) => unknown) & { syncWith?: (o: Record<string, unknown>) => void };
 
+type Lens = { destroy?: () => void };
+
 /**
- * Apply liquidGL (npm `liquid-gl`) glass to `.lg-nav` (fixed navbar) and `.lg-glass` (in-page panes).
+ * Apply liquidGL (npm `liquid-gl`) glass to every element matching `target`.
  * Lens elements are empty decorative layers, so real content stays visible and clickable even if WebGL fails;
  * their `glass` class doubles as the CSS fallback.
  */
-export function useLiquidGlass(deps: unknown[] = []) {
+export function useLiquidGlass(target: string, extra: Record<string, unknown> = {}) {
   useEffect(() => {
     let cancelled = false;
+    let lenses: Lens[] = [];
     const t = setTimeout(async () => {
       try {
         const mod = await import("liquid-gl");
         const liquidGL = ((mod as { default?: unknown }).default ?? mod) as LiquidFn;
-        if (cancelled || typeof liquidGL !== "function") return;
-        const opts = { snapshot: "body", resolution: 2, refraction: 0.012, bevelDepth: 0.1, bevelWidth: 0.18, frost: 3, shadow: false, specular: true, reveal: "fade" };
-        if (document.querySelector(".lg-nav")) liquidGL({ ...opts, target: ".lg-nav" });
-        if (document.querySelector(".lg-glass")) liquidGL({ ...opts, target: ".lg-glass", frost: 4 });
+        if (cancelled || typeof liquidGL !== "function" || !document.querySelector(target)) return;
+        const res = liquidGL({
+          snapshot: "body", resolution: 2, refraction: 0.012, bevelDepth: 0.1, bevelWidth: 0.18,
+          frost: 3, shadow: false, specular: true, reveal: "fade", ...extra, target,
+        });
+        lenses = (Array.isArray(res) ? res : res ? [res] : []) as Lens[];
         const { gsap } = await import("gsap");
         const lenis = (window as unknown as { __lenis?: unknown }).__lenis;
         liquidGL.syncWith?.({ gsap, ...(lenis ? { lenis } : {}) });
@@ -57,7 +62,8 @@ export function useLiquidGlass(deps: unknown[] = []) {
     return () => {
       cancelled = true;
       clearTimeout(t);
+      lenses.forEach((l) => l.destroy?.());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [target]);
 }

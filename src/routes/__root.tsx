@@ -121,7 +121,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  useLiquidGlass();
+  useLiquidGlass(".lg-nav");
 
   return (
     <QueryClientProvider client={queryClient}>
