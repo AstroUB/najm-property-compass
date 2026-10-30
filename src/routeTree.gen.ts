@@ -11,8 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminContactsRouteImport } from './routes/admin.contacts'
+import { Route as AdminEnquiriesRouteImport } from './routes/admin.enquiries'
+import { Route as AdminPropertiesRouteImport } from './routes/admin.properties'
+import { Route as AdminStaffRouteImport } from './routes/admin.staff'
 import { Route as PropertiesIndexRouteImport } from './routes/properties.index'
 import { Route as PropertiesIdRouteImport } from './routes/properties.$id'
 
@@ -26,6 +32,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -35,6 +46,31 @@ const KnowledgeRoute = KnowledgeRouteImport.update({
   id: '/knowledge',
   path: '/knowledge',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminContactsRoute = AdminContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEnquiriesRoute = AdminEnquiriesRouteImport.update({
+  id: '/enquiries',
+  path: '/enquiries',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPropertiesRoute = AdminPropertiesRouteImport.update({
+  id: '/properties',
+  path: '/properties',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminStaffRoute = AdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AdminRoute,
 } as any)
 const PropertiesIndexRoute = PropertiesIndexRouteImport.update({
   id: '/properties/',
@@ -50,9 +86,15 @@ const PropertiesIdRoute = PropertiesIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/knowledge': typeof KnowledgeRoute
+  '/admin/contacts': typeof AdminContactsRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/properties/': typeof PropertiesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -60,16 +102,27 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/knowledge': typeof KnowledgeRoute
+  '/admin/contacts': typeof AdminContactsRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/admin': typeof AdminIndexRoute
   '/properties': typeof PropertiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/knowledge': typeof KnowledgeRoute
+  '/admin/contacts': typeof AdminContactsRoute
+  '/admin/enquiries': typeof AdminEnquiriesRoute
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/admin/': typeof AdminIndexRoute
   '/properties/': typeof PropertiesIndexRoute
 }
 export interface FileRouteTypes {
@@ -77,9 +130,15 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/knowledge'
+    | '/admin/contacts'
+    | '/admin/enquiries'
+    | '/admin/properties'
+    | '/admin/staff'
     | '/properties/$id'
+    | '/admin/'
     | '/properties/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -87,21 +146,33 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/knowledge'
+    | '/admin/contacts'
+    | '/admin/enquiries'
+    | '/admin/properties'
+    | '/admin/staff'
     | '/properties/$id'
+    | '/admin'
     | '/properties'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/knowledge'
+    | '/admin/contacts'
+    | '/admin/enquiries'
+    | '/admin/properties'
+    | '/admin/staff'
     | '/properties/$id'
+    | '/admin/'
     | '/properties/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ContactRoute: typeof ContactRoute
   KnowledgeRoute: typeof KnowledgeRoute
   PropertiesIdRoute: typeof PropertiesIdRoute
@@ -124,6 +195,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -137,6 +215,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/knowledge'
       preLoaderRoute: typeof KnowledgeRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/contacts': {
+      id: '/admin/contacts'
+      path: '/contacts'
+      fullPath: '/admin/contacts'
+      preLoaderRoute: typeof AdminContactsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/enquiries': {
+      id: '/admin/enquiries'
+      path: '/enquiries'
+      fullPath: '/admin/enquiries'
+      preLoaderRoute: typeof AdminEnquiriesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/properties': {
+      id: '/admin/properties'
+      path: '/properties'
+      fullPath: '/admin/properties'
+      preLoaderRoute: typeof AdminPropertiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/staff': {
+      id: '/admin/staff'
+      path: '/staff'
+      fullPath: '/admin/staff'
+      preLoaderRoute: typeof AdminStaffRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/properties/': {
       id: '/properties/'
@@ -155,9 +268,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminContactsRoute: typeof AdminContactsRoute
+  AdminEnquiriesRoute: typeof AdminEnquiriesRoute
+  AdminPropertiesRoute: typeof AdminPropertiesRoute
+  AdminStaffRoute: typeof AdminStaffRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminContactsRoute: AdminContactsRoute,
+  AdminEnquiriesRoute: AdminEnquiriesRoute,
+  AdminPropertiesRoute: AdminPropertiesRoute,
+  AdminStaffRoute: AdminStaffRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   ContactRoute: ContactRoute,
   KnowledgeRoute: KnowledgeRoute,
   PropertiesIdRoute: PropertiesIdRoute,

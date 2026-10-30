@@ -90,69 +90,79 @@ const PILLARS = [
   { icon: Building2, t: "After-sale care", d: "Property management, leasing and resale support, so your home keeps performing long after the keys change hands." },
 ];
 
-/** Why Najm: headline stats, six service pillars and a client quote. */
+/** Why Najm: green intro + stats, cream service pillars, white lounge + team. */
 export function WhyNajm() {
   return (
-    <section className="bg-primary px-6 py-24 text-primary-foreground">
-      <div className="mx-auto max-w-[1440px]">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-end">
-          <h2 className="display-lg" data-reveal><span className="fancy !text-primary-foreground">Why</span> Najm?</h2>
-          <p className="text-xl opacity-80" data-reveal>
-            We are a Riyadh-born advisory built for one thing: helping families and investors own the right Saudi address with total confidence — from first viewing to long after handover.
-          </p>
-        </div>
-
-        <div className="mt-16 grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
-          {STATS.map((s) => (
-            <div key={s.t} data-reveal>
-              <p className="display-lg">{s.n}</p>
-              <p className="mt-3 text-lg opacity-75">{s.t}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-20 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {PILLARS.map((p) => (
-            <div key={p.t} className="rounded-[2rem] bg-primary-foreground/10 p-8 transition-colors hover:bg-primary-foreground/15" data-reveal>
-              <p.icon className="h-8 w-8" />
-              <h3 className="mt-10 text-2xl font-medium tracking-tight">{p.t}</h3>
-              <p className="mt-3 text-base opacity-75">{p.d}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-20 grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-          <div className="relative min-h-[420px] overflow-hidden rounded-[2.5rem]" data-reveal>
-            <img src={office} alt="Najm Estate client lounge in Riyadh" loading="lazy" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-x-5 bottom-5 rounded-[1.75rem] bg-background p-6 text-foreground md:max-w-md">
-              <p className="text-sm text-muted-foreground">Our flagship lounge</p>
-              <p className="mt-1 text-xl font-medium tracking-tight">King Fahd Road, Riyadh — private viewings by appointment, seven days a week.</p>
-            </div>
+    <section>
+      <div className="bg-primary px-6 py-24 text-primary-foreground">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-end">
+            <h2 className="display-lg" data-reveal><span className="fancy !text-primary-foreground">Why</span> Najm?</h2>
+            <p className="text-xl opacity-80" data-reveal>
+              We are a Riyadh-born advisory built for one thing: helping families and investors own the right Saudi address with total confidence — from first viewing to long after handover.
+            </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-            {[[p2, "Villa sourcing", "Off-market villas in Al Malqa, Hittin and Diriyah."], [p3, "Coastal homes", "Red Sea and Corniche residences with sea frontage."]].map(([img, t, d]) => (
-              <div key={t} className="flex gap-5 rounded-[2rem] bg-primary-foreground/10 p-3" data-reveal>
-                <img src={img} alt={t} loading="lazy" className="h-32 w-32 shrink-0 rounded-[1.5rem] object-cover md:h-40 md:w-40" />
-                <div className="py-3 pr-3"><p className="text-xl font-medium">{t}</p><p className="mt-2 opacity-75">{d}</p></div>
+          <div className="mt-16 grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
+            {STATS.map((s) => (
+              <div key={s.t} data-reveal>
+                <p className="display-lg">{s.n}</p>
+                <p className="mt-3 text-lg opacity-75">{s.t}</p>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        <div className="mt-24 flex flex-wrap items-end justify-between gap-6">
-          <h3 className="display-md" data-reveal>The <span className="fancy !text-primary-foreground">people</span> behind Najm</h3>
-          <Link to="/about" className="flex items-center gap-2 text-lg hover:opacity-70" data-reveal>Meet the full team <ArrowUpRight className="h-5 w-5" /></Link>
-        </div>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {TEAM.map((m) => (
-            <div key={m.name} data-reveal>
-              <div className="aspect-[4/5] overflow-hidden rounded-[2rem] bg-cream">
-                <img src={m.img} alt={m.name} loading="lazy" width={768} height={960} className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
+      <div className="bg-cream px-6 py-24">
+        <div className="mx-auto max-w-[1440px]">
+          <h3 className="display-md max-w-2xl" data-reveal>Six <span className="fancy">promises</span> behind every deal</h3>
+          <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {PILLARS.map((p) => (
+              <div key={p.t} className="rounded-[2rem] bg-background p-8 transition-transform duration-500 hover:-translate-y-1" data-reveal>
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground"><p.icon className="h-6 w-6" /></span>
+                <h4 className="mt-10 text-2xl font-medium tracking-tight">{p.t}</h4>
+                <p className="mt-3 text-base text-muted-foreground">{p.d}</p>
               </div>
-              <p className="mt-4 text-xl font-medium">{m.name}</p>
-              <p className="opacity-70">{m.role}</p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-background px-6 py-24">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
+            <div className="relative min-h-[420px] overflow-hidden rounded-[2.5rem]" data-reveal>
+              <img src={office} alt="Najm Estate client lounge in Riyadh" loading="lazy" width={1600} height={1008} className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute inset-x-5 bottom-5 rounded-[1.75rem] bg-background p-6 md:max-w-md">
+                <p className="text-sm text-muted-foreground">Our flagship lounge</p>
+                <p className="mt-1 text-xl font-medium tracking-tight">King Fahd Road, Riyadh — private viewings by appointment, seven days a week.</p>
+              </div>
             </div>
-          ))}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              {[[p2, "Villa sourcing", "Off-market villas in Al Malqa, Hittin and Diriyah."], [p3, "Coastal homes", "Red Sea and Corniche residences with sea frontage."]].map(([img, t, d]) => (
+                <div key={t} className="flex gap-5 rounded-[2rem] bg-cream p-3" data-reveal>
+                  <img src={img} alt={t} loading="lazy" className="h-32 w-32 shrink-0 rounded-[1.5rem] object-cover md:h-40 md:w-40" />
+                  <div className="py-3 pr-3"><p className="text-xl font-medium">{t}</p><p className="mt-2 text-muted-foreground">{d}</p></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-24 flex flex-wrap items-end justify-between gap-6">
+            <h3 className="display-md" data-reveal>The <span className="fancy">people</span> behind Najm</h3>
+            <Link to="/about" className="flex items-center gap-2 text-lg text-primary hover:opacity-70" data-reveal>Meet the full team <ArrowUpRight className="h-5 w-5" /></Link>
+          </div>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {TEAM.map((m) => (
+              <div key={m.name} data-reveal>
+                <div className="aspect-[4/5] overflow-hidden rounded-[2rem] bg-cream">
+                  <img src={m.img} alt={m.name} loading="lazy" width={768} height={960} className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
+                </div>
+                <p className="mt-4 text-xl font-medium">{m.name}</p>
+                <p className="text-muted-foreground">{m.role}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
