@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { toast } from "sonner";
 
 export function SmoothScroll() {
   useEffect(() => {
@@ -30,28 +31,39 @@ export function SmoothScroll() {
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 40);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+  const link = "rounded-full px-4 py-2 text-sm transition-colors hover:bg-background/60";
   return (
-    <header className="fixed inset-x-0 top-4 z-50 px-4">
-      <nav className="glass mx-auto flex max-w-6xl items-center justify-between rounded-full py-3 pl-7 pr-3">
-        <Link to="/" className="flex items-baseline gap-1 text-2xl font-medium tracking-tight">
-          <span className="fancy text-4xl">N</span>ajm Estate
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
+      <nav className={`liquidGL glass mx-auto flex max-w-6xl items-center justify-between rounded-full py-2 pl-6 pr-2 transition-all duration-500 ${scrolled ? "max-w-5xl" : ""}`}>
+        <Link to="/" className="flex items-baseline text-lg font-medium tracking-tight">
+          <span className="fancy text-2xl">N</span>ajm Estate
         </Link>
-        <div className="hidden items-center gap-10 text-base md:flex">
-          <Link to="/" className="hover:text-primary" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }}>Home</Link>
-          <Link to="/properties" className="hover:text-primary" activeProps={{ className: "text-primary" }}>Properties</Link>
-          <a href="/#contact" className="hover:text-primary">Contact</a>
+        <div className="hidden items-center gap-1 md:flex">
+          <Link to="/" className={link} activeOptions={{ exact: true }} activeProps={{ className: "bg-background/70" }}>Home</Link>
+          <Link to="/properties" className={link} activeProps={{ className: "bg-background/70" }}>Properties</Link>
+          <a href="/#vault" className={link}>Invest</a>
+          <a href="/#projects" className={link}>Giga Projects</a>
+          <a href="/#contact" className={link}>Contact</a>
         </div>
-        <a href="/#contact" className="hidden items-center gap-2 rounded-full bg-ink px-6 py-3 text-base text-ink-foreground transition-colors hover:bg-primary md:flex">
+        <a href="/#contact" className="hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-ink-foreground transition-colors hover:bg-primary md:flex">
           Book a viewing <ArrowUpRight className="h-4 w-4" />
         </a>
-        <button className="rounded-full bg-ink p-3 text-ink-foreground md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
+        <button className="rounded-full bg-ink p-2.5 text-ink-foreground md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </nav>
       {open && (
-        <div className="glass mx-auto mt-3 flex max-w-6xl flex-col gap-4 rounded-[2rem] p-6 text-2xl md:hidden">
+        <div className="glass mx-auto mt-2 flex max-w-6xl flex-col gap-3 rounded-[1.5rem] p-6 text-lg md:hidden">
           <Link to="/" onClick={() => setOpen(false)}>Home</Link>
           <Link to="/properties" onClick={() => setOpen(false)}>Properties</Link>
+          <a href="/#vault" onClick={() => setOpen(false)}>Invest</a>
           <a href="/#contact" onClick={() => setOpen(false)}>Contact</a>
         </div>
       )}
@@ -61,33 +73,54 @@ export function Nav() {
 
 export function Footer() {
   return (
-    <footer className="bg-ink px-6 pb-10 pt-24 text-ink-foreground">
-      <div className="mx-auto max-w-7xl">
-        <p className="display-xl">
-          <span className="fancy">N</span>ajm Estate
-        </p>
-        <div className="mt-20 grid gap-12 text-lg md:grid-cols-4">
-          <div>
-            <p className="opacity-50">Head office</p>
-            <p className="mt-3">King Fahd Road, Al Olaya<br />Riyadh 12214, Saudi Arabia</p>
+    <footer className="px-3 pb-3">
+      <div className="overflow-hidden rounded-[2rem] bg-ink px-6 pt-16 text-ink-foreground md:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
+            <div>
+              <h2 className="display-lg max-w-xl">Find the address that <span className="fancy !text-ink-foreground">d</span>efines you.</h2>
+              <form
+                className="mt-8 flex max-w-md items-center gap-2 rounded-full bg-ink-foreground/10 p-1.5"
+                onSubmit={(e) => { e.preventDefault(); e.currentTarget.reset(); toast.success("Subscribed — welcome to Najm."); }}
+              >
+                <input type="email" required placeholder="Your email for private listings" className="flex-1 bg-transparent px-4 text-sm outline-none placeholder:text-ink-foreground/50" />
+                <button className="rounded-full bg-primary px-5 py-2.5 text-sm text-primary-foreground transition-colors hover:bg-ink-foreground hover:text-ink">Subscribe</button>
+              </form>
+            </div>
+            <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
+              <div className="flex flex-col gap-3">
+                <p className="text-ink-foreground/50">Explore</p>
+                <Link to="/" className="hover:text-ink-foreground/70">Home</Link>
+                <Link to="/properties" className="hover:text-ink-foreground/70">Properties</Link>
+                <a href="/#vault" className="hover:text-ink-foreground/70">Investment Vault</a>
+                <a href="/#projects" className="hover:text-ink-foreground/70">Giga Projects</a>
+              </div>
+              <div className="flex flex-col gap-3">
+                <p className="text-ink-foreground/50">Cities</p>
+                {["Riyadh", "Jeddah", "Dammam", "AlUla"].map((c) => (
+                  <Link key={c} to="/properties" search={{ city: c }} className="hover:text-ink-foreground/70">{c}</Link>
+                ))}
+              </div>
+              <div className="flex flex-col gap-3">
+                <p className="text-ink-foreground/50">Contact</p>
+                <a href="tel:+966110000000" className="hover:text-ink-foreground/70">+966 11 000 0000</a>
+                <a href="mailto:hello@najmestate.sa" className="hover:text-ink-foreground/70">hello@najmestate.sa</a>
+                <p className="text-ink-foreground/70">King Fahd Rd, Riyadh</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <p className="opacity-50">Contact</p>
-            <p className="mt-3">+966 11 000 0000<br />hello@najmestate.sa</p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="opacity-50">Explore</p>
-            <Link to="/" className="mt-1 hover:opacity-70">Home</Link>
-            <Link to="/properties" className="hover:opacity-70">Properties</Link>
-          </div>
-          <div className="flex flex-col gap-2">
-            <p className="opacity-50">Follow</p>
-            <a href="#" className="mt-1 hover:opacity-70">Instagram</a>
-            <a href="#" className="hover:opacity-70">LinkedIn</a>
-            <a href="#" className="hover:opacity-70">X</a>
+          <div className="mt-16 flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-ink-foreground/50">
+            <p>© 2026 Najm Estate · Licensed by REGA</p>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-ink-foreground">Instagram</a>
+              <a href="#" className="hover:text-ink-foreground">LinkedIn</a>
+              <a href="#" className="hover:text-ink-foreground">X</a>
+            </div>
           </div>
         </div>
-        <p className="mt-20 text-base opacity-50">© 2026 Najm Estate. Licensed by REGA. All rights reserved.</p>
+        <p className="pointer-events-none -mb-[0.22em] select-none text-center font-medium leading-none tracking-[-0.05em] text-ink-foreground/10" style={{ fontSize: "clamp(5rem, 19vw, 18rem)" }}>
+          <span className="fancy !text-primary">N</span>ajm
+        </p>
       </div>
     </footer>
   );
@@ -96,7 +129,7 @@ export function Footer() {
 export function SectionTitle({ letter, rest, eyebrow, className = "" }: { letter: string; rest: string; eyebrow?: string; className?: string }) {
   return (
     <div className={className} data-reveal>
-      {eyebrow && <p className="mb-5 text-lg text-muted-foreground">{eyebrow}</p>}
+      {eyebrow && <p className="mb-3 text-sm text-muted-foreground">{eyebrow}</p>}
       <h2 className="display-lg">
         <span className="fancy">{letter}</span>{rest}
       </h2>
