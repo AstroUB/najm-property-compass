@@ -139,7 +139,7 @@ export function PageHeader({ title, sub, action }: { title: string; sub?: string
 }
 
 export function Panel({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`rounded-[1.75rem] bg-background p-6 ${className}`}>{children}</div>;
+  return <div className={`min-w-0 rounded-[1.75rem] bg-background p-5 md:p-6 ${className}`}>{children}</div>;
 }
 
 export const STATUS_STYLE: Record<string, string> = {
