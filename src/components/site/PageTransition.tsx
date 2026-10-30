@@ -75,10 +75,10 @@ export function PageTransition() {
       if (busy.current) {
         gsap.set(stripes(), { transformOrigin: "50% 50%" });
         beat.current = gsap.timeline({ repeat: -1, delay: 0.25, repeatDelay: 0.5 })
-          .to([...stripes(), text()!], { scale: 1.04, duration: 0.14, ease: "power2.out" })
-          .to([...stripes(), text()!], { scale: 1, duration: 0.16, ease: "power2.in" })
-          .to([...stripes(), text()!], { scale: 1.07, duration: 0.14, ease: "power2.out" })
-          .to([...stripes(), text()!], { scale: 1, duration: 0.3, ease: "power2.inOut" });
+          .to([...stripes(), text()!], { opacity: 0.65, duration: 0.18, ease: "power2.out" })
+          .to([...stripes(), text()!], { opacity: 1, duration: 0.22, ease: "power2.in" })
+          .to([...stripes(), text()!], { opacity: 0.65, duration: 0.18, ease: "power2.out" })
+          .to([...stripes(), text()!], { opacity: 1, duration: 0.4, ease: "power2.inOut" });
       }
       return false;
     },
@@ -89,7 +89,7 @@ export function PageTransition() {
     window.scrollTo(0, 0);
     const { gsap } = await import("gsap");
     beat.current?.kill(); beat.current = null;
-    gsap.set([...stripes(), text()!], { scale: 1 });
+    gsap.set([...stripes(), text()!], { opacity: 1 });
     await new Promise((r) => setTimeout(r, 120));
     gsap.timeline({ onComplete: () => { busy.current = false; if (root.current) root.current.style.visibility = "hidden"; } })
       .to(text()!, { yPercent: -120, opacity: 0, duration: 0.4, ease: "power3.in" })
