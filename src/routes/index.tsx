@@ -51,8 +51,8 @@ function Hero() {
   const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
   return (
-    <section className="px-3 pt-24 md:px-4">
-      <div ref={stageRef} className="relative mx-auto h-[128vw] w-full sm:h-[min(69vw,calc(100svh-6.5rem))]">
+    <section className="px-3 pb-[17rem] pt-24 md:px-4 md:pb-0">
+      <div ref={stageRef} className="relative mx-auto h-[115vw] w-full sm:h-[min(69vw,calc(100svh-6.5rem))]">
         <h1 className="absolute left-[5%] top-0 z-10 font-normal uppercase leading-[0.86] tracking-[-0.035em] sm:left-[23%]" style={{ fontSize: fs }}>
           <span className="block overflow-hidden"><span data-hero-line className="block">Homes</span></span>
           <span className="block overflow-hidden pb-[0.06em]"><span data-hero-line className="block"><span className="fancy normal-case">Beneath</span> the</span></span>
@@ -77,7 +77,7 @@ function Hero() {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="absolute inset-x-3 bottom-3 z-30 mx-auto grid max-w-5xl gap-2 md:bottom-8 md:grid-cols-[1fr_1fr_1fr_auto]"
+          className="absolute inset-x-0 top-full z-30 mx-auto mt-3 grid max-w-5xl gap-2 md:inset-x-3 md:bottom-8 md:top-auto md:mt-0 md:grid-cols-[1fr_1fr_1fr_auto]"
         >
           {[
             { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
