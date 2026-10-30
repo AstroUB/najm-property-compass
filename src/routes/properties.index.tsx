@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { SlidersHorizontal, X } from "lucide-react";
 import { BUDGETS, CITIES, PROPERTIES, TYPES } from "@/data/properties";
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { useReveal } from "@/components/site/motion";
@@ -24,76 +25,125 @@ export const Route = createFileRoute("/properties/")({
   component: PropertiesPage,
 });
 
+export function filterProperties(search: Search) {
+  let r = PROPERTIES.filter((p) => {
+    if (search.city && p.city !== search.city) return false;
+    if (search.type && p.type !== search.type) return false;
+    if (search.status && p.status !== search.status) return false;
+    if (search.beds && p.beds < Number(search.beds)) return false;
+    if (search.budget) {
+      const [min = 0, max = Infinity] = search.budget.split("-").map(Number);
+      if (p.price < min || p.price > max) return false;
+    }
+    return true;
+  });
+  if (search.sort === "low") r = [...r].sort((a, b) => a.price - b.price);
+  if (search.sort === "high") r = [...r].sort((a, b) => b.price - a.price);
+  if (search.sort === "area") r = [...r].sort((a, b) => b.area - a.area);
+  return r;
+}
+
 function PropertiesPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/properties/" });
-  const set = (k: keyof Search, v: string) => navigate({ search: (prev) => ({ ...prev, [k]: v || undefined }), replace: true });
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const set = (k: keyof Search, v: string) =>
+    navigate({ search: (prev) => ({ ...prev, [k]: prev[k] === v ? undefined : v || undefined }), replace: true });
 
-  const list = useMemo(() => {
-    let r = PROPERTIES.filter((p) => {
-      if (search.city && p.city !== search.city) return false;
-      if (search.type && p.type !== search.type) return false;
-      if (search.status && p.status !== search.status) return false;
-      if (search.beds && p.beds < Number(search.beds)) return false;
-      if (search.budget) {
-        const [min = 0, max = Infinity] = search.budget.split("-").map(Number);
-        if (p.price < min || p.price > max) return false;
-      }
-      return true;
-    });
-    if (search.sort === "low") r = [...r].sort((a, b) => a.price - b.price);
-    if (search.sort === "high") r = [...r].sort((a, b) => b.price - a.price);
-    if (search.sort === "area") r = [...r].sort((a, b) => b.area - a.area);
-    return r;
-  }, [search]);
-
+  const list = useMemo(() => filterProperties(search), [search]);
   useReveal([list.length, JSON.stringify(search)]);
   const hasFilters = Object.values(search).some(Boolean);
 
   return (
-    <main className="px-6 pb-28 pt-40">
-      <div className="mx-auto max-w-7xl">
-        <h1 className="display-xl"><span className="fancy">P</span>roperties</h1>
-        <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-          {list.length} curated {list.length === 1 ? "residence" : "residences"} across the Kingdom.
-        </p>
-
-        <div className="sticky top-24 z-30 mt-12 rounded-[2.5rem] bg-background/90 py-3 backdrop-blur-xl">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
-            <Select label="Location" value={search.city} onChange={(v) => set("city", v)} options={CITIES.map((c) => [c, c])} placeholder="Any location" />
-            <Select label="Type" value={search.type} onChange={(v) => set("type", v)} options={TYPES.map((c) => [c, c])} placeholder="Any type" />
-            <Select label="Budget" value={search.budget} onChange={(v) => set("budget", v)} options={BUDGETS.map((b) => [b.value, b.label])} placeholder="Any budget" />
-            <Select label="Bedrooms" value={search.beds} onChange={(v) => set("beds", v)} options={[["1", "1+ beds"], ["3", "3+ beds"], ["4", "4+ beds"], ["5", "5+ beds"]]} placeholder="Any bedrooms" />
-            <Select label="Status" value={search.status} onChange={(v) => set("status", v)} options={[["Ready", "Ready to move"], ["Off-plan", "Off-plan"]]} placeholder="Any status" />
-            <Select label="Sort" value={search.sort} onChange={(v) => set("sort", v)} options={[["low", "Price: low to high"], ["high", "Price: high to low"], ["area", "Largest first"]]} placeholder="Recommended" />
+    <main className="px-4 pb-20 pt-28 md:px-6">
+      <div className="mx-auto max-w-[1440px]">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h1 className="display-xl"><span className="fancy">P</span>roperties</h1>
+            <p className="mt-3 text-base text-muted-foreground">
+              {list.length} curated {list.length === 1 ? "residence" : "residences"} across the Kingdom
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setMobileOpen(true)} className="flex items-center gap-2 rounded-full bg-cream px-5 py-3 text-sm lg:hidden">
+              <SlidersHorizontal className="h-4 w-4" /> Filters
+            </button>
+            <select aria-label="Sort" value={search.sort ?? ""} onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value || undefined }), replace: true })} className="field w-auto pr-10 text-sm">
+              <option value="">Recommended</option>
+              <option value="low">Price: low to high</option>
+              <option value="high">Price: high to low</option>
+              <option value="area">Largest first</option>
+            </select>
           </div>
         </div>
-        {hasFilters && (
-          <button onClick={() => navigate({ search: {} })} className="mt-4 px-2 text-lg text-primary hover:underline">
-            Clear all filters
-          </button>
-        )}
 
-        {list.length ? (
-          <div className="mt-14 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
-            {list.map((p) => <PropertyCard key={p.id} p={p} />)}
-          </div>
-        ) : (
-          <div className="mt-14 rounded-[2.5rem] bg-cream p-16 text-center">
-            <p className="display-md">No matches — yet.</p>
-            <p className="mt-4 text-lg text-muted-foreground">Try widening your filters, or ask us about off-market homes.</p>
-          </div>
-        )}
+        <div className="mt-10 grid gap-8 lg:grid-cols-[280px_1fr]">
+          <aside className={`${mobileOpen ? "fixed inset-0 z-[60] overflow-y-auto bg-background p-6" : "hidden"} lg:sticky lg:top-24 lg:block lg:self-start`}>
+            <div className="rounded-[1.5rem] bg-cream p-6">
+              <div className="flex items-center justify-between">
+                <p className="text-lg font-medium">Filters</p>
+                {hasFilters ? (
+                  <button onClick={() => navigate({ search: {} })} className="text-sm text-primary hover:underline">Reset</button>
+                ) : null}
+                <button onClick={() => setMobileOpen(false)} className="lg:hidden" aria-label="Close filters"><X className="h-5 w-5" /></button>
+              </div>
+
+              <Group title="Location">
+                {CITIES.map((c) => <Chip key={c} active={search.city === c} onClick={() => set("city", c)}>{c}</Chip>)}
+              </Group>
+              <Group title="Property type">
+                {TYPES.map((c) => <Chip key={c} active={search.type === c} onClick={() => set("type", c)}>{c}</Chip>)}
+              </Group>
+              <Group title="Budget" column>
+                {BUDGETS.map((b) => <Chip key={b.value} active={search.budget === b.value} onClick={() => set("budget", b.value)} wide>{b.label}</Chip>)}
+              </Group>
+              <Group title="Bedrooms">
+                {["1", "2", "3", "4", "5"].map((n) => <Chip key={n} active={search.beds === n} onClick={() => set("beds", n)}>{n}+</Chip>)}
+              </Group>
+              <Group title="Status">
+                <Chip active={search.status === "Ready"} onClick={() => set("status", "Ready")}>Ready</Chip>
+                <Chip active={search.status === "Off-plan"} onClick={() => set("status", "Off-plan")}>Off-plan</Chip>
+              </Group>
+              <button onClick={() => setMobileOpen(false)} className="mt-6 w-full rounded-full bg-ink py-3 text-sm text-ink-foreground lg:hidden">
+                Show {list.length} results
+              </button>
+            </div>
+          </aside>
+
+          <section>
+            {list.length ? (
+              <div className="grid gap-x-5 gap-y-10 sm:grid-cols-2 xl:grid-cols-4">
+                {list.map((p) => <PropertyCard key={p.id} p={p} />)}
+              </div>
+            ) : (
+              <div className="rounded-[1.5rem] bg-cream p-12 text-center">
+                <p className="display-md">No matches — yet.</p>
+                <p className="mt-3 text-base text-muted-foreground">Try widening your filters, or ask us about off-market homes.</p>
+              </div>
+            )}
+          </section>
+        </div>
       </div>
     </main>
   );
 }
 
-function Select({ label, value, onChange, options, placeholder }: { label: string; value?: string | undefined; onChange: (v: string) => void; options: string[][]; placeholder: string }) {
+function Group({ title, children, column }: { title: string; children: React.ReactNode; column?: boolean }) {
   return (
-    <select aria-label={label} value={value ?? ""} onChange={(e) => onChange(e.target.value)} className="field">
-      <option value="">{placeholder}</option>
-      {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-    </select>
+    <div className="mt-6">
+      <p className="mb-3 text-sm text-muted-foreground">{title}</p>
+      <div className={column ? "flex flex-col gap-2" : "flex flex-wrap gap-2"}>{children}</div>
+    </div>
+  );
+}
+
+function Chip({ active, onClick, children, wide }: { active: boolean; onClick: () => void; children: React.ReactNode; wide?: boolean }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-full px-4 py-2 text-sm transition-colors ${wide ? "text-left" : ""} ${active ? "bg-primary text-primary-foreground" : "bg-background hover:bg-background/60"}`}
+    >
+      {children}
+    </button>
   );
 }

@@ -6,7 +6,7 @@ import { BUDGETS, CITIES, GIGA_PROJECTS, PROPERTIES, TYPES, formatSAR } from "@/
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
-import { useLiquidGlass, useReveal } from "@/components/site/motion";
+import { useReveal } from "@/components/site/motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -120,7 +120,6 @@ const FAQ = [
 
 function Home() {
   useReveal();
-  useLiquidGlass();
   const [faq, setFaq] = useState<number | null>(0);
   const featured = PROPERTIES.filter((p) => p.featured).slice(0, 6);
   const vault = PROPERTIES.filter((p) => p.investment).slice(0, 4);
