@@ -144,7 +144,7 @@ function Home() {
       <Hero />
 
       {/* Featured */}
-      <section className="px-6 py-20">
+      <section id="featured" className="scroll-mt-24 px-6 py-20">
         <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionTitle word="Featured" rest=" homes" eyebrow="Hand-picked this season" />
