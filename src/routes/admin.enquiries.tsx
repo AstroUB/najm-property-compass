@@ -40,7 +40,7 @@ function Enquiries() {
       <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
         <Panel className="!p-2">
           {list.length === 0 && <p className="p-6 text-muted-foreground">No enquiries match.</p>}
-          <ul className="max-h-[70vh] overflow-y-auto">
+          <ul className="max-h-[45vh] overflow-y-auto lg:max-h-[70vh]">
             {list.map((e) => (
               <li key={e.id}>
                 <button onClick={() => { setOpenId(e.id); }} className={`flex w-full items-start gap-3 rounded-2xl p-4 text-left transition-colors ${open?.id === e.id ? "bg-cream" : "hover:bg-cream/60"}`}>

@@ -87,7 +87,7 @@ export function PropertyEditor({ initial }: { initial: AdminProperty }) {
                 <div key={i} className="group relative aspect-[4/3] overflow-hidden rounded-2xl">
                   <img src={src} alt="" className="h-full w-full object-cover" />
                   {i === 0 && <span className="absolute left-2 top-2 rounded-full bg-background px-3 py-1 text-xs">Cover</span>}
-                  <div className="absolute inset-x-2 bottom-2 flex justify-between opacity-0 transition-opacity group-hover:opacity-100">
+                  <div className="absolute inset-x-2 bottom-2 flex justify-between transition-opacity lg:opacity-0 lg:group-hover:opacity-100">
                     <button type="button" disabled={i === 0} onClick={() => { const a = [...p.images]; [a[i - 1], a[i]] = [a[i]!, a[i - 1]!]; set("images", a); }} className="rounded-full bg-background p-1.5 disabled:opacity-30" aria-label="Move left"><GripVertical className="h-4 w-4" /></button>
                     <button type="button" onClick={() => set("images", p.images.filter((_, j) => j !== i))} className="rounded-full bg-background p-1.5 text-destructive" aria-label="Remove photo"><X className="h-4 w-4" /></button>
                   </div>
@@ -220,7 +220,7 @@ function Pairs({ list, onChange, a, b }: { list: Pair[]; onChange: (v: Pair[]) =
       {list.map(([k, v], i) => (
         <div key={i} className="flex gap-2">
           <input className="field" placeholder={a} value={k} onChange={(e) => onChange(list.map((r, j) => (j === i ? [e.target.value, r[1]] : r)))} />
-          <input className="field !w-40 shrink-0" placeholder={b} value={v} onChange={(e) => onChange(list.map((r, j) => (j === i ? [r[0], e.target.value] : r)))} />
+          <input className="field !w-28 shrink-0 sm:!w-40" placeholder={b} value={v} onChange={(e) => onChange(list.map((r, j) => (j === i ? [r[0], e.target.value] : r)))} />
           <button type="button" aria-label="Remove row" onClick={() => onChange(list.filter((_, j) => j !== i))} className="shrink-0 rounded-full bg-cream px-3 text-muted-foreground hover:text-destructive"><X className="h-4 w-4" /></button>
         </div>
       ))}
