@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Footer, Nav, SmoothScroll } from "@/components/site/Layout";
 import { useLiquidGlass } from "@/components/site/motion";
 import { Toaster } from "@/components/ui/sonner";
+import { PageTransition } from "@/components/site/PageTransition";
 
 function NotFoundComponent() {
   return (
@@ -129,6 +130,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {isAdmin ? <Outlet /> : (<><SmoothScroll /><Nav /><Outlet /><Footer /></>)}
       <Toaster position="bottom-center" />
+      <PageTransition />
     </QueryClientProvider>
   );
 }

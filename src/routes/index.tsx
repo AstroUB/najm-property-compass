@@ -10,6 +10,7 @@ import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
 import { useLiquidGlass, useReveal } from "@/components/site/motion";
+import { introDone } from "@/components/site/PageTransition";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,15 +34,21 @@ function Hero() {
   const [budget, setBudget] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
+    let ctx: { revert: () => void } | undefined;
     (async () => {
-      const { gsap } = await import("gsap");
-      gsap.timeline()
-        .from("[data-hero-line]", { yPercent: 110, duration: 1.2, stagger: 0.12, ease: "power4.out" })
-        .from("[data-hero-photo]", { scale: 1.08, opacity: 0, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.1)
-        .from("[data-hero-cut]", { y: 80, opacity: 0, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.3)
-        .from("[data-hero-side]", { opacity: 0, y: 20, duration: 1, stagger: 0.1, ease: "power3.out", clearProps: "all" }, 0.6)
-        .from("[data-hero-search]", { y: 30, opacity: 0, duration: 1, ease: "power3.out", clearProps: "all" }, 0.9);
+      const [{ gsap }] = await Promise.all([import("gsap"), introDone]);
+      if (cancelled || !stageRef.current) return;
+      ctx = gsap.context(() => {
+        gsap.timeline()
+          .fromTo("[data-hero-line]", { yPercent: 110 }, { yPercent: 0, duration: 1.2, stagger: 0.12, ease: "power4.out", clearProps: "transform" })
+          .fromTo("[data-hero-photo]", { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.1)
+          .fromTo("[data-hero-cut]", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1.6, ease: "power3.out", clearProps: "all" }, 0.3)
+          .fromTo("[data-hero-side]", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1, stagger: 0.1, ease: "power3.out", clearProps: "all" }, 0.6)
+          .fromTo("[data-hero-search]", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power3.out", clearProps: "all" }, 0.9);
+      }, stageRef.current.parentElement ?? undefined);
     })();
+    return () => { cancelled = true; ctx?.revert(); };
   }, []);
 
   useLiquidGlass(".lg-glass", { frost: 0, refraction: 0.003, bevelDepth: 0.04, bevelWidth: 0.1 });
