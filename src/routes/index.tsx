@@ -46,7 +46,6 @@ function Hero() {
   }, []);
 
   const sel = "w-full appearance-none bg-transparent text-base font-medium text-foreground outline-none cursor-pointer";
-  const clip = { clipPath: "inset(30% 0 0 0 round 2rem)" };
 
   return (
     <section className="px-3 pt-24 md:px-4">
@@ -55,7 +54,7 @@ function Hero() {
           <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
           <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy normal-case">S</span>tars</span></span>
         </h1>
-        <img data-hero-photo src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} style={clip} className="absolute inset-0 h-full w-full object-cover" />
+        <img data-hero-photo src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="hero-clip absolute inset-0 h-full w-full object-cover" />
         <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-0 z-20 h-full w-full object-cover" />
 
         <p className="absolute left-[2%] top-[31%] z-30 hidden max-w-[15rem] text-sm text-ink-foreground lg:block" style={{ marginTop: "2rem", marginLeft: "1rem" }}>
@@ -75,15 +74,15 @@ function Hero() {
             { label: "Property type", value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
             { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
           ].map((f) => (
-            <label key={f.label} className="liquidGL glass relative flex cursor-pointer flex-col rounded-full px-6 py-3">
-              <span className="text-xs text-foreground/70">{f.label}</span>
-              <select value={f.value} onChange={(e) => f.set(e.target.value)} className={sel} aria-label={f.label}>
+            <label key={f.label} className="liquidGL glass relative z-40 flex cursor-pointer flex-col rounded-full px-6 py-3">
+              <span className="relative z-10 text-xs text-foreground/70">{f.label}</span>
+              <select value={f.value} onChange={(e) => f.set(e.target.value)} className={`${sel} relative z-10`} aria-label={f.label}>
                 <option value="">{f.ph}</option>
                 {f.opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
               </select>
             </label>
           ))}
-          <button className="flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
+          <button className="relative z-40 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
             <Search className="h-4 w-4" /> Search
           </button>
         </form>
