@@ -81,7 +81,7 @@ function Detail() {
         <div className="mt-16 grid gap-16 lg:grid-cols-[1fr_420px]">
           <div>
             <p className="flex items-center gap-2 text-lg text-muted-foreground"><MapPin className="h-5 w-5 text-primary" />{p.district}, {p.city}</p>
-            <h1 className="display-lg mt-4"><span className="fancy">{p.title[0]}</span>{p.title.slice(1)}</h1>
+            <h1 className="display-lg mt-4"><span className="fancy">{p.title.split(" ")[0]}</span> {p.title.split(" ").slice(1).join(" ")}</h1>
             <p className="mt-6 text-3xl font-medium tracking-tight text-primary md:text-4xl">{formatSAR(p.price)}</p>
             {p.investment && (
               <p className="mt-3 text-lg text-muted-foreground">Est. annual yield {p.investment.yield}% · {p.investment.label}</p>
@@ -114,7 +114,7 @@ function Detail() {
 
           <aside className="lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-[2.5rem] bg-background p-8 shadow-soft">
-              <h2 className="display-md"><span className="fancy">E</span>nquire</h2>
+              <h2 className="display-md"><span className="fancy">Enquire</span></h2>
               <p className="mb-8 mt-3 text-lg text-muted-foreground">Arrange a private viewing or request more details.</p>
               <EnquiryForm cta="Request viewing" defaultMessage={`I'm interested in ${p.title}.`} />
             </div>
@@ -122,7 +122,7 @@ function Detail() {
         </div>
 
         <section className="mt-28">
-          <h2 className="display-lg"><span className="fancy">S</span>imilar homes</h2>
+          <h2 className="display-lg"><span className="fancy">Similar</span> homes</h2>
           <div className="mt-14 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
             {PROPERTIES.filter((x) => x.id !== p.id).slice(0, 3).map((x) => <PropertyCard key={x.id} p={x} />)}
           </div>

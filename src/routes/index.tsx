@@ -136,7 +136,7 @@ function Home() {
       <section className="px-6 py-20">
         <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-wrap items-end justify-between gap-8">
-            <SectionTitle letter="F" rest="eatured homes" eyebrow="Hand-picked this season" />
+            <SectionTitle word="Featured" rest=" homes" eyebrow="Hand-picked this season" />
             <Link to="/properties" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
               View all properties <ArrowUpRight className="h-5 w-5" />
             </Link>
@@ -151,7 +151,7 @@ function Home() {
       <section id="vault" className="scroll-mt-24 bg-cream px-6 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 md:grid-cols-2 md:items-end">
-            <SectionTitle letter="I" rest="nvestment Vault" eyebrow="Income-ready properties" />
+            <SectionTitle word="Investment" rest=" Vault" eyebrow="Income-ready properties" />
             <p className="text-lg text-muted-foreground" data-reveal>
               Tenanted, fully furnished or in high-growth zones — properties selected for strong, dependable returns from day one.
             </p>
@@ -179,7 +179,7 @@ function Home() {
       {/* Other properties */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-[1400px]">
-          <SectionTitle letter="M" rest="ore to explore" />
+          <SectionTitle word="More" rest=" to explore" />
           <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
             {PROPERTIES.filter((p) => !p.featured).slice(0, 4).map((p) => <PropertyCard key={p.id} p={p} />)}
           </div>
@@ -199,7 +199,7 @@ function Home() {
         <div className="mx-auto max-w-7xl">
           <div data-reveal>
             <p className="mb-5 text-lg opacity-60">Upcoming & under construction</p>
-            <h2 className="display-lg"><span className="fancy">T</span>he Sovereign Giga Projects</h2>
+            <h2 className="display-lg">The <span className="fancy">Sovereign</span> Giga Projects</h2>
           </div>
         </div>
         <div className="mt-16 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1.5rem,calc((100vw-80rem)/2))] pb-6 [scrollbar-width:none]">
@@ -219,7 +219,7 @@ function Home() {
       {/* Process */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-7xl">
-          <SectionTitle letter="H" rest="ow we work" eyebrow="Four steps to the keys" />
+          <SectionTitle word="How" rest=" we work" eyebrow="Four steps to the keys" />
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s, i) => (
               <div key={s.t} className="rounded-[2rem] bg-cream p-8" data-reveal>
@@ -236,7 +236,7 @@ function Home() {
       <section className="bg-primary px-6 py-20 text-primary-foreground">
         <div className="mx-auto max-w-7xl">
           <h2 className="display-lg" data-reveal>
-            <span className="fancy !text-primary-foreground">W</span>hy Najm?
+            <span className="fancy !text-primary-foreground">Why</span> Najm?
           </h2>
           <div className="mt-16 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-4">
             {WHY.map((w) => (
@@ -254,7 +254,7 @@ function Home() {
       <section id="insights" className="scroll-mt-28 px-6 py-20">
         <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-wrap items-end justify-between gap-8">
-            <SectionTitle letter="K" rest="nowledge Hub" eyebrow="Guides, market reports and buyer insight" />
+            <SectionTitle word="Knowledge" rest=" Hub" eyebrow="Guides, market reports and buyer insight" />
             <a href="#contact" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
               Ask an advisor <ArrowUpRight className="h-5 w-5" />
             </a>
@@ -280,7 +280,7 @@ function Home() {
       <section id="contact" className="scroll-mt-28 px-6 py-20">
         <div className="mx-auto grid max-w-7xl gap-16 lg:grid-cols-2">
           <div>
-            <SectionTitle letter="Q" rest="uestions" />
+            <SectionTitle word="Questions" rest="" />
             <div className="mt-12 flex flex-col gap-3">
               {FAQ.map((f, i) => (
                 <div key={f.q} className="rounded-[1.75rem] bg-cream" data-reveal>
@@ -294,7 +294,7 @@ function Home() {
             </div>
           </div>
           <div className="rounded-[2.5rem] bg-background p-2 lg:pt-0" data-reveal>
-            <h2 className="display-lg"><span className="fancy">T</span>alk to us</h2>
+            <h2 className="display-lg"><span className="fancy">Talk</span> to us</h2>
             <p className="mb-10 mt-5 text-lg text-muted-foreground">Tell us what you're looking for — a private advisor will be in touch within 24 hours.</p>
             <EnquiryForm cta="Send message" />
           </div>
@@ -304,7 +304,7 @@ function Home() {
       {/* Banner */}
       <section className="px-6 pb-28">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-10 overflow-hidden rounded-[2.5rem] bg-cream p-10 md:flex-row md:items-center md:p-16" data-reveal>
-          <h2 className="display-lg max-w-3xl">Your <span className="fancy">n</span>ext address is waiting.</h2>
+          <h2 className="display-lg max-w-3xl">Your next <span className="fancy">address</span> is waiting.</h2>
           <Link to="/properties" className="flex shrink-0 items-center gap-3 rounded-full bg-ink px-8 py-4 text-lg text-ink-foreground transition-colors hover:bg-primary">
             Browse properties <ArrowUpRight className="h-5 w-5" />
           </Link>

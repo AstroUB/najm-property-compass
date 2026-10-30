@@ -59,7 +59,7 @@ function PropertiesPage() {
       <div className="mx-auto max-w-[1440px]">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <h1 className="display-xl"><span className="fancy">P</span>roperties</h1>
+            <h1 className="display-xl"><span className="fancy">Properties</span></h1>
             <p className="mt-3 text-base text-muted-foreground">
               {list.length} curated {list.length === 1 ? "residence" : "residences"} across the Kingdom
             </p>
@@ -81,7 +81,7 @@ function PropertiesPage() {
           <aside className={`${mobileOpen ? "fixed inset-0 z-[60] overflow-y-auto bg-background p-4" : "hidden"} lg:sticky lg:top-28 lg:block lg:self-start`}>
             <div className="rounded-[2rem] bg-cream p-3">
               <div className="flex items-center justify-between px-4 pb-2 pt-4">
-                <p className="text-2xl font-medium tracking-tight"><span className="fancy">F</span>ilters</p>
+                <p className="text-2xl font-medium tracking-tight"><span className="fancy">Filters</span></p>
                 <div className="flex items-center gap-3">
                   {hasFilters ? (
                     <button onClick={() => navigate({ search: {} })} className="text-sm text-primary hover:underline">Clear all</button>

@@ -43,7 +43,7 @@ export function Nav() {
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4">
       <nav className={`liquidGL glass mx-auto flex max-w-6xl items-center justify-between rounded-full py-2 pl-6 pr-2 transition-all duration-500 ${scrolled ? "max-w-5xl" : ""}`}>
         <Link to="/" className="flex items-baseline text-lg font-medium tracking-tight">
-          <span className="fancy text-2xl">N</span>ajm Estate
+          <span className="fancy text-2xl">Najm</span>&nbsp;Estate
         </Link>
         <div className="hidden items-center gap-1 md:flex">
           <Link to="/" className={link} activeOptions={{ exact: true }} activeProps={{ className: "bg-background/70" }}>Home</Link>
@@ -80,7 +80,7 @@ export function Footer() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
             <div>
-              <h2 className="display-lg max-w-xl">Find the address that <span className="fancy !text-ink-foreground">d</span>efines you.</h2>
+              <h2 className="display-lg max-w-xl">Find the address that <span className="fancy !text-ink-foreground">defines</span> you.</h2>
               <form
                 className="mt-8 flex max-w-md items-center gap-2 rounded-full bg-ink-foreground/10 p-1.5"
                 onSubmit={(e) => { e.preventDefault(); e.currentTarget.reset(); toast.success("Subscribed — welcome to Najm."); }}
@@ -122,19 +122,19 @@ export function Footer() {
           </div>
         </div>
         <p className="pointer-events-none -mb-[0.22em] select-none text-center font-medium leading-none tracking-[-0.05em] text-ink-foreground/10" style={{ fontSize: "clamp(5rem, 19vw, 18rem)" }}>
-          <span className="fancy !text-primary">N</span>ajm
+          <span className="fancy !text-primary">Najm</span>
         </p>
       </div>
     </footer>
   );
 }
 
-export function SectionTitle({ letter, rest, eyebrow, className = "" }: { letter: string; rest: string; eyebrow?: string; className?: string }) {
+export function SectionTitle({ word, rest, eyebrow, className = "" }: { word: string; rest: string; eyebrow?: string; className?: string }) {
   return (
     <div className={className} data-reveal>
       {eyebrow && <p className="mb-3 text-sm text-muted-foreground">{eyebrow}</p>}
       <h2 className="display-lg">
-        <span className="fancy">{letter}</span>{rest}
+        <span className="fancy">{word}</span>{rest}
       </h2>
     </div>
   );
