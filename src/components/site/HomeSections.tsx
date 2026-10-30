@@ -1,48 +1,51 @@
 import { useEffect, useRef } from "react";
 import { ArrowUpRight, BadgeCheck, Building2, Handshake, Landmark, LineChart, ShieldCheck, Sparkles } from "lucide-react";
 import { GIGA_PROJECTS } from "@/data/properties";
-import { useLiquidGlass } from "./motion";
 
-/** Giga projects: full-image cards with a lightly frosted liquidGL details panel; scroll drives horizontal movement on desktop. */
+/** Giga projects: tall sticky stage; vertical scroll progress drives the card track horizontally on desktop (no pinning, so nothing overlaps). */
 export function GigaProjects() {
-  const section = useRef<HTMLElement>(null);
+  const outer = useRef<HTMLElement>(null);
   const track = useRef<HTMLDivElement>(null);
-  useLiquidGlass(".lg-giga", { frost: 1.5, refraction: 0.006, bevelDepth: 0.06, bevelWidth: 0.1 });
 
   useEffect(() => {
-    let mm: { revert: () => void } | undefined;
-    (async () => {
-      const { gsap } = await import("gsap");
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      gsap.registerPlugin(ScrollTrigger);
-      mm = gsap.matchMedia();
-      (mm as unknown as { add: (q: string, fn: () => void) => void }).add("(min-width: 1024px)", () => {
-        const el = track.current!;
-        const dist = () => el.scrollWidth - window.innerWidth;
-        gsap.to(el, {
-          x: () => -dist(),
-          ease: "none",
-          scrollTrigger: { trigger: section.current, start: "top top", end: () => "+=" + dist(), pin: true, scrub: 0.8, invalidateOnRefresh: true },
-        });
-      });
-    })();
-    return () => mm?.revert();
+    const el = track.current, sec = outer.current;
+    if (!el || !sec) return;
+    const mq = window.matchMedia("(min-width: 1024px)");
+    let raf = 0;
+    const size = () => {
+      if (!mq.matches) { sec.style.height = ""; el.style.transform = ""; return; }
+      sec.style.height = `${window.innerHeight + Math.max(0, el.scrollWidth - window.innerWidth)}px`;
+      update();
+    };
+    const update = () => {
+      if (!mq.matches) return;
+      const dist = Math.max(0, el.scrollWidth - window.innerWidth);
+      const top = sec.getBoundingClientRect().top;
+      const p = Math.min(1, Math.max(0, -top / Math.max(1, dist)));
+      el.style.transform = `translate3d(${-p * dist}px,0,0)`;
+    };
+    const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); };
+    size();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", size);
+    mq.addEventListener("change", size);
+    const t = setTimeout(size, 600);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", size); mq.removeEventListener("change", size); clearTimeout(t); cancelAnimationFrame(raf); };
   }, []);
 
   return (
-    <section ref={section} id="projects" className="scroll-mt-0 overflow-hidden bg-ink py-16 text-ink-foreground lg:flex lg:h-svh lg:flex-col lg:justify-center lg:py-10">
-      <div className="mx-auto w-full max-w-[1440px] px-6">
-        <p className="mb-4 text-lg opacity-60">Upcoming & under construction</p>
-        <h2 className="display-lg">The <span className="fancy">Sovereign</span> Giga Projects</h2>
-      </div>
-      <div ref={track} className="mt-10 flex gap-6 overflow-x-auto px-6 pb-4 [scrollbar-width:none] lg:w-max lg:overflow-visible lg:px-[max(1.5rem,calc((100vw-1440px)/2+1.5rem))]">
-        {GIGA_PROJECTS.map((g, i) => (
-          <article key={g.name} className="group relative h-[70svh] min-h-[460px] w-[86vw] shrink-0 overflow-hidden rounded-[2.5rem] lg:h-[64svh] lg:w-[min(64rem,72vw)]">
-            <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-            <p className="absolute left-8 top-6 text-7xl font-medium tracking-tighter text-ink-foreground/80 md:text-8xl">0{i + 1}</p>
-            <div className="absolute inset-x-3 bottom-3 md:inset-x-5 md:bottom-5">
-              <span aria-hidden className="lg-giga glass-clear pointer-events-none absolute inset-0 rounded-[2rem]" />
-              <div className="relative z-10 grid gap-6 rounded-[2rem] bg-ink/25 p-6 md:grid-cols-[1.4fr_1fr] md:p-8">
+    <section ref={outer} id="projects" className="relative bg-ink text-ink-foreground">
+      <div className="overflow-hidden py-16 lg:sticky lg:top-0 lg:flex lg:h-svh lg:flex-col lg:justify-center lg:py-10">
+        <div className="mx-auto w-full max-w-[1440px] px-6">
+          <p className="mb-4 text-lg opacity-60">Upcoming & under construction</p>
+          <h2 className="display-lg">The <span className="fancy">Sovereign</span> Giga Projects</h2>
+        </div>
+        <div ref={track} className="mt-10 flex gap-6 overflow-x-auto px-6 pb-4 [scrollbar-width:none] will-change-transform lg:w-max lg:overflow-visible lg:px-[max(1.5rem,calc((100vw-1440px)/2+1.5rem))]">
+          {GIGA_PROJECTS.map((g, i) => (
+            <article key={g.name} className="group relative h-[70svh] min-h-[460px] w-[86vw] shrink-0 overflow-hidden rounded-[2.5rem] lg:h-[64svh] lg:w-[min(60rem,70vw)]">
+              <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
+              <p className="absolute left-8 top-6 text-7xl font-medium tracking-tighter text-ink-foreground/85 md:text-8xl">0{i + 1}</p>
+              <div className="absolute inset-x-3 bottom-3 grid gap-6 rounded-[2rem] bg-ink/35 p-6 backdrop-blur-md md:inset-x-5 md:bottom-5 md:grid-cols-[1.4fr_1fr] md:p-8">
                 <div>
                   <p className="text-sm opacity-80">{g.status} · {g.region}</p>
                   <h3 className="mt-2 text-3xl font-medium tracking-tight md:text-4xl">{g.name}</h3>
@@ -58,9 +61,9 @@ export function GigaProjects() {
                   </a>
                 </div>
               </div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
