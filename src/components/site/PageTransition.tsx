@@ -18,6 +18,9 @@ const labelFor = (path: string) => {
 };
 const STRIPES = ["bg-background", "bg-primary", "bg-background", "bg-primary"];
 
+/** Minimal shape of a gsap timeline we keep a handle on (heartbeat animation). */
+type BeatTimeline = { kill: () => void; to: (...args: unknown[]) => BeatTimeline };
+
 /** Four stripes rise from the bottom to cover the page, then lift away upward one by one. */
 export function PageTransition() {
   const router = useRouter();
@@ -26,7 +29,7 @@ export function PageTransition() {
   const [count, setCount] = useState(0);
   const [intro, setIntro] = useState(true);
   const busy = useRef(false);
-  const beat = useRef<{ kill: () => void } | null>(null);
+  const beat = useRef<BeatTimeline | null>(null);
 
   const stripes = () => Array.from(root.current?.querySelectorAll<HTMLElement>("[data-stripe]") ?? []);
   const text = () => root.current?.querySelector<HTMLElement>("[data-label]");
@@ -74,11 +77,12 @@ export function PageTransition() {
       // If the next page is slow, all stripes + label pulse together like a heartbeat until it resolves.
       if (busy.current) {
         gsap.set(stripes(), { transformOrigin: "50% 50%" });
-        beat.current = gsap.timeline({ repeat: -1, delay: 0.25, repeatDelay: 0.5 })
-          .to([...stripes(), text()!], { opacity: 0.65, duration: 0.18, ease: "power2.out" })
-          .to([...stripes(), text()!], { opacity: 1, duration: 0.22, ease: "power2.in" })
-          .to([...stripes(), text()!], { opacity: 0.65, duration: 0.18, ease: "power2.out" })
-          .to([...stripes(), text()!], { opacity: 1, duration: 0.4, ease: "power2.inOut" });
+        beat.current = gsap.timeline({ repeat: -1, repeatDelay: 0.35 }) as unknown as BeatTimeline;
+        stripes().forEach((s) => {
+          beat.current!
+            .to(s, { opacity: 0, duration: 0.15, ease: "power2.out" })
+            .to(s, { opacity: 0.9, duration: 0.2, ease: "power2.in" });
+        });
       }
       return false;
     },
