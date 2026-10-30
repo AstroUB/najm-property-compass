@@ -106,6 +106,13 @@ const WHY = [
   { n: "24h", t: "Response promise", d: "A dedicated advisor, available whenever you need them." },
 ];
 
+const ARTICLES = [
+  { c: "Buyer guide", m: 6, t: "How foreigners can buy property in Saudi Arabia in 2026", img: p4 },
+  { c: "Market report", m: 8, t: "Riyadh prime residential: Q3 prices and rental yields", img: g3 },
+  { c: "Investment", m: 5, t: "Off-plan vs ready: which earns more in Jeddah?", img: p3 },
+  { c: "Giga projects", m: 7, t: "What NEOM and the Red Sea mean for nearby land values", img: g1 },
+];
+
 const FAQ = [
   { q: "Can foreigners buy property in Saudi Arabia?", a: "Yes. Under the updated real estate ownership law, non-Saudis can own property in designated zones. Our advisors guide you through every eligibility requirement." },
   { q: "Do you help with mortgage financing?", a: "We work with leading Saudi banks to secure competitive, Sharia-compliant financing for residents and eligible non-residents." },
@@ -126,7 +133,7 @@ function Home() {
 
       {/* Featured */}
       <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-[1400px]">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionTitle letter="F" rest="eatured homes" eyebrow="Hand-picked this season" />
             <Link to="/properties" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
@@ -170,7 +177,7 @@ function Home() {
 
       {/* Other properties */}
       <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-[1400px]">
           <SectionTitle letter="M" rest="ore to explore" />
           <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
             {PROPERTIES.filter((p) => !p.featured).slice(0, 4).map((p) => <PropertyCard key={p.id} p={p} />)}
@@ -237,6 +244,32 @@ function Home() {
                 <p className="mt-4 text-xl">{w.t}</p>
                 <p className="mt-2 text-lg opacity-70">{w.d}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Knowledge Hub */}
+      <section id="insights" className="scroll-mt-28 px-6 py-20">
+        <div className="mx-auto max-w-[1400px]">
+          <div className="flex flex-wrap items-end justify-between gap-8">
+            <SectionTitle letter="K" rest="nowledge Hub" eyebrow="Guides, market reports and buyer insight" />
+            <a href="#contact" className="flex items-center gap-2 text-lg hover:text-primary" data-reveal>
+              Ask an advisor <ArrowUpRight className="h-5 w-5" />
+            </a>
+          </div>
+          <div className="mt-16 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+            {ARTICLES.map((a) => (
+              <a key={a.t} href="#contact" className="group block" data-reveal>
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
+                  <img src={a.img} alt={a.t} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <span className="glass absolute bottom-4 right-4 flex h-11 w-11 translate-y-2 items-center justify-center rounded-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                    <ArrowUpRight className="h-5 w-5" />
+                  </span>
+                </div>
+                <p className="mt-5 text-sm text-muted-foreground">{a.c} · {a.m} min read</p>
+                <p className="mt-2 text-xl font-medium leading-snug tracking-tight">{a.t}</p>
+              </a>
             ))}
           </div>
         </div>
