@@ -72,7 +72,7 @@ function Hero() {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="liquidGL glass relative grid w-full gap-1 rounded-[1.75rem] p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
+          className="liquidGL glass relative z-50 grid w-full gap-1 rounded-[1.75rem] p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:rounded-full"
         >
           {[
             { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
@@ -203,7 +203,7 @@ function Home() {
           {GIGA_PROJECTS.map((g) => (
             <article key={g.name} className="group relative h-[62vh] min-h-[420px] w-[85vw] shrink-0 snap-start overflow-hidden rounded-[2.5rem] md:w-[65vw] lg:w-[46rem]">
               <img src={g.image} alt={g.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.5s] group-hover:scale-105" />
-              <div className="liquidGL glass absolute bottom-5 left-5 right-5 rounded-[1.5rem] p-6 text-foreground md:right-auto md:max-w-md">
+              <div className="liquidGL glass absolute z-50 bottom-5 left-5 right-5 rounded-[1.5rem] p-6 text-foreground md:right-auto md:max-w-md">
                 <p className="text-lg text-primary">{g.status} · {g.region}</p>
                 <h3 className="display-md mt-2">{g.name}</h3>
                 <p className="mt-3 text-lg text-muted-foreground">{g.text}</p>
