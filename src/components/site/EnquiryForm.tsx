@@ -2,6 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { ArrowUpRight } from "lucide-react";
+import { pushEnquiry } from "@/lib/admin-store";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(100),
@@ -10,7 +11,7 @@ const schema = z.object({
   message: z.string().trim().max(1000).optional(),
 });
 
-export function EnquiryForm({ cta = "Send enquiry", defaultMessage = "" }: { cta?: string; defaultMessage?: string }) {
+export function EnquiryForm({ cta = "Send enquiry", defaultMessage = "", source, propertyId }: { cta?: string; defaultMessage?: string; source?: string; propertyId?: string }) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   return (
     <form
@@ -27,6 +28,7 @@ export function EnquiryForm({ cta = "Send enquiry", defaultMessage = "" }: { cta
           return;
         }
         setErrors({});
+        pushEnquiry({ ...r.data, message: r.data.message ?? "", source: source ?? (typeof window !== "undefined" ? window.location.pathname : "Website"), propertyId });
         form.reset();
         toast.success("Thank you — an advisor will contact you within 24 hours.");
       }}
