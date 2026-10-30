@@ -89,7 +89,7 @@ export function PageTransition() {
     window.scrollTo(0, 0);
     const { gsap } = await import("gsap");
     beat.current?.kill(); beat.current = null;
-    gsap.set([...stripes(), text()!], { scale: 1 });
+    gsap.set([...stripes(), text()!], { opacity: 1 });
     await new Promise((r) => setTimeout(r, 120));
     gsap.timeline({ onComplete: () => { busy.current = false; if (root.current) root.current.style.visibility = "hidden"; } })
       .to(text()!, { yPercent: -120, opacity: 0, duration: 0.4, ease: "power3.in" })
