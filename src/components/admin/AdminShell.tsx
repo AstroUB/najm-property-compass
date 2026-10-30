@@ -37,7 +37,7 @@ function AppSidebar() {
             <SidebarMenu>
               {NAV.filter((n) => n.title !== "Staff" || can.staff).map((n) => (
                 <SidebarMenuItem key={n.url}>
-                  <SidebarMenuButton asChild isActive={path === n.url} tooltip={n.title} size="lg">
+                  <SidebarMenuButton asChild isActive={n.url === "/admin" ? path === n.url : path.startsWith(n.url)} tooltip={n.title} size="lg" className="rounded-full data-[active=true]:bg-primary data-[active=true]:text-primary-foreground data-[active=true]:hover:bg-primary data-[active=true]:hover:text-primary-foreground">
                     <Link to={n.url}><n.icon className="h-5 w-5" /><span className="text-base">{n.title}</span></Link>
                   </SidebarMenuButton>
                   {n.title === "Enquiries" && newCount > 0 && <SidebarMenuBadge className="rounded-full bg-primary text-primary-foreground">{newCount}</SidebarMenuBadge>}

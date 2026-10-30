@@ -8,7 +8,7 @@ import { CITIES, TYPES, formatSAR, type Property } from "@/data/properties";
 import { newId, useAdmin, type AdminProperty } from "@/lib/admin-store";
 import { PageHeader, Panel } from "@/components/admin/AdminShell";
 
-export const Route = createFileRoute("/admin/properties")({ component: PropertiesAdmin });
+export const Route = createFileRoute("/admin/properties/")({ component: PropertiesAdmin });
 
 const blank = (): AdminProperty => ({
   id: newId(), title: "", city: "Riyadh", district: "", type: "Villa", price: 0, area: 0, beds: 0, baths: 0,

@@ -45,7 +45,7 @@ function Hero() {
   }, []);
 
   useLiquidGlass(".lg-glass", { frost: 0, refraction: 0.003, bevelDepth: 0.04, bevelWidth: 0.1 });
-  const sel = "w-full truncate appearance-none bg-transparent text-[15px] font-medium text-foreground outline-none cursor-pointer md:text-ink-foreground [&>option]:text-foreground";
+  const sel = "w-full truncate appearance-none bg-transparent text-sm font-medium text-foreground outline-none cursor-pointer md:text-ink-foreground [&>option]:text-foreground";
   const fs = "clamp(2.75rem, min(9.5vw, calc((100svh - 6.5rem) * 0.1377)), 11rem)";
 
   return (
@@ -75,18 +75,18 @@ function Hero() {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="absolute inset-x-0 top-full z-30 mx-auto mt-3 max-w-[1240px] md:inset-x-8 md:bottom-8 md:top-auto md:mt-0"
+          className="absolute inset-x-0 top-full z-30 mx-auto mt-3 max-w-[940px] md:inset-x-8 md:bottom-8 md:top-auto md:mt-0"
         >
           <span aria-hidden className="lg-glass pointer-events-none absolute inset-0 hidden rounded-[2rem] md:block md:rounded-full" />
-          <div className="relative z-10 grid gap-2 rounded-[2rem] bg-cream p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:gap-0 md:rounded-full md:bg-ink/40 md:p-2.5">
+          <div className="relative z-10 grid gap-2 rounded-[2rem] bg-cream p-2 md:grid-cols-[1fr_1fr_1fr_auto] md:gap-0 md:rounded-full md:bg-ink/40 md:p-1.5">
             {[
               { label: "Location", icon: MapPin, value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city in the Kingdom" },
               { label: "Property type", icon: HomeIcon, value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Villa, penthouse…" },
               { label: "Budget", icon: Wallet, value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget (SAR)" },
             ].map((f, i) => (
-              <label key={f.label} className={`group relative flex cursor-pointer items-center gap-4 rounded-full px-5 py-3 transition-colors hover:bg-background/60 md:px-6 md:hover:bg-ink-foreground/10 ${i > 0 ? "md:before:absolute md:before:left-0 md:before:top-1/4 md:before:h-1/2 md:before:w-px md:before:bg-ink-foreground/25" : ""}`}>
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-background text-primary">
-                  <f.icon className="h-5 w-5" />
+              <label key={f.label} className={`group relative flex cursor-pointer items-center gap-4 rounded-full px-4 py-2 transition-colors hover:bg-background/60 md:px-4 md:hover:bg-ink-foreground/10 ${i > 0 ? "md:before:absolute md:before:left-0 md:before:top-1/4 md:before:h-1/2 md:before:w-px md:before:bg-ink-foreground/25" : ""}`}>
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-background text-primary">
+                  <f.icon className="h-4 w-4" />
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col">
                   <span className="text-sm text-muted-foreground md:text-ink-foreground/75">{f.label}</span>
