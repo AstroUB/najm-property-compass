@@ -52,12 +52,13 @@ export function Nav() {
           <Link to="/properties" className={link} activeProps={{ className: "bg-background/70" }}>Properties</Link>
           <a href="/#vault" className={link}>Invest</a>
           <a href="/#projects" className={link}>Giga Projects</a>
-          <a href="/#insights" className={link}>Knowledge Hub</a>
-          <a href="/#contact" className={link}>Contact</a>
+          <Link to="/knowledge" className={link} activeProps={{ className: "bg-background/70" }}>Knowledge Hub</Link>
+          <Link to="/about" className={link} activeProps={{ className: "bg-background/70" }}>About</Link>
+          <Link to="/contact" className={link} activeProps={{ className: "bg-background/70" }}>Contact</Link>
         </div>
-        <a href="/#contact" className="relative z-10 hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-ink-foreground transition-colors hover:bg-primary md:flex">
+        <Link to="/contact" className="relative z-10 hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm text-ink-foreground transition-colors hover:bg-primary md:flex">
           Book a viewing <ArrowUpRight className="h-4 w-4" />
-        </a>
+        </Link>
         <button className="relative z-10 rounded-full bg-ink p-2.5 text-ink-foreground md:hidden" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -67,8 +68,9 @@ export function Nav() {
           <Link to="/" onClick={() => setOpen(false)}>Home</Link>
           <Link to="/properties" onClick={() => setOpen(false)}>Properties</Link>
           <a href="/#vault" onClick={() => setOpen(false)}>Invest</a>
-          <a href="/#insights" onClick={() => setOpen(false)}>Knowledge Hub</a>
-          <a href="/#contact" onClick={() => setOpen(false)}>Contact</a>
+          <Link to="/knowledge" onClick={() => setOpen(false)}>Knowledge Hub</Link>
+          <Link to="/about" onClick={() => setOpen(false)}>About</Link>
+          <Link to="/contact" onClick={() => setOpen(false)}>Contact</Link>
         </div>
       )}
     </header>
@@ -98,7 +100,9 @@ export function Footer() {
                 <Link to="/properties" className="hover:text-ink-foreground/70">Properties</Link>
                 <a href="/#vault" className="hover:text-ink-foreground/70">Investment Vault</a>
                 <a href="/#projects" className="hover:text-ink-foreground/70">Giga Projects</a>
-                <a href="/#insights" className="hover:text-ink-foreground/70">Knowledge Hub</a>
+                <Link to="/knowledge" className="hover:text-ink-foreground/70">Knowledge Hub</Link>
+                <Link to="/about" className="hover:text-ink-foreground/70">About us</Link>
+                <Link to="/contact" className="hover:text-ink-foreground/70">Contact</Link>
               </div>
               <div className="flex flex-col gap-3">
                 <p className="text-ink-foreground/50">Cities</p>
