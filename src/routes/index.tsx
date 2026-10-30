@@ -74,7 +74,7 @@ function Hero() {
             { label: "Property type", value: type, set: setType, opts: TYPES.map((c) => [c, c]), ph: "Any type" },
             { label: "Budget", value: budget, set: setBudget, opts: BUDGETS.map((b) => [b.value, b.label]), ph: "Any budget" },
           ].map((f) => (
-            <label key={f.label} className="liquidGL glass relative z-40 flex cursor-pointer flex-col rounded-full px-6 py-3">
+            <label key={f.label} className="liquidGL glass relative z-50 flex cursor-pointer flex-col rounded-full px-6 py-3">
               <span className="relative z-10 text-xs text-foreground/70">{f.label}</span>
               <select value={f.value} onChange={(e) => f.set(e.target.value)} className={`${sel} relative z-10`} aria-label={f.label}>
                 <option value="">{f.ph}</option>
@@ -82,7 +82,7 @@ function Hero() {
               </select>
             </label>
           ))}
-          <button className="relative z-40 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
+          <button className="relative z-50 flex items-center justify-center gap-2 rounded-full bg-ink px-9 py-4 text-base text-ink-foreground transition-colors hover:bg-primary">
             <Search className="h-4 w-4" /> Search
           </button>
         </form>
