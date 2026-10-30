@@ -154,7 +154,7 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   );
 }
 
-function Segment({ options, value, onPick, suffix = "" }: { options: string[]; value?: string; onPick: (v: string) => void; suffix?: string }) {
+function Segment({ options, value, onPick, suffix = "" }: { options: string[]; value?: string | undefined; onPick: (v: string) => void; suffix?: string }) {
   return (
     <div className="flex gap-1 rounded-full bg-cream p-1">
       {options.map((o) => (

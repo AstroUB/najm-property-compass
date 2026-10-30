@@ -49,15 +49,17 @@ function Hero() {
 
   return (
     <section className="px-3 pt-24 md:px-4">
-      <div ref={stageRef} className="relative mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[3/2]">
-        <h1 className="absolute inset-x-0 top-[2%] z-10 text-center font-medium uppercase leading-[0.86] tracking-[-0.04em]" style={{ fontSize: "clamp(3rem, 9.2vw, 9.5rem)" }}>
+      <div ref={stageRef} className="relative mx-auto aspect-[4/5] w-full max-w-[1440px] sm:aspect-[5/4]">
+        <h1 className="absolute inset-x-0 top-[1%] z-10 text-center font-medium uppercase leading-[0.86] tracking-[-0.04em]" style={{ fontSize: "clamp(3rem, 9.2vw, 9.5rem)" }}>
           <span className="block overflow-hidden"><span data-hero-line className="block">Homes written</span></span>
           <span className="block overflow-hidden"><span data-hero-line className="block">in the <span className="fancy normal-case">S</span>tars</span></span>
         </h1>
-        <img data-hero-photo src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="hero-clip absolute inset-0 h-full w-full object-cover" />
-        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-0 z-20 h-full w-full object-cover" />
+        <div data-hero-photo className="absolute inset-x-0 bottom-0 top-[40%] overflow-hidden rounded-[2rem]">
+          <img src={hero} alt="Najm Estate signature villa at blue hour" width={1920} height={1280} className="absolute inset-x-0 bottom-0 h-[138.4%] w-full object-cover" />
+        </div>
+        <img data-hero-cut src={heroCut} alt="" aria-hidden width={1920} height={1280} className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[83%] w-full object-cover" />
 
-        <p className="absolute left-[2%] top-[31%] z-30 hidden max-w-[15rem] text-sm text-ink-foreground lg:block" style={{ marginTop: "2rem", marginLeft: "1rem" }}>
+        <p className="absolute left-[2%] top-[29%] z-30 hidden max-w-[14rem] text-base text-muted-foreground lg:block">
           Curated residences and investment property across the Kingdom.
         </p>
 
