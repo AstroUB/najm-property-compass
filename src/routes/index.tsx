@@ -66,7 +66,7 @@ function Hero() {
             e.preventDefault();
             navigate({ to: "/properties", search: { city: loc || undefined, type: type || undefined, budget: budget || undefined } });
           }}
-          className="absolute inset-x-3 bottom-3 z-30 mx-auto grid max-w-5xl gap-2 md:bottom-8 md:grid-cols-[1fr_1fr_1fr_auto]"
+          className="absolute inset-x-3 bottom-3 z-50 mx-auto grid max-w-5xl gap-2 md:bottom-8 md:grid-cols-[1fr_1fr_1fr_auto]"
         >
           {[
             { label: "Location", value: loc, set: setLoc, opts: CITIES.map((c) => [c, c]), ph: "Any city" },
