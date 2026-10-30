@@ -9,6 +9,7 @@ import g1 from "@/assets/g1.jpg";
 import g3 from "@/assets/g3.jpg";
 import { GigaProjects, WhyNajm } from "@/components/site/HomeSections";
 import { BUDGETS, CITIES, PROPERTIES, TYPES, formatSAR } from "@/data/properties";
+import { ARTICLES } from "@/data/site";
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { SectionTitle } from "@/components/site/Layout";
 import { EnquiryForm } from "@/components/site/EnquiryForm";
@@ -240,7 +241,7 @@ function Home() {
                 </div>
                 <p className="mt-5 text-sm text-muted-foreground">{a.c} · {a.m} min read</p>
                 <p className="mt-2 text-xl font-medium leading-snug tracking-tight">{a.t}</p>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
